@@ -25,16 +25,16 @@ const Hero = () => {
 
       const tl = gsap.timeline();
 
-      // Entrance Animation
+      // Entrance Animation (Cinematic Blur Reveal)
       tl.fromTo('.hero-char',
-        { yPercent: 100, opacity: 0, rotateX: 90 },
-        { yPercent: 0, opacity: 1, rotateX: 0, duration: 1.2, stagger: 0.05, ease: 'power4.out' },
+        { opacity: 0, filter: 'blur(10px)', scale: 1.1 },
+        { opacity: 1, filter: 'blur(0px)', scale: 1, duration: 1.5, stagger: 0.08, ease: 'power3.out' },
         0
       )
       .fromTo(subtextRef.current,
-        { y: 50, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, ease: 'power3.out' },
-        0.8
+        { y: 30, opacity: 0, filter: 'blur(5px)' },
+        { y: 0, opacity: 1, filter: 'blur(0px)', duration: 1.5, ease: 'power3.out' },
+        1.0
       )
       .to(overlayRef.current,
         { opacity: 0, duration: 2, ease: 'power2.inOut' },
