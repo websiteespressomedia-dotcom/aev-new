@@ -1,0 +1,175 @@
+.stack-section {
+  position: relative;
+  width: 100%;
+  background-color: var(--color-bg);
+  padding: 100px 0 100px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stack-header-wrapper {
+  text-align: center;
+  margin-bottom: 100px;
+  position: relative;
+  z-index: 100;
+}
+
+.stack-main-title {
+  font-size: 5rem;
+  font-family: var(--font-serif);
+  color: var(--color-white);
+  text-transform: uppercase;
+  letter-spacing: 6px;
+  line-height: 1;
+  margin-bottom: 15px;
+}
+
+.stack-sub-title {
+  font-size: 1rem;
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 4px;
+}
+
+.stack-container {
+  position: relative;
+  width: 90vw;
+  max-width: 1400px;
+  /* We don't set a fixed height here, the cards will stack naturally and create scroll space */
+  display: flex;
+  flex-direction: column;
+  gap: 80vh; /* This gap determines how much you scroll before the next card comes up */
+  padding-bottom: 20vh; /* Extra space at the bottom */
+}
+
+.stack-card {
+  position: sticky;
+  top: 12vh; /* Where the card sticks on the screen */
+  height: 76vh; /* Takes up most of the screen */
+  width: 100%;
+  transform-origin: top center; /* When it scales down, it scales from the top */
+}
+
+.stack-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.8);
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.stack-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.stack-overlay {
+  position: absolute;
+  inset: 0;
+  /* Dark overlay mostly on the left for the text to pop */
+  background: linear-gradient(to right, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 50%, transparent 100%);
+  pointer-events: none;
+}
+
+.stack-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 5vw;
+  z-index: 2;
+}
+
+.stack-number {
+  font-family: var(--font-serif);
+  font-size: 8rem;
+  color: rgba(255,255,255,0.1); /* Very large, faint watermark number */
+  line-height: 1;
+  position: absolute;
+  top: 20%;
+  left: 3vw;
+  z-index: -1;
+}
+
+.stack-title {
+  font-family: var(--font-serif);
+  font-size: 4.5rem;
+  color: var(--color-white);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+  line-height: 1.1;
+}
+
+.stack-desc {
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  color: #ccc;
+  line-height: 1.6;
+  margin-bottom: 40px;
+  max-width: 400px;
+}
+
+.stack-explore-btn {
+  display: inline-block;
+  align-self: flex-start;
+  padding: 15px 30px;
+  border: 1px solid var(--color-accent);
+  color: var(--color-white);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: transparent;
+}
+
+.stack-explore-btn:hover {
+  background: var(--color-accent);
+  color: var(--color-bg);
+}
+
+@media (max-width: 1024px) {
+  .stack-main-title { font-size: 3.5rem; }
+  .stack-title { font-size: 3.5rem; }
+  .stack-content { width: 70%; }
+}
+
+@media (max-width: 768px) {
+  .stack-main-title { font-size: 2.5rem; }
+  .stack-sub-title { font-size: 0.8rem; }
+  
+  .stack-card {
+    height: 60vh;
+    top: 15vh;
+  }
+  
+  .stack-overlay {
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 100%);
+  }
+  
+  .stack-content {
+    width: 100%;
+    justify-content: flex-end;
+    padding: 10vw;
+    padding-bottom: 40px;
+  }
+  
+  .stack-number {
+    top: 10%;
+    left: auto;
+    right: 5vw;
+    font-size: 6rem;
+  }
+  
+  .stack-title { font-size: 2.5rem; }
+  .stack-desc { font-size: 1rem; margin-bottom: 20px; }
+}

@@ -1,0 +1,155 @@
+.accordion-gallery-section {
+  width: 100vw;
+  min-height: 100vh;
+  background-color: var(--color-bg); /* Dark background */
+  padding: 10vh 5vw;
+  display: flex;
+  flex-direction: column;
+}
+
+.ag-header {
+  margin-bottom: 5vh;
+}
+
+.ag-header h2 {
+  font-size: 4rem;
+  font-family: var(--font-serif);
+  color: var(--color-white);
+  margin-bottom: 10px;
+}
+
+.ag-header p {
+  font-size: 1.2rem;
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+.ag-container {
+  display: flex;
+  width: 100%;
+  height: 70vh;
+  gap: 10px;
+}
+
+.ag-card {
+  position: relative;
+  height: 100%;
+  flex: 1; /* Default width when not hovered */
+  border-radius: 20px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: flex 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* The hovered/active card takes up much more space */
+.ag-card.active {
+  flex: 5;
+}
+
+.ag-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.ag-card:hover .ag-image {
+  transform: scale(1.05);
+}
+
+.ag-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 100%);
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+.ag-card.active .ag-overlay {
+  opacity: 0.6;
+}
+
+.ag-title-vertical {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%) rotate(180deg);
+  writing-mode: vertical-rl;
+  color: var(--color-white);
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  white-space: nowrap;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+  z-index: 3;
+  letter-spacing: 2px;
+  text-shadow: 0 4px 10px rgba(0,0,0,0.8);
+}
+
+.ag-card.active .ag-title-vertical {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ag-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 40px;
+  z-index: 2;
+  color: var(--color-white);
+  display: flex;
+  align-items: flex-end;
+}
+
+.ag-content-inner {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.4s ease 0.2s; /* Delayed fade in */
+  white-space: nowrap; /* Prevent text wrapping when shrinking */
+}
+
+/* Only show text on the active card */
+.ag-card.active .ag-content-inner {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.ag-category {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+.ag-title {
+  font-size: 3rem;
+  font-family: var(--font-serif);
+  margin: 0;
+}
+
+@media (max-width: 1024px) {
+  .ag-container {
+    height: 60vh;
+  }
+  .ag-title {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .ag-container {
+    flex-direction: column; /* Stack vertically on mobile */
+    height: 100vh;
+  }
+  .ag-header h2 {
+    font-size: 3rem;
+  }
+}

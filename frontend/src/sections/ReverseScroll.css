@@ -1,0 +1,97 @@
+.reverse-scroll-section {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  position: relative;
+  background-color: var(--color-black);
+}
+
+.rs-overlay-title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  mix-blend-mode: difference;
+  color: var(--color-white);
+  pointer-events: auto; /* To trigger cursor */
+}
+
+.rs-overlay-title h2 {
+  font-size: 10vw;
+  font-family: var(--font-serif);
+  text-transform: uppercase;
+  margin: 0;
+  line-height: 1;
+  text-align: center;
+}
+
+.rs-subtitle {
+  font-size: 1.2rem;
+  font-family: var(--font-sans);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  text-align: center;
+  margin-top: 20px;
+  color: var(--color-beige);
+}
+
+.rs-btn {
+  display: block;
+  margin: 30px auto 0;
+  padding: 15px 30px;
+  background: transparent;
+  color: white;
+  border: 1px solid white;
+  border-radius: 30px;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.rs-btn:hover {
+  background: white;
+  color: black;
+}
+
+.rs-columns {
+  display: flex;
+  height: 300vh; /* 3 images per column = 300vh */
+  width: 100vw;
+}
+
+.rs-col {
+  width: 50vw;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.rs-item {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.rs-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.8;
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.rs-item:hover img {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .rs-overlay-title h2 {
+    font-size: 20vw;
+  }
+}

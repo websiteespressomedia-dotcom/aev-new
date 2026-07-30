@@ -1,0 +1,120 @@
+.hero-section {
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  background-color: var(--color-black);
+}
+
+.hero-image-wrapper {
+  position: absolute;
+  inset: -10%; /* Negative inset for parallax padding */
+  z-index: 1;
+}
+
+.hero-image-wrapper img,
+.hero-image-wrapper video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: black;
+  z-index: 2;
+}
+
+/* Gradient to ensure text readability */
+.hero-image-wrapper::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%);
+  z-index: 1;
+}
+
+.hero-content-wrapper {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-white);
+}
+
+.hero-main-title {
+  font-size: 8vw;
+  line-height: 0.8;
+  font-family: var(--font-serif);
+  font-weight: 500;
+  text-transform: uppercase;
+  margin: 0;
+  text-align: center;
+  perspective: 1000px; /* For 3D text effect */
+}
+
+.hero-char {
+  display: inline-block;
+  transform-origin: 50% 100%;
+  will-change: transform, opacity;
+}
+
+.hero-subtext {
+  font-size: 1.5rem;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  margin-top: 2rem;
+  font-weight: 300;
+  color: var(--color-beige);
+}
+
+.scroll-prompt {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.scroll-line {
+  width: 1px;
+  height: 60px;
+  background: var(--color-white);
+  transform-origin: top;
+  animation: scrollLine 2s infinite ease-in-out;
+}
+
+.scroll-prompt span {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--color-white);
+}
+
+@keyframes scrollLine {
+  0% { transform: scaleY(0); transform-origin: top; }
+  50% { transform: scaleY(1); transform-origin: top; }
+  50.1% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+@media (max-width: 768px) {
+  .hero-main-title {
+    font-size: 12vw;
+  }
+  .hero-subtext {
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-align: center;
+    padding: 0 1rem;
+  }
+}

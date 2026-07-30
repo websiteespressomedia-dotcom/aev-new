@@ -1,0 +1,111 @@
+.testimonials-section {
+  position: relative;
+  background-color: var(--color-bg); /* Dark background matching statistics */
+  padding: 10vh 0 15vh 0;
+  overflow: hidden;
+}
+
+.marquee-container {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 0.03; /* Extremely subtle */
+  position: absolute;
+  top: 10%;
+  left: 0;
+  pointer-events: none;
+}
+
+.marquee-inner {
+  display: inline-block;
+}
+
+.marquee-inner span {
+  font-size: 15rem;
+  font-family: var(--font-serif);
+  color: var(--color-white);
+  text-transform: uppercase;
+  padding-right: 50px;
+}
+
+.t-grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 5vw;
+  position: relative;
+  z-index: 2;
+  margin-top: 10vh;
+}
+
+.t-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 50px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.4s ease, background 0.4s ease;
+}
+
+.t-card:hover {
+  transform: translateY(-10px);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.t-quote-icon {
+  font-family: var(--font-serif);
+  font-size: 4rem;
+  color: var(--color-accent);
+  line-height: 0;
+  margin-bottom: 30px;
+  opacity: 0.5;
+}
+
+.t-text {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  color: #dddddd;
+  line-height: 1.6;
+  margin-bottom: 40px;
+  font-style: italic;
+}
+
+.t-author {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.t-author strong {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: var(--color-white);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.t-author span {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  color: #888888;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+@media (max-width: 1024px) {
+  .t-grid-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .t-grid-container {
+    grid-template-columns: 1fr;
+  }
+  .marquee-inner span {
+    font-size: 8rem;
+  }
+}

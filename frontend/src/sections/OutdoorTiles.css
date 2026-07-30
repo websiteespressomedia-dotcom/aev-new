@@ -1,0 +1,73 @@
+.outdoor-tiles-section {
+  min-height: 150vh; /* Extra height for scrolling parallax space */
+  background-color: var(--color-beige);
+  position: relative;
+  overflow: hidden;
+}
+
+.outdoor-container {
+  position: relative;
+  max-width: 1400px;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 20vh;
+}
+
+.outdoor-text {
+  max-width: 600px;
+  z-index: 10;
+  position: relative;
+  mix-blend-mode: difference;
+  color: var(--color-white);
+}
+
+.outdoor-text h2 {
+  font-size: 6rem;
+  font-family: var(--font-serif);
+  line-height: 1;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+}
+
+.outdoor-text p {
+  font-size: 1.25rem;
+  line-height: 1.6;
+}
+
+.outdoor-images {
+  position: relative;
+  height: 100vh;
+  margin-top: -30vh;
+  pointer-events: none;
+}
+
+.floating-image-1 {
+  position: absolute;
+  top: 40%;
+  right: 5%;
+  width: 50vw;
+  height: 70vh;
+  object-fit: cover;
+  z-index: 1;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+}
+
+.floating-image-2 {
+  position: absolute;
+  top: 70%;
+  left: 10%;
+  width: 35vw;
+  height: 50vh;
+  object-fit: cover;
+  z-index: 2;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+}
+
+@media (max-width: 768px) {
+  .outdoor-text h2 { font-size: 3.5rem; }
+  .floating-image-1 { width: 80vw; height: 50vh; right: 0; }
+  .floating-image-2 { width: 60vw; height: 40vh; left: 0; top: 90%; }
+}
