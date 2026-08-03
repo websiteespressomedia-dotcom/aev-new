@@ -90,3 +90,75 @@ html.lenis {
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
+
+/* Continuous Scroll Experience Styles */
+.home-page {
+  position: relative;
+  width: 100%;
+}
+
+.three-canvas-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  pointer-events: none; /* Let clicks pass through to HTML content if needed */
+}
+
+.background-kitchen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.scroll-container {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+}
+
+.scroll-spacer {
+  height: 100vh; /* Each scene takes roughly 100vh to scroll through, or more */
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none; /* Only allow pointer events on actual content */
+}
+
+/* Extend the last spacer for all the content */
+.scroll-spacer.scene-6 {
+  height: auto;
+  min-height: 100vh;
+  align-items: flex-start;
+}
+
+.scene-3-headline {
+  opacity: 0;
+  transform: translateY(50px);
+  font-size: clamp(2rem, 5vw, 5rem);
+  text-align: center;
+  max-width: 800px;
+  color: var(--color-white);
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 300;
+}
+
+.final-content-wrapper {
+  width: 100%;
+  opacity: 0;
+  background: transparent;
+  pointer-events: none; /* GSAP will change to auto */
+  padding-top: 100px; /* Space from the top where slab sits */
+}

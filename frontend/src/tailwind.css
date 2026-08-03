@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+/* Avoid starting with a number */
+.container-3d {
+  perspective: 1000px;
+}
+
+.char-3d {
+  display: inline-block;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transform: translateZ(0); 
+}
+
+/* 3D Book Cover Utilities */
+.perspective-2000 { perspective: 2000px; }
+.perspective-3000 { perspective: 3000px; }
+.preserve-3d { transform-style: preserve-3d; }
+.rotate-y-90 { transform: rotateY(90deg); }
+.translate-z-\\[-38px\\] { transform: translateZ(-38px); }
+.translate-z-\\[-44px\\] { transform: translateZ(-44px); }

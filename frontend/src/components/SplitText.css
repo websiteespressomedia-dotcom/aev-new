@@ -1,0 +1,16 @@
+.word-wrap {
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: bottom;
+}
+
+.animated-word {
+  display: inline-block;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.animated-word-up { transform: translateY(100%); }
+.animated-word-down { transform: translateY(-100%); }
+.animated-word-left { transform: translateX(-100%); }
+.animated-word-right { transform: translateX(100%); }

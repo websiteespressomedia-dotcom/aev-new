@@ -1,213 +1,215 @@
-.bento-section {
-  width: 100%;
+.sizes-directory-section {
+  width: 100vw;
   min-height: 100vh;
-  background-color: #050505; /* Sleek dark mode */
-  padding: 10vh 0;
+  background-color: var(--color-bg);
+  padding: 10vh 5vw;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  font-family: var(--font-sans);
 }
 
-.bento-header {
-  text-align: center;
-  margin-bottom: 6vh;
-}
-
-.bento-header h2 {
-  font-size: 3rem;
-  font-weight: 700;
-  color: #fff;
-  letter-spacing: -1px;
-  margin-bottom: 10px;
-}
-
-.bento-header p {
-  font-size: 1rem;
-  color: #888;
-  letter-spacing: 1px;
-}
-
-.bento-container {
+.sizes-container {
+  display: flex;
   width: 100%;
   max-width: 1600px;
-  padding: 0 5vw;
+  gap: 8vw;
 }
 
-.bento-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
-  grid-template-rows: 40vh 40vh;
-  gap: 20px;
-  width: 100%;
-}
-
-/* Specific Grid Placements */
-.bento-jumbo {
-  grid-column: 1 / 2;
-  grid-row: 1 / 3; /* Spans full height on the left */
-}
-
-.bento-large {
-  grid-column: 2 / 3;
-  grid-row: 1 / 2; /* Top middle */
-}
-
-.bento-standard {
-  grid-column: 2 / 3;
-  grid-row: 2 / 3; /* Bottom middle */
-}
-
-.bento-tall {
-  grid-column: 3 / 4;
-  grid-row: 1 / 3; /* Spans full height on the right */
-}
-
-/* Individual Bento Item Styling */
-.bento-item {
-  position: relative;
-  border-radius: 30px;
-  overflow: hidden;
-  background-color: #111;
-  cursor: pointer;
-  /* Premium subtle border */
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease;
-}
-
-.bento-item:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-  border-color: rgba(255, 255, 255, 0.15);
-}
-
-.bento-bg {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-.bento-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.8) 100%);
-  transition: opacity 0.5s ease;
-}
-
-.bento-item:hover .bento-bg {
-  transform: scale(1.08); /* Slow zoom on hover */
-}
-
-.bento-item:hover .bento-overlay {
-  opacity: 0.8; /* slightly lighten/darken based on preference */
-}
-
-/* Glassmorphic Size Pill */
-.bento-pill {
-  position: absolute;
-  top: 30px;
-  left: 30px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 8px 16px;
-  border-radius: 20px;
-  color: #fff;
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-}
-
-/* Content Details */
-.bento-content {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  padding: 30px;
+/* Left Side: Directory */
+.sizes-left {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  transform: translateY(20px);
-  opacity: 0.8;
-  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.bento-item:hover .bento-content {
-  transform: translateY(0);
+.sizes-left-header {
+  margin-bottom: 4rem;
+}
+
+.sizes-title {
+  font-family: var(--font-serif);
+  color: var(--color-white);
+  font-size: clamp(3rem, 5vw, 5rem);
+  font-weight: 400;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+}
+
+.sizes-desc {
+  font-family: var(--font-sans);
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  max-width: 500px;
+}
+
+.sizes-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  /* Scrollable container if height is too tall */
+  max-height: 60vh;
+  overflow-y: auto;
+  padding-right: 20px;
+}
+
+/* Custom Scrollbar for the list */
+.sizes-list::-webkit-scrollbar {
+  width: 4px;
+}
+.sizes-list::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.05);
+}
+.sizes-list::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2);
+  border-radius: 4px;
+}
+
+.sizes-list-item {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  padding: 0.5rem 0;
+  opacity: 0.4;
+  transition: opacity 0.3s ease;
+}
+
+.sizes-list-item:hover, .sizes-list-item.active {
   opacity: 1;
 }
 
-.bento-subtitle {
-  font-size: 0.7rem;
-  color: #a89476; /* Subtle gold */
-  text-transform: uppercase;
+.sizes-item-text {
+  font-family: var(--font-sans);
+  color: var(--color-white);
+  font-size: clamp(1.2rem, 2vw, 1.8rem);
+  font-weight: 300;
   letter-spacing: 2px;
-  margin-bottom: 5px;
+  transition: transform 0.4s ease;
 }
 
-.bento-title {
-  font-size: 2.2rem;
-  font-weight: 700;
-  color: #fff;
-  margin-bottom: 10px;
-  line-height: 1.1;
+.sizes-list-item.active .sizes-item-text {
+  font-weight: 500;
+  transform: translateX(20px);
+  color: var(--color-beige);
 }
 
-.bento-title-small {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #fff;
-  margin-bottom: 10px;
-  line-height: 1.2;
+.sizes-item-line {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 15px;
+  height: 2px;
+  background-color: var(--color-beige);
+  transform: translateY(-50%) scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.4s ease;
 }
 
-.bento-specs {
-  font-size: 0.8rem;
-  color: #ccc;
+.sizes-list-item.active .sizes-item-line {
+  transform: translateY(-50%) scaleX(1);
+}
+
+
+/* Right Side: Dynamic Visualizer */
+.sizes-right {
+  flex: 1;
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
 }
 
-.bento-dot {
-  color: #666;
+.sizes-visual-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
 }
 
-/* --- RESPONSIVE DESIGN --- */
-@media (max-width: 1200px) {
-  .bento-grid {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 40vh 40vh 40vh;
-  }
-  .bento-jumbo {
-    grid-column: 1 / 3;
-    grid-row: 1 / 2; /* Full width top */
-  }
-  .bento-large {
-    grid-column: 1 / 2;
-    grid-row: 2 / 3;
-  }
-  .bento-standard {
-    grid-column: 2 / 3;
-    grid-row: 2 / 3;
-  }
-  .bento-tall {
-    grid-column: 1 / 3;
-    grid-row: 3 / 4; /* Full width bottom */
-  }
+.sizes-dynamic-frame {
+  position: relative;
+  height: 60vh; /* Base height is fixed, width calculates dynamically */
+  max-width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background-color: #0a0a0a;
+  transition: width 0.8s cubic-bezier(0.25, 1, 0.5, 1), aspect-ratio 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-@media (max-width: 768px) {
-  .bento-grid {
-    display: flex;
-    flex-direction: column;
+.sizes-visual-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  will-change: transform, opacity, filter;
+}
+
+.sizes-visual-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.3) 100%);
+  pointer-events: none;
+}
+
+/* Elegant Corner Brackets */
+.frame-corner {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  border-color: var(--color-beige);
+  border-style: solid;
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0.7;
+}
+
+.top-left { top: 10px; left: 10px; border-width: 1px 0 0 1px; }
+.top-right { top: 10px; right: 10px; border-width: 1px 1px 0 0; }
+.bottom-left { bottom: 10px; left: 10px; border-width: 0 0 1px 1px; }
+.bottom-right { bottom: 10px; right: 10px; border-width: 0 1px 1px 0; }
+
+/* Dimensions Footer */
+.sizes-dimension-info {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  font-family: var(--font-sans);
+  color: var(--color-white);
+  font-size: 0.85rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.dimension-label {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.dimension-divider {
+  color: var(--color-beige);
+}
+
+@media (max-width: 1024px) {
+  .sizes-container {
+    flex-direction: column-reverse;
+    gap: 10vh;
   }
-  .bento-item {
-    width: 100%;
-    height: 40vh; /* Fixed height for all on mobile */
+  
+  .sizes-dynamic-frame {
+    height: 40vh;
+  }
+  
+  .sizes-left-header {
+    margin-bottom: 2rem;
   }
 }
