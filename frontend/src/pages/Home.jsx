@@ -58,6 +58,19 @@ const Home = () => {
           delay: 0.2
         });
       }
+      
+      // Animate kicker, CTA, and scroll indicator
+      gsap.fromTo(['.hero-kicker', '.hero-cta-btn', '.scroll-indicator'], 
+        { y: 30, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1.2,
+          stagger: 0.2,
+          ease: "power4.out",
+          delay: 0.8
+        }
+      );
 
       // Parallax Image Effect
       const parallaxImages = gsap.utils.toArray('.parallax-img');
@@ -74,48 +87,34 @@ const Home = () => {
         });
       });
 
-      // 2. Video Collage Parallax & Expand
-      if (videoPinSecRef.current && videoWrapperRef.current) {
-        const vids = gsap.utils.toArray('.collage-vid:not(.vid-center)');
-        
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: videoPinSecRef.current,
-            start: "top top",
-            end: "+=150%",
-            scrub: 1,
-            pin: true
-          }
+      // 2. 9-Part Shatter Animation
+      const shatterPieces = gsap.utils.toArray('.shatter-piece');
+      if (shatterPieces.length > 0) {
+        // Initial scattered state
+        shatterPieces.forEach((piece, i) => {
+          gsap.set(piece, {
+            x: (Math.random() - 0.5) * 600,
+            y: (Math.random() - 0.5) * 600,
+            rotation: (Math.random() - 0.5) * 90,
+            scale: 0.3 + Math.random() * 0.5,
+            opacity: 0
+          });
         });
 
-        // Center scales up to fill screen
-        tl.to('.vid-center', {
-          width: '100%',
-          height: '100vh',
-          top: 0,
-          left: 0,
-          borderRadius: 0,
-          ease: "power2.inOut"
-        }, 0);
-
-        // Hide watch video button as it scales up
-        tl.to('.watch-btn', {
-          opacity: 0,
-          ease: "power2.inOut"
-        }, 0);
-
-        // Others fly off screen in different directions
-        vids.forEach((vid, i) => {
-           const yOffset = i % 2 === 0 ? -150 : 150;
-           const xOffset = i < 2 ? -100 : 100;
-           
-           tl.to(vid, {
-             yPercent: yOffset,
-             xPercent: xOffset,
-             opacity: 0,
-             scale: 0.5,
-             ease: "power2.inOut"
-           }, 0);
+        // Assemble on scroll
+        gsap.to(shatterPieces, {
+          x: 0,
+          y: 0,
+          rotation: 0,
+          scale: 1,
+          opacity: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".shatter-wrap",
+            start: "top 85%",
+            end: "center 45%",
+            scrub: 1.5
+          }
         });
       }
 
@@ -168,33 +167,22 @@ const Home = () => {
         });
       }
 
-      // 4. Pinned Horizontal Timeline Scroll (History)
-      if (historySliderRef.current && historySectionRef.current) {
-        gsap.to(historySliderRef.current, {
-          x: () => -(historySliderRef.current.scrollWidth - window.innerWidth + 120),
-          ease: "none",
-          scrollTrigger: {
-            trigger: historySectionRef.current,
-            pin: true,
-            start: "center center",
-            end: () => "+=" + (historySliderRef.current.scrollWidth * 0.8), // Reduced scroll distance
-            scrub: 1,
-            invalidateOnRefresh: true
-          }
-        });
-
-        // Fade up cards as they enter
-        gsap.to(".card", {
+      // 4. Staggered Scroll Animation for Stats Cards
+      gsap.fromTo(".stat-info-card", 
+        { y: 50, opacity: 0 },
+        {
           y: 0,
           opacity: 1,
-          duration: 0.8,
-          stagger: 0.1,
+          duration: 0.6,
+          stagger: 0.05,
+          ease: "power2.out",
           scrollTrigger: {
-            trigger: historySectionRef.current,
-            start: "top 70%"
+            trigger: ".stats-grid-wrapper",
+            start: "top 80%", // Animates when top of grid wrapper hits 80% of screen height
+            toggleActions: "play none none reverse"
           }
-        });
-      }
+        }
+      );
 
       // 5. Team Slider Horizontal Scroll (Not Pinned, just drag/scroll feel)
       if (teamSliderRef.current) {
@@ -242,7 +230,7 @@ const Home = () => {
       const textElements = gsap.utils.toArray("p:not(.hero-desc):not(.cat-split-desc):not(.process-desc), h2:not(:has(.split-text-container)):not(.hero-large-text):not(.cat-split-title), h3:not(.process-head), h4, .diagram-text > div, form > div, .submit-btn, .material-item h3");
       
       textElements.forEach(el => {
-        if (el.closest('.horizontal-section') || el.closest('.collection-section') || el.closest('.sizes-carousel-section')) return;
+        if (el.closest('.horizontal-section') || el.closest('.collection-section') || el.closest('.sizes-carousel-section') || el.closest('.stats-grid-wrapper')) return;
 
         gsap.fromTo(el,
           { 
@@ -302,64 +290,79 @@ const Home = () => {
       
       {/* Hero Section */}
       {/* Hero Section */}
-      <section className="hero">
-        <div className="hero-title-wrap" style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <section className="hero cinematic-hero">
+        
+        {/* Background Video */}
+        <div className="hero-bg-video">
+          <video autoPlay muted loop playsInline>
+            <source src="/video/reel1.mp4" type="video/mp4" />
+          </video>
+          <div className="hero-overlay"></div>
+        </div>
+
+        <div className="hero-title-wrap" style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', zIndex: 2, position: 'relative' }}>
           
           {/* Explicit Kicker */}
-          <div style={{ fontSize: '0.9rem', letterSpacing: '4px', textTransform: 'uppercase', marginBottom: '2rem', color: '#1a1a1a', fontWeight: '600' }}>
+          <div className="hero-kicker" style={{ fontSize: '0.9rem', letterSpacing: '4px', textTransform: 'uppercase', marginBottom: '2rem', color: '#F9F8F6', fontWeight: '600' }}>
              Luxury Italian Porcelain Slabs & Natural Stone
           </div>
 
-          <h1 className="hero-title custom-hero-title">
-            <div className="title-row-1">
-              <SplitText text="THE ART OF" direction="left" />
-            </div>
-            <div className="title-row-2">
-              <SplitText text="PREMIUM TILES" direction="right" />
-            </div>
-            <div className="title-row-3">
-              <SplitText text="& SLABS" direction="up" />
-            </div>
-          </h1>
+          <button className="hero-cta-btn" data-cursor-hover>
+            EXPLORE COLLECTION
+          </button>
+        </div>
+
+        {/* Scroll Indicator */}
+        <div className="scroll-indicator">
+          <div className="mouse">
+            <div className="wheel"></div>
+          </div>
+          <span>SCROLL</span>
         </div>
       </section>
 
 
-      {/* Video Collage Parallax Section */}
-      <div className="video-collage-wrapper" ref={videoPinSecRef} style={{ width: '100%', height: '100vh', overflow: 'hidden', background: '#F2F0E9' }}>
-        <section className="collage-container" ref={videoWrapperRef} style={{ width: '100%', height: '100%', position: 'relative' }}>
-          
-          <div className="collage-vid vid-center" onClick={openModal}>
-            <button className="watch-btn" style={{ zIndex: 20 }}>WATCH VIDEO</button>
-            <video autoPlay muted loop playsInline>
-              <source src="/video/reel1.mp4" type="video/mp4" />
-            </video>
+      {/* Brand Legacy Section */}
+      <section className="brand-legacy-section" style={{ padding: '15rem 4% 8rem 4%', background: '#F2F0E9', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '4rem', minHeight: '80vh' }}>
+        
+        {/* Left: Shattered Image */}
+        <div className="legacy-image-wrap shatter-wrap" style={{ flex: '1', height: '600px', borderRadius: '4px' }}>
+          <div className="shatter-container">
+            <div className="shatter-piece piece-0-0"></div>
+            <div className="shatter-piece piece-0-1"></div>
+            <div className="shatter-piece piece-0-2"></div>
+            <div className="shatter-piece piece-1-0"></div>
+            <div className="shatter-piece piece-1-1"></div>
+            <div className="shatter-piece piece-1-2"></div>
+            <div className="shatter-piece piece-2-0"></div>
+            <div className="shatter-piece piece-2-1"></div>
+            <div className="shatter-piece piece-2-2"></div>
           </div>
+        </div>
 
-          <div className="collage-vid vid-top-left">
-             <video autoPlay muted loop playsInline><source src="/video/reel2.mp4" type="video/mp4" /></video>
+        {/* Right: Typography */}
+        <div className="legacy-text-wrap" style={{ flex: '1', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          <div className="animate-fade-up" style={{ fontSize: '0.8rem', letterSpacing: '3px', textTransform: 'uppercase', color: '#C1A673', marginBottom: '2rem' }}>
+            Our Heritage
           </div>
+          <h2 className="animate-fade-up" style={{ fontSize: 'clamp(2.5rem, 4vw, 4rem)', fontFamily: "'Times New Roman', serif", fontWeight: '300', color: '#1a1a2e', lineHeight: '1.2', marginBottom: '2rem' }}>
+            Elevating spaces with <br/>uncompromising <br/>Italian excellence.
+          </h2>
+          <p className="animate-fade-up" style={{ fontSize: '1.1rem', color: '#1a1a2e', opacity: '0.8', lineHeight: '1.8', maxWidth: '500px', marginBottom: '3rem' }}>
+            For decades, Aevitas Ceramics has pioneered the art of large-format porcelain slabs. By merging traditional craftsmanship with cutting-edge technology, we create surfaces that redefine luxury architecture.
+          </p>
+          <div className="animate-fade-up">
+            <button className="pill-btn" style={{ background: '#1a1a2e', color: '#F9F8F6', padding: '1rem 2.5rem', border: 'none', borderRadius: '50px', letterSpacing: '2px', fontSize: '0.8rem', textTransform: 'uppercase', cursor: 'pointer' }}>
+              DISCOVER OUR STORY
+            </button>
+          </div>
+        </div>
+      </section>
 
-          <div className="collage-vid vid-top-right">
-             <video autoPlay muted loop playsInline><source src="/video/reel3.mp4" type="video/mp4" /></video>
-          </div>
-
-          <div className="collage-vid vid-bottom-left">
-             <video autoPlay muted loop playsInline><source src="/video/reel4.mp4" type="video/mp4" /></video>
-          </div>
-
-          <div className="collage-vid vid-bottom-right">
-             <video autoPlay muted loop playsInline><source src="/video/reel5.mp4" type="video/mp4" /></video>
-          </div>
-          
-          <div className="collage-vid vid-mid-left">
-             <video autoPlay muted loop playsInline><source src="/video/reel6.mp4" type="video/mp4" /></video>
-          </div>
-
-        </section>
+      {/* Elegant Separator Line */}
+      <div style={{ width: '100%', backgroundColor: '#F2F0E9' }}>
+        <div style={{ width: '90%', height: '1px', background: 'rgba(26, 26, 46, 0.1)', margin: '0 auto' }}></div>
       </div>
-
-
 
       {/* 2 Elegant Categories Section - Redesigned to Split Layout */}
       <section className="section split-categories" style={{ padding: '8rem 4rem 2rem 4rem' }}>
@@ -418,6 +421,11 @@ const Home = () => {
           </div>
         </div>
         </section>
+
+      {/* Elegant Separator Line Above */}
+      <div style={{ width: '100%', backgroundColor: '#F2F0E9' }}>
+        <div style={{ width: '100%', height: '1px', background: 'rgba(26, 26, 46, 0.1)' }}></div>
+      </div>
 
       {/* Collections / Editorial Process Layout */}
       <section className="collection-section" ref={processPinRef}>
@@ -489,11 +497,16 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Elegant Separator Line Below */}
+      <div style={{ width: '100%', backgroundColor: '#F2F0E9' }}>
+        <div style={{ width: '100%', height: '1px', background: 'rgba(26, 26, 46, 0.1)' }}></div>
+      </div>
+
       {/* Sizes / Formats Carousel Section */}
-      <section className="sizes-carousel-section" ref={sizesSectionRef} style={{ padding: '8rem 4%', background: '#F9F8F6', width: '100%', minHeight: '100vh', justifyContent: 'center', boxSizing: 'border-box', overflow: 'hidden' }}>
+      <section className="sizes-carousel-section" ref={sizesSectionRef} style={{ padding: '4rem 4%', background: '#F2F0E9', width: '100%', minHeight: '100vh', justifyContent: 'center', boxSizing: 'border-box', overflow: 'hidden' }}>
         
         {/* Header */}
-        <div className="sizes-header">
+        <div className="sizes-header" style={{ marginBottom: '0.5rem' }}>
           <div className="sizes-header-left animate-fade-up">
             <span className="subtitle">SIZES</span>
             <h2 className="title">Forme in equilibrio.<br/>Spazi in armonia.</h2>
@@ -503,9 +516,11 @@ const Home = () => {
           </div>
         </div>
         
+        <div style={{ width: '100%', height: '1px', backgroundColor: '#d8d3c5', marginBottom: '0.5rem' }}></div>
+        
         {/* Carousel */}
         <div className="sizes-carousel-wrapper" style={{ overflow: 'visible' }}>
-          <div className="sizes-carousel" ref={sizesSliderRef} style={{ width: 'max-content', display: 'flex', overflow: 'visible', paddingRight: '150px' }}>
+          <div className="sizes-carousel" ref={sizesSliderRef} style={{ width: 'max-content', display: 'flex', overflow: 'visible', paddingRight: '150px', paddingTop: '0.5rem' }}>
             {[
               { id: 1, size: '1600×3200', thk: '6mm', type: 'SLAB', img: '/luxury_tile_craftsmanship.jpg' },
               { id: 2, size: '1200×3200', thk: '6mm', type: 'SLAB', img: '/tile_nero.jpg' },
@@ -538,39 +553,41 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Pinned Horizontal Scroll Section (Our History) */}
-      <section className="horizontal-section" ref={historySectionRef}>
-        <div className="history-header animate-fade-up">
-          <h2 className="section-title">
-            <SplitText text="Our History" />
+      {/* Stats Section (Grid Layout) */}
+      <section style={{ padding: '8rem 4%', background: '#F2F0E9', width: '100%', boxSizing: 'border-box' }}>
+        <div className="animate-fade-up" style={{ marginBottom: '3rem' }}>
+          <h2 className="section-title" style={{ marginBottom: 0, fontSize: '3.5rem' }}>
+            <SplitText text="The Strength Behind Every Surface" />
           </h2>
+          <p style={{ maxWidth: '600px', marginTop: '1rem', opacity: 0.8, lineHeight: 1.6 }}>
+            From advanced manufacturing to global exports, every number reflects our commitment to quality, innovation, and customer satisfaction.
+          </p>
+          <div style={{ width: '100%', height: '1px', backgroundColor: '#d8d3c5', marginTop: '3rem' }}></div>
         </div>
-        <div className="cards-wrapper" ref={historySliderRef}>
-          <div className="card">
-            <span className="card-year">1981</span>
-            <p>In 1981 Mario and Laura founded Scalvini Marmi, dealing mainly with small construction work in Breno.</p>
-          </div>
-          <div className="card">
-            <span className="card-year">1984</span>
-            <p>A first major expansion took place in 1984, thanks to the acquisition of a company in a neighbouring town.</p>
-          </div>
-          <div className="card">
-            <span className="card-year">1991</span>
-            <p>In 1991 the first and current headquarters were built in Breno, in the province of Brescia.</p>
-          </div>
-          <div className="card">
-            <span className="card-year">'90</span>
-            <p>During the 1990s, far-sighted investments were made in technology, purchasing new numerical controlled machines.</p>
-          </div>
-          <div className="card">
-            <span className="card-year">2000</span>
-            <p>Since the 2000s, Matteo, Andrea and Marta have joined management, carrying forward their parents' tradition.</p>
-          </div>
+        <div className="stats-grid-wrapper">
+          {[
+            { num: "57,600+", label: "Sq. Meters Daily Production", text: "Manufactured with cutting-edge Italian technology ensuring precision and durability." },
+            { num: "3,500", label: "Sq. Ft Display Area", text: "Explore our vast collections in our immersive state-of-the-art showrooms." },
+            { num: "282", label: "Meter Long Kiln", text: "Advanced firing processes guarantee the structural integrity of every slab." },
+            { num: "100%", label: "Export Quality", text: "Rigorous quality checks ensure perfection for every international shipment." },
+            { num: "78+", label: "Export Countries", text: "Trusted by architects and developers across the globe." },
+            { num: "10+", label: "Tile Sizes", text: "From standard formats to massive seamless slabs for any project." },
+            { num: "48k+", label: "Tile Designs", text: "A massive library of textures, colors, and premium finishes." },
+            { num: "20+", label: "Tile Surfaces", text: "Matte, polished, rustic, and specialized textures for all environments." },
+          ].map((stat, i) => (
+            <div key={i} className="stat-info-card">
+              <span className="stat-large-num">{stat.num}</span>
+              <h3 style={{ fontSize: '1.2rem', margin: '1.5rem 0 1rem 0', color: '#1a1a1a', fontWeight: '400' }}>{stat.label}</h3>
+              <p style={{ fontSize: '0.95rem', opacity: 0.7 }}>{stat.text}</p>
+            </div>
+          ))}
         </div>
       </section>
 
-
-
+      {/* Elegant Separator Line */}
+      <div style={{ width: '100%', padding: '4rem 0' }}>
+        <div style={{ width: '90%', height: '1px', background: 'rgba(26, 26, 46, 0.1)', margin: '0 auto' }}></div>
+      </div>
       {/* Materials Grid */}
       <section className="section">
         <p style={{ opacity: 0.6, textTransform: 'uppercase' }} className="animate-fade-up">( Material )</p>
