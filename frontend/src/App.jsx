@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import Lenis from '@studio-freight/lenis';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
+import Lenis from 'lenis';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -29,17 +30,32 @@ const ScrollManager = () => {
   return null;
 };
 
+// Page Transition Configuration
+const pageVariants = {
+  initial: { opacity: 0, y: 100 },
+  animate: { opacity: 1, y: 0, transition: { duration: 1.2, ease: [0.25, 1, 0.5, 1] } },
+  exit: { opacity: 0, y: -50, transition: { duration: 0.8, ease: [0.25, 1, 0.5, 1] } }
+};
+
+const PageWrapper = ({ children }) => (
+  <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit" style={{ width: '100%' }}>
+    {children}
+  </motion.div>
+);
+
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: 1.8,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       direction: 'vertical',
       gestureDirection: 'vertical',
       smooth: true,
-      mouseMultiplier: 1,
+      smoothWheel: true,
+      mouseMultiplier: 1.2,
       smoothTouch: false,
       touchMultiplier: 2,
       infinite: false,
@@ -61,7 +77,7 @@ function App() {
   }, []);
 
   return (
-    <Router>
+    <>
       <ScrollManager />
       <main className="app-container">
         <CustomCursor />
@@ -70,15 +86,17 @@ function App() {
         <Navigation onMenuClick={() => setIsMenuOpen(true)} />
         <FullscreenMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
 
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/collections" element={<Collections />} />
-          <Route path="/catalogue" element={<Catalogue />} />
-          <Route path="/contact" element={<ContactPage />} />
-        </Routes>
+        <AnimatePresence mode="wait">
+          <Routes location={location} key={location.pathname}>
+            <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
+            <Route path="/about" element={<PageWrapper><About /></PageWrapper>} />
+            <Route path="/collections" element={<PageWrapper><Collections /></PageWrapper>} />
+            <Route path="/catalogue" element={<PageWrapper><Catalogue /></PageWrapper>} />
+            <Route path="/contact" element={<PageWrapper><ContactPage /></PageWrapper>} />
+          </Routes>
+        </AnimatePresence>
       </main>
-    </Router>
+    </>
   );
 }
 
