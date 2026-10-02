@@ -7,6 +7,95 @@ import './Home.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
+
+const SizePanel = ({ item }) => {
+  const [isActive, setIsActive] = useState(false);
+
+  return (
+    <article
+      className={`size-panel ${isActive ? 'is-active' : ''}`}
+      style={{ '--size-image': `url("${item.img}")` }}
+      onMouseEnter={() => setIsActive(true)}
+      onMouseLeave={() => setIsActive(false)}
+      onFocus={() => setIsActive(true)}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) {
+          setIsActive(false);
+        }
+      }}
+      tabIndex={0}
+      aria-label={`${item.size} ${item.type}`}
+      
+    >
+      <div className="size-panel-image"  />
+
+      <div className="size-panel-overlay"  />
+
+      <div className="size-panel-vertical">
+        <span className="size-panel-vertical-size">
+          {item.size.replace('×', ' x ')} MM
+        </span>
+
+        <span className="size-panel-vertical-meta">
+          {item.thk} · {item.type}
+        </span>
+      </div>
+
+      <div className="size-panel-content">
+        <span className="size-panel-index">
+          FORMAT / {String(item.id).padStart(2, '0')}
+        </span>
+
+        <h3>{item.size} <small>MM</small></h3>
+
+        <div className="size-panel-meta">
+          <span>{item.thk} THICKNESS</span>
+          <span>{item.type}</span>
+        </div>
+
+        <p>{item.description}</p>
+
+        <a
+          href="/collections"
+          className="size-panel-link"
+          tabIndex={isActive ? 0 : -1}
+        >
+          View More <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </article>
+  );
+};
+
+
+/* ---------- Scroll-driven category stage data ---------- */
+const CATEGORY_SLIDES = [
+  {
+    id: 'porcelain',
+    num: '01 / PORCELAIN',
+    title: ['Porcelain', 'Tiles'],
+    desc: 'Discover our premium range of porcelain tiles, offering lasting durability and timeless appeal for distinctive interiors. Explore refined surfaces designed to bring character to every space.',
+    tags: ['GVT', 'PGVT'],
+    linkText: 'Explore Collection',
+    href: '/collections',
+    img: '/lobi_preview.png',
+    alt: 'Porcelain tile surface',
+    bg: '#9C9999',
+  },
+  {
+    id: 'formats',
+    num: '02 / FORMATS',
+    title: ['Large', 'Format'],
+    desc: 'Create seamless, expansive spaces with large-format porcelain slabs. Their generous dimensions reduce grout lines and bring a calm, continuous finish to modern architecture.',
+    tags: ['Color Body', 'Full Body'],
+    linkText: 'Explore Formats',
+    href: '/collections',
+    img: '/floor_preview.jpg',
+    alt: 'Large format porcelain slabs',
+    bg: '#d4d2d2',
+  },
+];
+
 const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   
@@ -19,10 +108,11 @@ const Home = () => {
   const teamSliderRef = useRef(null);
   const processPinRef = useRef(null);
   const processSliderRef = useRef(null);
-  const sizesSectionRef = useRef(null);
-  const sizesSliderRef = useRef(null);
+  // const sizesSectionRef = useRef(null);
+  // const sizesSliderRef = useRef(null);
   const wipeContainerRef = useRef(null);
   const categoryHeroRef = useRef(null);
+  const catStageRef = useRef(null);
 
   useEffect(() => {
     let ctx = gsap.context(() => {
@@ -152,20 +242,20 @@ const Home = () => {
       }
 
       // 3.5 Sizes Carousel Pinned Horizontal Scroll (Moved for DOM order)
-      if (sizesSectionRef.current && sizesSliderRef.current) {
-        gsap.to(sizesSliderRef.current, {
-          x: () => -(sizesSliderRef.current.scrollWidth - window.innerWidth + (window.innerWidth * 0.1)),
-          ease: "none",
-          scrollTrigger: {
-            trigger: sizesSectionRef.current,
-            pin: true,
-            start: "center center",
-            end: () => "+=" + sizesSliderRef.current.scrollWidth,
-            scrub: 1,
-            invalidateOnRefresh: true
-          }
-        });
-      }
+      // if (sizesSectionRef.current && sizesSliderRef.current) {
+      //   gsap.to(sizesSliderRef.current, {
+      //     x: () => -(sizesSliderRef.current.scrollWidth - window.innerWidth + (window.innerWidth * 0.1)),
+      //     ease: "none",
+      //     scrollTrigger: {
+      //       trigger: sizesSectionRef.current,
+      //       pin: true,
+      //       start: "center center",
+      //       end: () => "+=" + sizesSliderRef.current.scrollWidth,
+      //       scrub: 1,
+      //       invalidateOnRefresh: true
+      //     }
+      //   });
+      // }
 
       // 4. Staggered Scroll Animation for Stats Cards
       gsap.fromTo(".stat-info-card", 
@@ -198,39 +288,77 @@ const Home = () => {
         });
       }
 
-      // 6. Split Categories Reveal Animation
-      const splitRows = gsap.utils.toArray('.cat-split-row');
-      splitRows.forEach((row) => {
-        const textBlock = row.querySelector('.cat-split-text');
-        const imgContainer = row.querySelector('.cat-split-image');
-        const img = row.querySelector('.cat-split-image img');
+      // 6. Pinned Category Stage: card stays, text rises in, image changes (scrubbed)
+      if (catStageRef.current) {
+        const stage = catStageRef.current;
+        const card = stage.querySelector('.cs-card');
+        const layers = gsap.utils.toArray('.cs-layer', stage);
+        const slides = gsap.utils.toArray('.cs-slide', stage);
+        const dots = gsap.utils.toArray('.cs-dot', stage);
+        const count = slides.length;
+        const kids = (slide) => gsap.utils.toArray('.cs-item', slide);
 
-        // Initial states for scrub reveal
-        gsap.set(textBlock, { y: 150, opacity: 0, filter: "blur(20px)" });
-        gsap.set(imgContainer, { clipPath: "inset(0% 0% 100% 0%)" });
-        gsap.set(img, { scale: 1.2, yPercent: -15 });
+        // initial state: slide 0 visible, the rest waiting below
+        slides.forEach((s, i) => {
+          gsap.set(s, { autoAlpha: i === 0 ? 1 : 0 });
+          if (i > 0) gsap.set(kids(s), { y: 90, opacity: 0 });
+        });
+        layers.forEach((l, i) => {
+          if (i > 0) {
+            gsap.set(l, { clipPath: 'inset(100% 0% 0% 0%)' });
+            gsap.set(l.querySelector('img'), { scale: 1.25 });
+          }
+        });
+        gsap.set(card, { backgroundColor: CATEGORY_SLIDES[0].bg });
+        dots.forEach((d, i) => gsap.set(d, { width: i === 0 ? 30 : 8, opacity: i === 0 ? 1 : 0.35 }));
 
-        // Single Scrub Timeline for EVERYTHING (Movement, Blur, Reveal)
-        // This ensures text and image animate perfectly together, strictly tied to scroll position
-        const scrubTl = gsap.timeline({
+        const STEP = 2;      // timeline length per slide (hold + transition)
+        const tl = gsap.timeline({
+          defaults: { ease: 'none' },
           scrollTrigger: {
-            trigger: row,
-            start: "top 95%", // Starts animating when top of row enters bottom of screen
-            end: "center center", // Fully revealed when center of row hits center of screen
-            scrub: true // Instantly tracks scroll wheel without delay
+            trigger: stage,
+            start: 'top top',
+            end: () => '+=' + window.innerHeight * 0.9 * (count - 1) + window.innerHeight * 0.4,
+            pin: true,
+            scrub: 1,               // smooth catch-up
+            anticipatePin: 1,
+            invalidateOnRefresh: true
           }
         });
 
-        scrubTl.to(textBlock, { y: 0, opacity: 1, filter: "blur(0px)", ease: "none" }, 0)
-               .to(imgContainer, { clipPath: "inset(0% 0% 0% 0%)", ease: "none" }, 0)
-               .to(img, { scale: 1, yPercent: 0, ease: "none" }, 0);
-      });
+        tl.to({}, { duration: 0.3 }); // short hold on slide 1 before anything moves
+
+        for (let i = 1; i < count; i++) {
+          const T = 0.3 + (i - 1) * STEP;
+
+          // outgoing text slides up and fades
+          tl.to(kids(slides[i - 1]), { y: -90, opacity: 0, duration: 0.8, stagger: 0.06, ease: 'power2.in' }, T);
+          tl.fromTo(slides[i - 1], { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.01, immediateRender: false }, T + 1.1);
+
+          // incoming text rises from the bottom
+          tl.fromTo(slides[i], { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01, immediateRender: false }, T + 0.5);
+          tl.to(kids(slides[i]), { y: 0, opacity: 1, duration: 0.9, stagger: 0.08, ease: 'power2.out' }, T + 0.55);
+
+          // image: next one wipes up over the previous, with a slow zoom-out
+          tl.to(layers[i], { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.3, ease: 'power2.inOut' }, T);
+          tl.to(layers[i].querySelector('img'), { scale: 1, duration: 1.5, ease: 'power2.out' }, T);
+          tl.to(layers[i - 1].querySelector('img'), { scale: 1.08, duration: 1.3 }, T);
+
+          // card colour + progress dots
+          tl.to(card, { backgroundColor: CATEGORY_SLIDES[i].bg, duration: 1.2 }, T);
+          tl.to(dots[i - 1], { width: 8, opacity: 0.35, duration: 0.5 }, T + 0.4);
+          tl.to(dots[i], { width: 30, opacity: 1, duration: 0.5 }, T + 0.4);
+
+          tl.to({}, { duration: 0.01 }, T + STEP - 0.01); // keep spacing for next hold
+        }
+        tl.to({}, { duration: 0.3 }); // short hold on last slide before un-pinning
+      }
 
       // 7. Pronounced Global Text Reveal on Scroll
       const textElements = gsap.utils.toArray("p:not(.hero-desc):not(.cat-split-desc):not(.process-desc), h2:not(:has(.split-text-container)):not(.hero-large-text):not(.cat-split-title), h3:not(.process-head), h4, .diagram-text > div, form > div, .submit-btn, .material-item h3");
       
       textElements.forEach(el => {
-        if (el.closest('.horizontal-section') || el.closest('.collection-section') || el.closest('.sizes-carousel-section') || el.closest('.stats-grid-wrapper')) return;
+        if (el.closest('.horizontal-section') || el.closest('.collection-section') || el.closest('.sizes-carousel-section') || el.closest('.stats-grid-wrapper') || el.closest('.cs-card')) return;
 
         gsap.fromTo(el,
           { 
@@ -364,43 +492,48 @@ const Home = () => {
         <div style={{ width: '90%', height: '1px', background: 'rgba(26, 26, 46, 0.1)', margin: '0 auto' }}></div>
       </div>
 
-      {/* 2 Elegant Categories Section - Redesigned to Split Layout */}
-      <section className="section split-categories" style={{ padding: '8rem 4rem 2rem 4rem' }}>
-        
-        {/* Porcelain Tiles Row */}
-        <div className="cat-split-row">
-          <div className="cat-split-text">
-            <span className="cat-num">01 . PORCELAIN</span>
-            <h2 className="cat-split-title">Porcelain<br/>Tiles</h2>
-            <p className="cat-split-desc">Discover our premium range of porcelain tiles, offering unmatched durability and timeless aesthetic appeal for any space. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-            <div className="cat-sublinks">
-              <span>GVT</span>
-              <span>PGVT</span>
-            </div>
-            <a href="#" className="explore-link">EXPLORE COLLECTION ↗</a>
+      {/* Editorial Category Stage (pinned, scroll-driven) */}
+      <section className="cat-stage" ref={catStageRef}>
+        <div className="cs-card">
+          {/* Image layers (stacked) */}
+          <div className="cs-media">
+            {CATEGORY_SLIDES.map((c, i) => (
+              <div className="cs-layer" key={c.id} style={{ zIndex: i + 1 }}>
+                <img src={c.img} alt={c.alt} />
+              </div>
+            ))}
           </div>
-          <div className="cat-split-image">
-            <img src="/marble_texture.jpg" alt="Porcelain Tiles" />
+
+          {/* Text slides (stacked) */}
+          <div className="cs-content">
+            {CATEGORY_SLIDES.map((c) => (
+              <div className="cs-slide" key={c.id}>
+                <span className="cs-num cs-item">{c.num}</span>
+
+                <h2 className="cs-title cs-item">
+                  {c.title.map((line, idx) => (
+                    <span key={idx} className="cs-title-line">{line}</span>
+                  ))}
+                </h2>
+
+                <p className="cs-desc cs-item">{c.desc}</p>
+
+                <div className="cs-tags cs-item">
+                  {c.tags.map((t) => <span key={t}>{t}</span>)}
+                </div>
+
+                <a href={c.href} className="cs-link cs-item">
+                  {c.linkText} <span aria-hidden="true">↗</span>
+                </a>
+              </div>
+            ))}
+          </div>
+
+          {/* Progress dots */}
+          <div className="cs-dots" aria-hidden="true">
+            {CATEGORY_SLIDES.map((c) => <span className="cs-dot" key={c.id} />)}
           </div>
         </div>
-
-        {/* Large Format Row */}
-        <div className="cat-split-row reverse" style={{ marginTop: '10rem' }}>
-          <div className="cat-split-text">
-            <span className="cat-num">02 . FORMATS</span>
-            <h2 className="cat-split-title">Large<br/>Format</h2>
-            <p className="cat-split-desc">Seamless and expansive. Our large format slabs reduce grout lines and create breathtaking, continuous surfaces. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            <div className="cat-sublinks">
-              <span>Color Body</span>
-              <span>Full Body</span>
-            </div>
-            <a href="#" className="explore-link">EXPLORE FORMATS ↗</a>
-          </div>
-          <div className="cat-split-image">
-            <img src="/luxury_tile_craftsmanship.jpg" alt="Large Format" />
-          </div>
-        </div>
-
       </section>
 
       {/* Category Brief About - Redesigned as Full Screen Hero */}
@@ -501,57 +634,164 @@ const Home = () => {
       <div style={{ width: '100%', backgroundColor: '#F2F0E9' }}>
         <div style={{ width: '100%', height: '1px', background: 'rgba(26, 26, 46, 0.1)' }}></div>
       </div>
-
-      {/* Sizes / Formats Carousel Section */}
-      <section className="sizes-carousel-section" ref={sizesSectionRef} style={{ padding: '4rem 4%', background: '#F2F0E9', width: '100%', minHeight: '100vh', justifyContent: 'center', boxSizing: 'border-box', overflow: 'hidden' }}>
-        
+      
+      {/* Sizes / Formats — Expanding Panels */}
+      <section
+        className="sizes-carousel-section"
+        style={{
+          padding: '4rem 4%',
+          background: '#F2F0E9',
+          width: '100%',
+          boxSizing: 'border-box',
+        }}
+      >
         {/* Header */}
-        <div className="sizes-header" style={{ marginBottom: '0.5rem' }}>
-          <div className="sizes-header-left animate-fade-up">
-            <span className="subtitle">SIZES</span>
-            <h2 className="title">Forme in equilibrio.<br/>Spazi in armonia.</h2>
-          </div>
-          <div className="sizes-header-right animate-fade-up">
-            <p>Una selezione di formati pensati per valorizzare<br/>ogni superficie con proporzioni perfette.<br/>Dalla materia, infinite possibilità progettuali.</p>
+        <div className="sizes-header">
+          <div className="sizes-header-left">
+            <span className="subtitle">Luxurious Collection</span>
+            <h2 className="title">
+              Discover Perfect Tile Sizes for Every Unique Space
+            </h2>
           </div>
         </div>
-        
-        <div style={{ width: '100%', height: '1px', backgroundColor: '#d8d3c5', marginBottom: '0.5rem' }}></div>
-        
-        {/* Carousel */}
-        <div className="sizes-carousel-wrapper" style={{ overflow: 'visible' }}>
-          <div className="sizes-carousel" ref={sizesSliderRef} style={{ width: 'max-content', display: 'flex', overflow: 'visible', paddingRight: '150px', paddingTop: '0.5rem' }}>
-            {[
-              { id: 1, size: '1600×3200', thk: '6mm', type: 'SLAB', img: '/luxury_tile_craftsmanship.jpg' },
-              { id: 2, size: '1200×3200', thk: '6mm', type: 'SLAB', img: '/tile_nero.jpg' },
-              { id: 3, size: '1200×3000', thk: '6mm', type: 'SLAB', img: '/tile_travertine.jpg' },
-              { id: 4, size: '1200×2800', thk: '6mm', type: 'SLAB', img: '/tile_calacatta.jpg' },
-              { id: 5, size: '1200×2400', thk: '9mm', type: 'SLAB', img: '/marble_texture.jpg' },
-              { id: 6, size: '800×3200', thk: '9mm', type: 'SLAB', img: '/tile_emerald.jpg' },
-              { id: 7, size: '800×3000', thk: '9mm', type: 'TILE', img: '/tile_calacatta.jpg' },
-              { id: 8, size: '800×2400', thk: '9mm', type: 'TILE', img: '/marble_texture.jpg' },
-              { id: 9, size: '1200×1800', thk: '9mm', type: 'TILE', img: '/tile_nero.jpg' },
-              { id: 10, size: '800×1600', thk: '9mm', type: 'TILE', img: '/tile_travertine.jpg' },
-              { id: 11, size: '1200×1200', thk: '9mm', type: 'TILE', img: '/tile_nero.jpg' },
-              { id: 12, size: '800×800', thk: '9mm', type: 'TILE', img: '/tile_calacatta.jpg' },
-              { id: 13, size: '600×1200', thk: '9mm', type: 'TILE', img: '/marble_texture.jpg' },
-              { id: 14, size: '600×600', thk: '9mm', type: 'TILE', img: '/tile_emerald.jpg' },
-            ].map((item) => (
-              <div key={item.id} className="size-card">
-                <div className="size-card-img" style={{ backgroundImage: `url(${item.img})` }}></div>
-                <div className="size-card-info">
-                  <h4>{item.size}</h4>
-                  <div className="size-meta">
-                    <span>{item.thk}</span>
-                    <span>{item.type}</span>
-                  </div>
-                  <button className="size-plus-btn">+</button>
-                </div>
-              </div>
-            ))}
-          </div>
+
+        <div className="sizes-divider" />
+
+        {/* Expanding Panels */}
+        <div className="sizes-panels">
+          {[
+            {
+              id: 1,
+              size: '1600×3200',
+              thk: '6mm',
+              type: 'SLAB',
+              img: '/images/size-previews/tile-1600x3200.webp',
+              description:
+                'Monumental surfaces designed for seamless architecture and expansive interiors.',
+            },
+            {
+              id: 2,
+              size: '1200×3200',
+              thk: '6mm',
+              type: 'SLAB',
+              img: '/images/size-previews/tile-1200x3200.webp',
+              description:
+                'A dramatic large-format surface for sophisticated contemporary spaces.',
+            },
+            {
+              id: 3,
+              size: '1200×3000',
+              thk: '6mm',
+              type: 'SLAB',
+              img: '/images/size-previews/tile-1200x3000.webp',
+              description:
+                'Natural stone character with generous proportions and visual continuity.',
+            },
+            {
+              id: 4,
+              size: '1200×2800',
+              thk: '6mm',
+              type: 'SLAB',
+              img: '/images/size-previews/tile-1200x2800.webp',
+              description:
+                'Elegant marble-inspired surfaces for refined architectural applications.',
+            },
+            {
+              id: 5,
+              size: '1200×2400',
+              thk: '9mm',
+              type: 'SLAB',
+              img: '/images/size-previews/tile-1200x2400.webp',
+              description:
+                'A versatile slab format that brings scale and sophistication to interiors.',
+            },
+            {
+              id: 6,
+              size: '1200×1800',
+              thk: '9mm',
+              type: 'TILE',
+              img: '/images/size-previews/tile-1200x1800.webp',
+              description:
+                'A generous format that creates a strong visual foundation for a space.',
+            },
+            {
+              id: 7,
+              size: '1200×1200',
+              thk: '9mm',
+              type: 'TILE',
+              img: '/images/size-previews/tile-1200x1200.webp',
+              description:
+                'A confident square format for balanced layouts and modern interiors.',
+            },
+            {
+              id: 8,
+              size: '800×3200',
+              thk: '9mm',
+              type: 'SLAB',
+              img: '/images/size-previews/tile-800x3200.webp',
+              description:
+                'An expressive format that pairs distinctive surfaces with modern design.',
+            },
+            {
+              id: 9,
+              size: '800×3000',
+              thk: '9mm',
+              type: 'TILE',
+              img: '/images/size-previews/tile-800x3000.webp',
+              description:
+                'Tall, elegant proportions for walls and carefully composed interiors.',
+            },
+            {
+              id: 10,
+              size: '800×2400',
+              thk: '9mm',
+              type: 'TILE',
+              img: '/images/size-previews/tile-800x2400.webp',
+              description:
+                'A balanced large-format tile for clean lines and understated luxury.',
+            },
+            {
+              id: 11,
+              size: '800×1600',
+              thk: '9mm',
+              type: 'TILE',
+              img: '/images/size-previews/tile-800x1600.webp',
+              description:
+                'A contemporary rectangular format with a natural, tactile appearance.',
+            },
+            {
+              id: 12,
+              size: '800×800',
+              thk: '9mm',
+              type: 'TILE',
+              img: '/images/size-previews/tile-800x800.webp',
+              description:
+                'A timeless square format suited to a wide range of applications.',
+            },
+            {
+              id: 13,
+              size: '600×1200',
+              thk: '9mm',
+              type: 'TILE',
+              img: '/images/size-previews/tile-600x1200.webp',
+              description:
+                'A practical rectangular format that brings elegance to everyday spaces.',
+            },
+            {
+              id: 14,
+              size: '600×600',
+              thk: '9mm',
+              type: 'TILE',
+              img: '/images/size-previews/tile-600x600.webp',
+              description:
+                'A compact square format for versatile layouts and distinctive surfaces.',
+            },
+          ].map((item) => (
+            <SizePanel key={item.id} item={item} />
+          ))}
         </div>
       </section>
+
 
       {/* Stats Section (Grid Layout) */}
       <section style={{ padding: '8rem 4%', background: '#F2F0E9', width: '100%', boxSizing: 'border-box' }}>
