@@ -444,25 +444,29 @@ const HeroImageSlider = () => {
   );
 };
 
-/* ---------- About / Heritage section ----------
-   Arch-shaped image that opens on scroll, a gold outline that draws itself,
-   heading that fills word by word, counting facts, and a floating inset image.
-   Edit the words / numbers / images below. */
-const ABOUT_HEADING = [
-  [{ t: 'Elevating' }, { t: 'spaces' }, { t: 'with' }],
-  [{ t: 'uncompromising' }],
-  [{ t: 'Italian', gold: true }, { t: 'excellence.', gold: true }]
-];
-
-const ABOUT_FACTS = [
-  { value: 25, suffix: '+', label: 'Years of craftsmanship' },
-  { value: 40, suffix: '+', label: 'Countries served' },
-  { value: 3200, suffix: 'mm', label: 'Largest slab length' }
-];
+/* ---------- About / Heritage: pinned scroll story (5 steps) ----------
+   1  "Designed to become part of the architecture." + scroll hint
+   2  text splits apart, a thin band of marble opens between the lines
+   3  the band expands, the text fades into the background
+   4  full-screen material view  ("01 - Material Intelligence")
+   5  the image shrinks into a frame and the final About text appears
+   Edit the words and the two image paths below. */
+const ABOUT_TEXT = {
+  eyebrow: 'Our Heritage',
+  line1: 'Designed to become',
+  line2: 'part of the architecture.',
+  matNumber: '01',
+  matTitle: ['Material', 'Intelligence'],
+  matText: 'Italian craftsmanship meets modern technology to create timeless surfaces.',
+  finalTitle: 'Aevitas Ceramics is where material, technology and architecture meet.',
+  finalText:
+    'For decades, we have combined Italian craftsmanship with cutting-edge technology to create surfaces that redefine luxury spaces.',
+  cta: 'Discover Our Story'
+};
 
 const ABOUT_IMAGES = {
-  main: '/luxury_tile_craftsmanship.jpg',
-  inset: '/marble_texture.jpg'
+  main: '/luxury_tile_craftsmanship.jpg',   // band + full-screen view
+  final: '/marble_texture.jpg'              // image inside the final frame
 };
 
 const AboutHeritage = () => {
@@ -474,166 +478,104 @@ const AboutHeritage = () => {
 
     const q = (sel) => gsap.utils.toArray(sel, root);
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isMobile = () => window.innerWidth <= 800;
+    const vh = (n) => () => (n * window.innerHeight) / 100;   // re-evaluated on resize
+    const pick = (d, m) => () => (isMobile() ? m : d);
 
     const ctx = gsap.context(() => {
-      const ARCH_CLOSED = 'inset(0% 34% 0% 34% round 999px 999px 0px 0px)';
-      const ARCH_OPEN = 'inset(0% 0% 0% 0% round 999px 999px 0px 0px)';
-      const visual = q('.ah-visual')[0];
-      const arch = q('.ah-arch')[0];
-      const archImg = q('.ah-arch-img')[0];
-      const outline = q('.ah-outline-path')[0];
-      const inset = q('.ah-inset')[0];
-      const insetImg = q('.ah-inset img')[0];
-      const badge = q('.ah-badge')[0];
-      const words = q('.ah-word');
-      const facts = q('.ah-fact');
-      const eyebrowLine = q('.ah-eyebrow-line')[0];
-      const eyebrowText = q('.ah-eyebrow-text')[0];
-      const para = q('.ah-para')[0];
-      const cta = q('.ah-cta')[0];
-      const ghost = q('.ah-ghost')[0];
+      const media = q('.ah-media')[0];
+      const imgA = q('.ah-img-a')[0];
+      const imgB = q('.ah-img-b')[0];
+      const veil = q('.ah-veil')[0];
+      const eyebrow = q('.ah-eyebrow')[0];
+      const hl1 = q('.ah-hl-1')[0];
+      const hl2 = q('.ah-hl-2')[0];
+      const vline = q('.ah-vline')[0];
+      const hint = q('.ah-scroll')[0];
+      const matKids = q('.ah-mat > *');
+      const finalWrap = q('.ah-final-wrap')[0];
+      const finalKids = q('.ah-final > *');
 
-      /* ---------- reduced motion: show everything, no scroll effects ---------- */
+      /* final frame (image on the left, text on the right; stacked on phones) */
+      const frame = {
+        left: pick('5%', '6%'),
+        top: pick('13%', '11%'),
+        width: pick('46%', '88%'),
+        height: pick('74%', '36%')
+      };
+
+      /* ---------- reduced motion: just show the final layout ---------- */
       if (reduce) {
-        gsap.set(arch, { clipPath: ARCH_OPEN });
-        gsap.set(outline, { strokeDasharray: 1, strokeDashoffset: 0 });
-        gsap.set(inset, { clipPath: 'inset(0% 0% 0% 0%)' });
-        words.forEach((w) => gsap.set(w, { color: w.dataset.fill }));
-        facts.forEach((f) => {
-          f.querySelector('.ah-count').textContent = f.dataset.value;
-          gsap.set(f.querySelector('.ah-fact-label'), { opacity: 1 });
-        });
+        gsap.set(media, { left: frame.left(), top: frame.top(), width: frame.width(), height: frame.height(), borderRadius: 6 });
+        gsap.set(imgB, { opacity: 1 });
+        gsap.set([eyebrow, hl1, hl2, vline, hint, q('.ah-mat')[0]], { autoAlpha: 0 });
         return;
       }
 
-      /* ---------- 1. arch image opens as you scroll (scrubbed) ---------- */
-      gsap.set(arch, { clipPath: ARCH_CLOSED });
-      gsap.set(archImg, { scale: 1.35 });
-      gsap.set(outline, { strokeDasharray: 1, strokeDashoffset: 1 });
+      /* ---------- start state (step 1) ---------- */
+      gsap.set(media, { left: '0%', top: '54%', width: '100%', height: '0%', borderRadius: 0 });
+      gsap.set(imgA, { scale: 1.25 });
+      gsap.set([eyebrow, hl1, hl2], { yPercent: -50 });
+      gsap.set(matKids, { opacity: 0, y: 40 });
+      gsap.set(finalWrap, { autoAlpha: 0 });
+      gsap.set(finalKids, { opacity: 0, y: 50 });
 
-      gsap
-        .timeline({
-          defaults: { ease: 'none' },
-          scrollTrigger: { trigger: visual, start: 'top 85%', end: 'top 20%', scrub: 1 }
-        })
-        .to(arch, { clipPath: ARCH_OPEN, duration: 1, ease: 'power2.inOut' }, 0)
-        .to(archImg, { scale: 1, duration: 1 }, 0)
-        .to(outline, { strokeDashoffset: 0, duration: 0.9 }, 0.25);
-
-      // slow parallax inside the arch while the section passes
-      gsap.fromTo(
-        archImg,
-        { yPercent: -5 },
-        {
-          yPercent: 5,
-          ease: 'none',
-          scrollTrigger: { trigger: visual, start: 'top bottom', end: 'bottom top', scrub: true }
+      const tl = gsap.timeline({
+        defaults: { ease: 'power2.inOut' },
+        scrollTrigger: {
+          trigger: root,
+          start: 'top top',
+          end: '+=600%',
+          pin: true,
+          scrub: 1.2,               // smooth catch-up
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          refreshPriority: 2        // this pin is the first one on the page: measure it first
         }
-      );
-
-      /* ---------- 2. small inset image: wipes up + drifts at a different speed ---------- */
-      gsap.set(inset, { clipPath: 'inset(100% 0% 0% 0%)' });
-      gsap.set(insetImg, { scale: 1.3 });
-      gsap
-        .timeline({ scrollTrigger: { trigger: visual, start: 'top 55%', once: true } })
-        .to(inset, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.4, ease: 'power3.inOut' }, 0)
-        .to(insetImg, { scale: 1, duration: 1.8, ease: 'power3.out' }, 0);
-
-      gsap.fromTo(
-        inset,
-        { y: 70 },
-        {
-          y: -60,
-          ease: 'none',
-          scrollTrigger: { trigger: visual, start: 'top bottom', end: 'bottom top', scrub: true }
-        }
-      );
-
-      /* ---------- 3. rotating badge pops in ---------- */
-      gsap.from(badge, {
-        scale: 0,
-        rotation: -120,
-        duration: 1.3,
-        ease: 'back.out(1.6)',
-        scrollTrigger: { trigger: visual, start: 'top 55%', once: true }
       });
 
-      /* ---------- 4. eyebrow: line draws, text wipes in ---------- */
-      gsap.set(eyebrowLine, { scaleX: 0, transformOrigin: 'left center' });
-      gsap.set(eyebrowText, { clipPath: 'inset(0% 100% 0% 0%)' });
-      gsap
-        .timeline({ scrollTrigger: { trigger: eyebrowLine, start: 'top 92%', once: true } })
-        .to(eyebrowLine, { scaleX: 1, duration: 1.1, ease: 'power3.inOut' }, 0)
-        .to(eyebrowText, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.1, ease: 'power3.inOut' }, 0.25);
+      const T2 = 0.4;   // step 1 -> 2
+      const T3 = 1.6;   // step 2 -> 3
+      const T4 = 2.8;   // step 3 -> 4
+      const T5 = 5.4;   // step 4 -> 5
 
-      /* ---------- 5. heading fills word by word with scroll ---------- */
-      gsap.to(words, {
-        color: (i, el) => el.dataset.fill,
-        stagger: 0.5,
-        ease: 'none',
-        scrollTrigger: { trigger: q('.ah-title')[0], start: 'top 82%', end: 'bottom 48%', scrub: true }
-      });
+      /* ---------- step 1 -> 2 : text separates, a thin band opens ---------- */
+      tl.to(media, { top: '48%', height: '12%', duration: 1 }, T2)
+        .to(eyebrow, { y: vh(-5), duration: 1 }, T2)
+        .to(hl1, { y: vh(-6), duration: 1 }, T2)
+        .to(hl2, { y: vh(27), duration: 1 }, T2)
+        .to(vline, { top: vh(37), height: vh(49), duration: 1 }, T2)
+        .to(hint, { opacity: 0, y: 12, duration: 0.6 }, T2)
+        .to(imgA, { scale: 1, duration: T4 + 1.3 - T2, ease: 'none' }, T2);   // slow zoom-out until full view
 
-      /* ---------- 6. paragraph comes into focus (blur -> sharp) ---------- */
-      gsap.fromTo(
-        para,
-        { opacity: 0, filter: 'blur(10px)' },
-        {
-          opacity: 1,
-          filter: 'blur(0px)',
-          duration: 1.6,
-          ease: 'power2.out',
-          scrollTrigger: { trigger: para, start: 'top 90%', once: true }
-        }
-      );
+      /* ---------- step 2 -> 3 : image reveal expands, text turns ghostly ---------- */
+      tl.to(media, { top: '33%', height: '42%', duration: 1 }, T3)
+        .to(eyebrow, { y: vh(-8), duration: 1 }, T3)
+        .to(hl1, { y: vh(-12), opacity: 0.22, duration: 1 }, T3)
+        .to(hl2, { y: vh(33), opacity: 0.22, duration: 1 }, T3)
+        .to(vline, { opacity: 0, duration: 0.8 }, T3);
 
-      /* ---------- 7. facts: gold line draws + numbers count up ---------- */
-      facts.forEach((f, i) => {
-        const line = f.querySelector('.ah-fact-line');
-        const num = f.querySelector('.ah-count');
-        const label = f.querySelector('.ah-fact-label');
-        const counter = { v: 0 };
-        gsap.set(line, { scaleX: 0, transformOrigin: 'left center' });
-        gsap.set(label, { opacity: 0 });
+      /* ---------- step 3 -> 4 : full material view ---------- */
+      tl.to(media, { top: '0%', height: '100%', duration: 1.3 }, T4)
+        .to(hl1, { y: vh(-20), opacity: 0, duration: 1 }, T4)
+        .to(hl2, { y: vh(45), opacity: 0, duration: 1 }, T4)
+        .to(eyebrow, { y: vh(-12), opacity: 0, duration: 1 }, T4)
+        .to(veil, { opacity: 1, duration: 0.8 }, T4 + 0.5)
+        .to(matKids, { opacity: 1, y: 0, duration: 0.9, stagger: 0.12, ease: 'power2.out' }, T4 + 0.8);
 
-        gsap
-          .timeline({ delay: i * 0.18, scrollTrigger: { trigger: f, start: 'top 94%', once: true } })
-          .to(line, { scaleX: 1, duration: 1.1, ease: 'power3.inOut' }, 0)
-          .to(
-            counter,
-            {
-              v: Number(f.dataset.value),
-              duration: 2.2,
-              ease: 'power3.out',
-              onUpdate: () => { num.textContent = Math.round(counter.v); }
-            },
-            0.1
-          )
-          .to(label, { opacity: 1, duration: 0.9, ease: 'power2.out' }, 0.5);
-      });
+      /* ---------- step 4 -> 5 : image shrinks into a frame, final text arrives ---------- */
+      tl.to(matKids, { opacity: 0, y: -30, duration: 0.6, stagger: 0.05, ease: 'power2.in' }, T5)
+        .to(veil, { opacity: 0, duration: 0.8 }, T5)
+        .to(
+          media,
+          { left: frame.left, top: frame.top, width: frame.width, height: frame.height, borderRadius: 6, duration: 1.5 },
+          T5
+        )
+        .to(imgB, { opacity: 1, duration: 0.8, ease: 'none' }, T5 + 0.6)
+        .fromTo(finalWrap, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01, immediateRender: false }, T5 + 0.7)
+        .to(finalKids, { opacity: 1, y: 0, duration: 1, stagger: 0.12, ease: 'power2.out' }, T5 + 0.8);
 
-      /* ---------- 8. button opens from the centre ---------- */
-      gsap.fromTo(
-        cta,
-        { clipPath: 'inset(0% 50% 0% 50% round 50px)' },
-        {
-          clipPath: 'inset(0% 0% 0% 0% round 50px)',
-          duration: 1.2,
-          ease: 'power3.inOut',
-          scrollTrigger: { trigger: cta, start: 'top 94%', once: true }
-        }
-      );
-
-      /* ---------- 9. big ghost word drifts sideways ---------- */
-      gsap.fromTo(
-        ghost,
-        { xPercent: -6 },
-        {
-          xPercent: 6,
-          ease: 'none',
-          scrollTrigger: { trigger: root, start: 'top bottom', end: 'bottom top', scrub: true }
-        }
-      );
+      tl.to({}, { duration: 0.5 });   // short hold on the final layout before un-pinning
     }, root);
 
     return () => ctx.revert();
@@ -641,96 +583,61 @@ const AboutHeritage = () => {
 
   return (
     <section className="ah-section" ref={rootRef}>
-      <div className="ah-ghost" aria-hidden="true">Heritage</div>
+      {/* image: thin band -> full screen -> final frame */}
+      <div className="ah-media">
+        <img className="ah-img ah-img-a" src={ABOUT_IMAGES.main} alt="Gold-veined Italian marble" />
+        <img className="ah-img ah-img-b" src={ABOUT_IMAGES.final} alt="Marble surface in an architectural space" />
+        <div className="ah-veil" />
+      </div>
 
-      <div className="ah-grid">
-        {/* ---------- Left: arch image composition ---------- */}
-        <div className="ah-visual">
-          {/* gold outline that draws itself (offset behind the arch) */}
-          <div className="ah-outline" aria-hidden="true">
-            <svg viewBox="0 0 400 500" fill="none" preserveAspectRatio="none">
-              <path
-                className="ah-outline-path"
-                pathLength="1"
-                d="M2 498 V200 A198 198 0 0 1 398 200 V498"
-                stroke="#C1A673"
-                strokeWidth="1.2"
-              />
-            </svg>
-          </div>
+      {/* steps 1-3: centred text */}
+      <div className="ah-eyebrow">
+        <span>{ABOUT_TEXT.eyebrow}</span>
+        <i />
+      </div>
 
-          <div className="ah-arch">
-            <img className="ah-arch-img" src={ABOUT_IMAGES.main} alt="Gold-veined Italian marble surface" />
-          </div>
+      <h2 className="ah-heading">
+        <span className="ah-hl ah-hl-1">{ABOUT_TEXT.line1}</span>
+        <span className="ah-hl ah-hl-2">{ABOUT_TEXT.line2}</span>
+      </h2>
 
-          <div className="ah-inset">
-            <img src={ABOUT_IMAGES.inset} alt="White marble detail" />
-          </div>
+      <div className="ah-vline" aria-hidden="true" />
 
-          {/* rotating text badge */}
-          <div className="ah-badge" aria-hidden="true">
-            <div className="ah-badge-ring">
-              <svg viewBox="0 0 120 120">
-                <defs>
-                  <path id="ahBadgePath" d="M60,60 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0" />
-                </defs>
-                <text>
-                  <textPath href="#ahBadgePath" startOffset="0">
-                    ITALIAN CRAFTSMANSHIP • TIMELESS SURFACES •
-                  </textPath>
-                </text>
-              </svg>
-            </div>
-            <span className="ah-badge-star">✦</span>
-          </div>
+      <div className="ah-scroll" aria-hidden="true">
+        <span className="ah-scroll-ring"><span className="ah-scroll-dot" /></span>
+        <span>Scroll</span>
+      </div>
+
+      {/* step 4: text over the full image */}
+      <div className="ah-mat">
+        <div className="ah-mat-num">
+          <span>{ABOUT_TEXT.matNumber}</span>
+          <i />
         </div>
+        <div className="ah-mat-title">
+          {ABOUT_TEXT.matTitle.map((l) => (
+            <span key={l}>{l}</span>
+          ))}
+        </div>
+        <div className="ah-mat-text">{ABOUT_TEXT.matText}</div>
+      </div>
 
-        {/* ---------- Right: typography ---------- */}
-        <div className="ah-copy">
-          <div className="ah-eyebrow">
-            <span className="ah-eyebrow-line" />
-            <span className="ah-eyebrow-text">Our Heritage</span>
+      {/* step 5: final layout */}
+      <div className="ah-final-wrap">
+        <div className="ah-final">
+          <div className="ah-final-eyebrow">
+            <span className="ah-final-num">{ABOUT_TEXT.matNumber}</span>
+            <i />
+            <span className="ah-final-label">{ABOUT_TEXT.eyebrow}</span>
           </div>
-
-          <h2 className="ah-title">
-            {ABOUT_HEADING.map((line, li) => (
-              <span className="ah-line" key={li}>
-                {line.map((w) => (
-                  <span
-                    className="ah-word"
-                    key={w.t}
-                    data-fill={w.gold ? '#C1A673' : '#1a1a2e'}
-                  >
-                    {w.t}
-                  </span>
-                ))}
-              </span>
-            ))}
-          </h2>
-
-          <p className="ah-para">
-            For decades, Aevitas Ceramics has pioneered the art of large-format porcelain slabs.
-            By merging traditional craftsmanship with cutting-edge technology, we create surfaces
-            that redefine luxury architecture.
-          </p>
-
-          <div className="ah-facts">
-            {ABOUT_FACTS.map((f) => (
-              <div className="ah-fact" key={f.label} data-value={f.value}>
-                <span className="ah-fact-line" />
-                <div className="ah-fact-num">
-                  <span className="ah-count">0</span>
-                  <span className="ah-suffix">{f.suffix}</span>
-                </div>
-                <span className="ah-fact-label">{f.label}</span>
-              </div>
-            ))}
+          <h3 className="ah-final-title">{ABOUT_TEXT.finalTitle}</h3>
+          <p className="ah-final-p">{ABOUT_TEXT.finalText}</p>
+          <div>
+            <button className="pill-btn ah-cta">
+              <span className="ah-cta-circle" aria-hidden="true">→</span>
+              <span className="ah-cta-label">{ABOUT_TEXT.cta}</span>
+            </button>
           </div>
-
-          <button className="pill-btn ah-cta">
-            <span>Discover Our Story</span>
-            <span aria-hidden="true">→</span>
-          </button>
         </div>
       </div>
     </section>
@@ -820,6 +727,37 @@ const Home = () => {
           }
         });
       });
+
+      // 2. 9-Part Shatter Animation
+      const shatterPieces = gsap.utils.toArray('.shatter-piece');
+      if (shatterPieces.length > 0) {
+        // Initial scattered state
+        shatterPieces.forEach((piece, i) => {
+          gsap.set(piece, {
+            x: (Math.random() - 0.5) * Math.min(600, window.innerWidth * 0.6),
+            y: (Math.random() - 0.5) * Math.min(600, window.innerWidth * 0.6),
+            rotation: (Math.random() - 0.5) * 90,
+            scale: 0.3 + Math.random() * 0.5,
+            opacity: 0
+          });
+        });
+
+        // Assemble on scroll
+        gsap.to(shatterPieces, {
+          x: 0,
+          y: 0,
+          rotation: 0,
+          scale: 1,
+          opacity: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".shatter-wrap",
+            start: "top 85%",
+            end: "center 45%",
+            scrub: 1.5
+          }
+        });
+      }
 
       // 2.5 Horizontal Wipe for Category Hero Section (Standard Entry Animation)
       if (categoryHeroRef.current) {
@@ -1048,7 +986,7 @@ const Home = () => {
       <HeroImageSlider />
 
 
-      {/* About / Heritage Section */}
+      {/* About / Heritage (pinned scroll story) */}
       <AboutHeritage />
 
       {/* Elegant Separator Line */}

@@ -2924,299 +2924,342 @@
 }
 
 /* =========================================================
-   ABOUT / HERITAGE  (arch image, word-fill heading, counting facts)
+   ABOUT / HERITAGE  (pinned scroll story, 5 steps)
    ========================================================= */
 
 .ah-section {
   position: relative;
   width: 100%;
-  box-sizing: border-box;
-  padding: 11rem 4% 9rem;
-  background: #F2F0E9;
+  height: 100vh;
+  height: 100svh;
+  min-height: 560px;
   overflow: hidden;
+  background: #F2F0E9;
+  color: #1a1a2e;
   isolation: isolate;
 }
 
-/* big outlined word in the background that drifts sideways */
-.ah-ghost {
+/* ---- image (starts as a zero-height band in the middle) ---- */
+.ah-media {
+  position: absolute;
+  left: 0;
+  top: 54%;
+  width: 100%;
+  height: 0;
+  z-index: 1;
+  overflow: hidden;
+  will-change: top, height, left, width;
+}
+
+.ah-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.ah-img-a { will-change: transform; }
+.ah-img-b { opacity: 0; }
+
+/* soft light veil on the left so dark text stays readable over the image */
+.ah-veil {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: linear-gradient(90deg, rgba(242, 240, 233, 0.78) 0%, rgba(242, 240, 233, 0.42) 38%, rgba(242, 240, 233, 0) 70%);
+}
+
+/* ---- steps 1-3: centred text ---- */
+.ah-eyebrow {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: -0.14em;
-  z-index: -1;
+  top: 21vh;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.1rem;
+  text-align: center;
+}
+
+.ah-eyebrow span {
+  font-size: 0.72rem;
+  letter-spacing: 0.42em;
+  text-indent: 0.42em;
+  text-transform: uppercase;
+  color: #1a1a2e;
+}
+
+.ah-eyebrow i {
+  display: block;
+  width: 44px;
+  height: 1px;
+  background: #C1A673;
+}
+
+.ah-heading {
+  margin: 0;
+  font-weight: 400;
+}
+
+.ah-hl {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  padding: 0 4%;
   text-align: center;
   font-family: "Times New Roman", Times, serif;
-  font-size: clamp(7rem, 21vw, 22rem);
-  line-height: 1;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(26, 26, 46, 0.08);
-  pointer-events: none;
-  user-select: none;
+  font-size: clamp(2.3rem, 5vw, 5.2rem);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: #14142b;
 }
 
-.ah-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  align-items: center;
-  gap: clamp(3.5rem, 7vw, 8rem);
-  max-width: 1500px;
-  margin: 0 auto;
-}
+.ah-hl-1 { top: 38vh; }
+.ah-hl-2 { top: calc(38vh + 1.2em); }
 
-/* ---- left: image composition (fixed 4:5 so the SVG outline always matches) ---- */
-.ah-visual {
-  position: relative;
-  width: min(100%, 560px);
-  aspect-ratio: 4 / 5;
-  justify-self: center;
-}
-
-.ah-outline {
+.ah-vline {
   position: absolute;
-  inset: 0;
-  z-index: 0;
-  transform: translate(20px, 20px);
-  pointer-events: none;
+  left: 50%;
+  top: 64vh;
+  height: 18vh;
+  width: 1px;
+  z-index: 2;
+  background: rgba(26, 26, 46, 0.28);
 }
 
-.ah-outline svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-
-.ah-arch {
+/* scroll hint */
+.ah-scroll {
   position: absolute;
-  inset: 0;
-  z-index: 1;
-  overflow: hidden;
-  background: #d9d3c4;
-  will-change: clip-path;
-}
-
-.ah-arch-img {
-  position: absolute;
-  top: -8%;
   left: 0;
-  width: 100%;
-  height: 116%;
-  object-fit: cover;
-  display: block;
-  will-change: transform;
-}
-
-.ah-inset {
-  position: absolute;
-  right: -10%;
-  bottom: -7%;
+  right: 0;
+  bottom: 5vh;
   z-index: 3;
-  width: 44%;
-  aspect-ratio: 3 / 4;
-  box-sizing: border-box;
-  border: 6px solid #F2F0E9;
-  border-radius: 4px;
-  overflow: hidden;
-  box-shadow: 0 30px 60px rgba(26, 26, 46, 0.22);
-  will-change: transform, clip-path;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.38em;
+  text-indent: 0.38em;
+  text-transform: uppercase;
+  color: #1a1a2e;
 }
 
-.ah-inset img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* ---- rotating badge ---- */
-.ah-badge {
-  position: absolute;
-  top: -30px;
-  right: -30px;
-  z-index: 4;
-  width: 118px;
-  height: 118px;
-  border-radius: 50%;
-  background: #F2F0E9;
-  box-shadow: 0 10px 30px rgba(26, 26, 46, 0.12);
+.ah-scroll-ring {
   display: grid;
   place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid rgba(26, 26, 46, 0.6);
+  border-radius: 50%;
 }
 
-.ah-badge-ring {
-  position: absolute;
-  inset: 0;
-  animation: ah-spin 22s linear infinite;
-}
-
-.ah-badge-ring svg {
-  width: 100%;
-  height: 100%;
+.ah-scroll-dot {
   display: block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #1a1a2e;
+  animation: ah-bob 1.8s ease-in-out infinite;
 }
 
-.ah-badge-ring text {
+@keyframes ah-bob {
+  0%, 100% { transform: translateY(-3px); opacity: 0.5; }
+  50% { transform: translateY(3px); opacity: 1; }
+}
+
+/* ---- step 4: text over the full image ---- */
+.ah-mat {
+  position: absolute;
+  left: 7vw;
+  top: 26vh;
+  z-index: 3;
+  max-width: min(440px, 80vw);
+  color: #1a1a2e;
+}
+
+.ah-mat-num {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
   font-family: "Times New Roman", Times, serif;
-  font-size: 9.2px;
-  letter-spacing: 2.1px;
-  fill: #C1A673;
-}
-
-.ah-badge-star {
-  position: relative;
-  font-size: 1.1rem;
+  font-size: clamp(2.2rem, 3.4vw, 3.4rem);
+  line-height: 1;
   color: #C1A673;
 }
 
-@keyframes ah-spin {
-  to { transform: rotate(360deg); }
-}
-
-/* ---- right: copy ---- */
-.ah-copy {
-  max-width: 600px;
-}
-
-.ah-eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.ah-eyebrow-line {
+.ah-mat-num i {
   display: block;
   width: 56px;
   height: 1px;
   background: #C1A673;
 }
 
-.ah-eyebrow-text {
-  display: block;
-  font-size: 0.8rem;
-  letter-spacing: 3px;
+.ah-mat-title {
+  margin-top: 1.6rem;
+  font-family: "Times New Roman", Times, serif;
+  font-size: clamp(1.8rem, 2.8vw, 3rem);
+  line-height: 1.12;
+  letter-spacing: 0.01em;
   text-transform: uppercase;
+}
+
+.ah-mat-title span { display: block; }
+
+.ah-mat-text {
+  max-width: 320px;
+  margin-top: 1.3rem;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: rgba(26, 26, 46, 0.88);
+}
+
+/* ---- step 5: final layout (text on the right) ---- */
+.ah-final-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  padding: 0 5vw 0 56vw;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.ah-final {
+  width: 100%;
+  max-width: 560px;
+  pointer-events: auto;
+}
+
+.ah-final-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+.ah-final-num {
+  font-family: "Times New Roman", Times, serif;
+  font-size: clamp(2rem, 3vw, 3rem);
+  line-height: 1;
   color: #C1A673;
 }
 
-.ah-title {
-  margin: 1.75rem 0 2rem;
-  font-family: "Times New Roman", Times, serif;
-  font-size: clamp(2.5rem, 3.9vw, 4rem);
-  font-weight: 300;
-  line-height: 1.15;
-  text-transform: none;
-}
-
-.ah-line { display: block; }
-
-.ah-word {
-  display: inline-block;
-  margin-right: 0.26em;
-  color: rgba(26, 26, 46, 0.14);   /* filled to its data-fill colour while scrolling */
-}
-
-.ah-para {
-  max-width: 500px;
-  margin: 0 0 2.75rem;
-  font-size: 1.05rem;
-  line-height: 1.85;
-  color: rgba(26, 26, 46, 0.8);
-}
-
-/* ---- facts ---- */
-.ah-facts {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 2rem;
-  max-width: 540px;
-  margin: 0 0 3rem;
-}
-
-.ah-fact-line {
+.ah-final-eyebrow i {
   display: block;
+  width: clamp(48px, 6vw, 96px);
   height: 1px;
-  margin-bottom: 1rem;
   background: #C1A673;
 }
 
-.ah-fact-num {
-  font-family: "Times New Roman", Times, serif;
-  font-size: clamp(2rem, 2.8vw, 2.8rem);
-  line-height: 1;
+.ah-final-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
   color: #1a1a2e;
 }
 
-.ah-suffix {
-  margin-left: 0.12em;
-  font-size: 0.5em;
-  color: #C1A673;
+.ah-final-title {
+  margin: 0 0 1.8rem;
+  font-family: "Times New Roman", Times, serif;
+  font-size: clamp(1.9rem, 3.1vw, 3.3rem);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.005em;
+  text-transform: none;
+  color: #14142b;
 }
 
-.ah-fact-label {
-  display: block;
-  margin-top: 0.6rem;
-  font-size: 0.7rem;
-  letter-spacing: 1.5px;
-  line-height: 1.5;
-  text-transform: uppercase;
-  color: rgba(26, 26, 46, 0.65);
+.ah-final-p {
+  max-width: 440px;
+  margin: 0 0 2.4rem;
+  font-size: 1rem;
+  line-height: 1.75;
+  color: rgba(26, 26, 46, 0.78);
 }
 
-/* ---- button ---- */
+/* ---- button: circle arrow + label with gold underline ---- */
 .ah-cta {
-  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 0.9rem;
-  padding: 1rem 2.5rem;
+  gap: 1.1rem;
+  padding: 0;
   border: 0;
-  border-radius: 50px;
-  overflow: hidden;
-  background: #1a1a2e;
-  color: #F9F8F6;
-  font-size: 0.8rem;
-  letter-spacing: 2px;
-  text-transform: uppercase;
+  background: transparent;
+  font-family: inherit;
+  color: #1a1a2e;
   cursor: pointer;
-  transition: color 0.45s ease;
 }
 
-.ah-cta::before {
+.ah-cta-circle {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border: 1px solid #1a1a2e;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  transition: background 0.4s ease, color 0.4s ease, transform 0.4s ease;
+}
+
+.ah-cta-label {
+  position: relative;
+  padding-bottom: 0.55rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.ah-cta-label::after {
   content: "";
   position: absolute;
-  inset: 0;
+  left: 0;
+  bottom: 0;
+  width: 70px;
+  height: 1px;
   background: #C1A673;
-  transform: translateY(101%);
-  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.ah-cta > span {
-  position: relative;
-  z-index: 1;
+.ah-cta:hover .ah-cta-circle {
+  background: #1a1a2e;
+  color: #F2F0E9;
+  transform: translateX(4px);
 }
 
-.ah-cta:hover { color: #1a1a2e; }
-.ah-cta:hover::before { transform: translateY(0); }
+.ah-cta:hover .ah-cta-label::after { width: 100%; }
 
-/* ---- tablet / phone ---- */
-@media (max-width: 900px) {
-  .ah-section { padding: 7rem 6% 6rem; }
+.ah-cta:focus-visible {
+  outline: 2px solid #C1A673;
+  outline-offset: 6px;
+}
 
-  .ah-grid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 4.5rem;
+/* ---- tablet ---- */
+@media (max-width: 1000px) and (min-width: 801px) {
+  .ah-final-wrap { padding-left: 54vw; }
+}
+
+/* ---- phone: image on top, text below in the final step ---- */
+@media (max-width: 800px) {
+  .ah-eyebrow { top: 18vh; }
+  .ah-eyebrow span { font-size: 0.64rem; letter-spacing: 0.34em; }
+  .ah-mat { left: 6vw; top: 20vh; }
+
+  .ah-final-wrap {
+    align-items: flex-start;
+    padding: 53vh 6vw 0;
   }
 
-  .ah-visual { width: min(84%, 420px); }
-  .ah-inset { right: -8%; }
-  .ah-badge { top: -22px; right: -16px; width: 92px; height: 92px; }
-  .ah-badge-ring text { font-size: 9.6px; }
-
-  .ah-copy { max-width: none; }
-  .ah-facts { gap: 1rem; }
-  .ah-fact-label { font-size: 0.62rem; letter-spacing: 1px; }
-  .ah-ghost { font-size: 28vw; }
+  .ah-final-eyebrow { margin-bottom: 1rem; }
+  .ah-final-title { margin-bottom: 1.4rem; font-size: 1.7rem; }
+  .ah-final-p { display: none; }
+  .ah-cta-circle { width: 46px; height: 46px; }
 }
