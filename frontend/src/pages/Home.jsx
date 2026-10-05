@@ -6,26 +6,36 @@ import SplitText from '../components/SplitText';
 import './Home.css';
 
 gsap.registerPlugin(ScrollTrigger);
+// Phones: URL-bar show/hide fires resize; don't rebuild every pin because of it
+ScrollTrigger.config({ ignoreMobileResize: true });
 
 
-const SizePanel = ({ item }) => {
-  const [isActive, setIsActive] = useState(false);
+const SizePanel = ({ item, isActive, onActivate, onDeactivate, onToggle }) => {
+  const panelRef = useRef(null);
+
+  // On touch the strip scrolls sideways, so bring the opened panel into view
+  useEffect(() => {
+    if (isActive && panelRef.current && window.matchMedia('(hover: none)').matches) {
+      panelRef.current.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    }
+  }, [isActive]);
 
   return (
     <article
+      ref={panelRef}
       className={`size-panel ${isActive ? 'is-active' : ''}`}
       style={{ '--size-image': `url("${item.img}")` }}
-      onMouseEnter={() => setIsActive(true)}
-      onMouseLeave={() => setIsActive(false)}
-      onFocus={() => setIsActive(true)}
+      onPointerEnter={(e) => { if (e.pointerType === 'mouse') onActivate(item.id); }}
+      onPointerLeave={(e) => { if (e.pointerType === 'mouse') onDeactivate(item.id); }}
+      onPointerUp={(e) => { if (e.pointerType !== 'mouse') onToggle(item.id); }}
+      onFocus={(e) => { if (e.currentTarget.matches(':focus-visible')) onActivate(item.id); }}
       onBlur={(event) => {
         if (!event.currentTarget.contains(event.relatedTarget)) {
-          setIsActive(false);
+          onDeactivate(item.id);
         }
       }}
       tabIndex={0}
       aria-label={`${item.size} ${item.type}`}
-      
     >
       <div className="size-panel-image"  />
 
@@ -78,9 +88,9 @@ const CATEGORY_SLIDES = [
     tags: ['GVT', 'PGVT'],
     linkText: 'Explore Collection',
     href: '/collections',
-    img: '/lobi_preview.png',
+    img: '/floor_preview.jpg',
     alt: 'Porcelain tile surface',
-    bg: '#9C9999',
+    bg: '#222220',
   },
   {
     id: 'formats',
@@ -90,14 +100,354 @@ const CATEGORY_SLIDES = [
     tags: ['Color Body', 'Full Body'],
     linkText: 'Explore Formats',
     href: '/collections',
-    img: '/floor_preview.jpg',
+    img: '/terrace_preview.jpg',
     alt: 'Large format porcelain slabs',
-    bg: '#d4d2d2',
+    bg: '#222220',
   },
 ];
 
+/* ---------- Inspiration (vertical panels, shared background) ----------
+   Hover / tap a panel -> ITS image fades in as the background behind ALL panels,
+   and the description rises inside that panel. Panel sizes never change on desktop.
+   Add your images later: fill in `img` with a path from /public,
+   e.g. img: '/inspiration_villa.jpg'. Until then a soft gradient shows. */
+const INSPIRATION_ITEMS = [
+  {
+    id: 'villa',
+    name: 'Villa',
+    desc: 'Warm, seamless surfaces that turn private retreats into quiet statements.',
+    img: '/terrace_preview.jpg',
+    tone: 'linear-gradient(160deg, #7a6d5b 0%, #2b2823 100%)',
+  },
+  {
+    id: 'residential',
+    name: 'Residential',
+    desc: 'Everyday living, elevated with durable and beautifully finished tiles.',
+    img: '/residential_preview.png',
+    tone: 'linear-gradient(160deg, #8f8677 0%, #34312c 100%)',
+  },
+  {
+    id: 'office',
+    name: 'Office Building',
+    desc: 'Calm, hard-wearing floors and walls built for the pace of modern work.',
+    img: '/office_preview.png',
+    tone: 'linear-gradient(160deg, #62676d 0%, #25272a 100%)',
+  },
+  {
+    id: 'commercial',
+    name: 'Commercial Building',
+    desc: 'Large-format surfaces that handle heavy footfall without losing their poise.',
+    img: '/commercial_preview.png',
+    tone: 'linear-gradient(160deg, #84735c 0%, #2c2822 100%)',
+  },
+  {
+    id: 'hotel',
+    name: 'Hotel',
+    desc: 'Lobbies and suites with a luxurious first impression that lasts.',
+    img: '/kitchen_preview.png',
+    tone: 'linear-gradient(160deg, #6f5e47 0%, #241f19 100%)',
+  },
+];
+
+const InspirationSection = () => {
+  const [active, setActive] = useState(0);   // whose image is the background
+  const [hovered, setHovered] = useState(-1); // which panel shows its text
+
+  const select = (i) => { setActive(i); setHovered(i); };
+
+  return (
+    <section className="insp-section" onMouseLeave={() => setHovered(-1)}>
+      {/* one shared background: every item's image is stacked here */}
+      <div className="insp-bg" aria-hidden="true">
+        {INSPIRATION_ITEMS.map((item, i) => (
+          <div
+            key={item.id}
+            className={`insp-bg-layer${active === i ? ' is-active' : ''}`}
+            style={{ background: item.img ? `url(${item.img}) center / cover no-repeat` : item.tone }}
+          />
+        ))}
+        <div className="insp-bg-overlay" />
+      </div>
+
+      <div className="insp-head">
+        <span className="insp-eyebrow">Inspiration</span>
+        <h2 className="insp-title">Where Our Surfaces Come to Life</h2>
+      </div>
+
+      <div className="insp-panels">
+        {INSPIRATION_ITEMS.map((item, i) => (
+          <div
+            key={item.id}
+            className={`insp-panel${hovered === i ? ' is-hovered' : ''}${hovered !== -1 && hovered !== i ? ' is-dim' : ''}`}
+            role="button"
+            tabIndex={0}
+            aria-expanded={hovered === i}
+            onMouseEnter={() => select(i)}
+            onFocus={() => select(i)}
+            onClick={() => select(i)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(i); }
+            }}
+          >
+            <span className="insp-panel-line" aria-hidden="true" />
+            <span className="insp-num">{String(i + 1).padStart(2, '0')}</span>
+
+            <div className="insp-panel-body">
+              <span className="insp-name">{item.name}</span>
+              <div className="insp-desc-wrap">
+                <div className="insp-desc-inner">
+                  <span className="insp-desc">{item.desc}</span>
+                  {/* <span className="insp-link">View Inspiration <span aria-hidden="true">↗</span></span> */}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+};
+
+/* =========================================================
+   AEVITAS HERO IMAGE SLIDER
+   ========================================================= */
+
+const HERO_SLIDES = [
+  { id: 'villa',       image: '/terrace_preview.jpg',    alt: 'Villa terrace with porcelain flooring' },
+  { id: 'residential', image: '/residential_preview.png', alt: 'Residential living space' },
+  { id: 'office',      image: '/office_preview.png',      alt: 'Office interior with large-format surfaces' },
+  { id: 'commercial',  image: '/commercial_preview.png',  alt: 'Commercial space with porcelain surfaces' },
+  { id: 'hotel',       image: '/kitchen_preview.png',     alt: 'Kitchen with premium porcelain finishes' },
+  { id: 'porcelain',   image: '/floor_preview.jpg',       alt: 'Contemporary floor in porcelain' }
+];
+
+const HERO_SLICE_COUNT = 7;
+const HERO_AUTOPLAY_MS = 4000;   // change image every 4 seconds
+
+// one single text for the whole hero (does not change per slide)
+const HERO_TEXT = {
+  eyebrow: 'Aevitas Ceramics',
+  title: ['Timeless', 'Surfaces for', 'Every Space'],
+  description: 'Luxury Italian porcelain slabs and natural stone, crafted for distinctive interiors.'
+};
+
+
+const HeroImageSlider = () => {
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  const rootRef = useRef(null);
+  const busyRef = useRef(false);
+  const hoverRef = useRef(false);
+  const timerRef = useRef(null);
+  const tlRef = useRef(null);
+  const changeRef = useRef(null);
+
+  const nextIndex = (activeSlide + 1) % HERO_SLIDES.length;
+
+  const changeSlide = (direction) => {
+    if (busyRef.current) return;
+    const root = rootRef.current;
+    if (!root) return;
+
+    const target =
+      (activeSlide + direction + HERO_SLIDES.length) % HERO_SLIDES.length;
+
+    // the transition layer always shows `target`
+    const slices = gsap.utils.toArray('.aev-hero-transition-slice', root);
+    const imgs = gsap.utils.toArray('.aev-hero-transition-image', root);
+    if (slices.length === 0) {
+      setActiveSlide(target);
+      return;
+    }
+
+    busyRef.current = true;
+    clearTimeout(timerRef.current);
+    imgs.forEach((im) => { im.src = HERO_SLIDES[target].image; });
+
+    const fromRight = direction < 0;
+    const order = fromRight ? [...slices].reverse() : slices;
+
+    gsap.set(slices, {
+      clipPath: fromRight ? 'inset(0 0 0 100%)' : 'inset(0 100% 0 0)',
+      opacity: 1
+    });
+
+    // each vertical slice is revealed one after another (left -> right, or right -> left on "prev")
+    tlRef.current = gsap.timeline({
+      onComplete: () => {
+        // slices stay fully visible until React swaps the permanent image,
+        // so there is no flash of the old picture
+        setActiveSlide(target);
+      }
+    });
+
+    tlRef.current.to(order, {
+      clipPath: 'inset(0 0% 0 0%)',
+      duration: 0.9,
+      stagger: 0.14,
+      ease: 'power3.inOut'
+    });
+  };
+  changeRef.current = changeSlide;
+
+  // autoplay: every 4s, paused while the mouse is over the hero
+  const schedule = () => {
+    clearTimeout(timerRef.current);
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    timerRef.current = setTimeout(() => {
+      if (hoverRef.current || busyRef.current) { schedule(); return; }
+      changeRef.current && changeRef.current(1);
+    }, HERO_AUTOPLAY_MS);
+  };
+
+  // runs after every committed slide change: unlock + restart the 4s timer
+  useEffect(() => {
+    busyRef.current = false;
+    schedule();
+    return () => clearTimeout(timerRef.current);
+  }, [activeSlide]);
+
+  // preload images + cleanup
+  useEffect(() => {
+    HERO_SLIDES.forEach((s) => { const im = new Image(); im.src = s.image; });
+    return () => {
+      clearTimeout(timerRef.current);
+      if (tlRef.current) tlRef.current.kill();
+    };
+  }, []);
+
+  const onPointerEnter = (e) => {
+    if (e.pointerType && e.pointerType !== 'mouse') return;
+    hoverRef.current = true;
+  };
+  const onPointerLeave = (e) => {
+    if (e.pointerType && e.pointerType !== 'mouse') return;
+    hoverRef.current = false;
+    if (!busyRef.current) schedule();   // fresh 5s after the mouse leaves
+  };
+
+  const currentSlide = HERO_SLIDES[activeSlide];
+
+  const arrowKey = (dir) => (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); changeSlide(dir); }
+  };
+
+  return (
+    <section
+      className="aev-hero"
+      ref={rootRef}
+      onPointerEnter={onPointerEnter}
+      onPointerLeave={onPointerLeave}
+    >
+
+      {/* =====================================================
+          IMAGE (right side, ~70%)
+          ===================================================== */}
+
+      <div className="aev-hero-media">
+
+        {/* Permanent current image */}
+        <img
+          className="aev-hero-current-image"
+          src={currentSlide.image}
+          alt={currentSlide.alt}
+        />
+
+        {/* Temporary transition image (vertical slices) */}
+        <div className="aev-hero-transition" aria-hidden="true">
+          {Array.from({ length: HERO_SLICE_COUNT }).map((_, index) => (
+            <div
+              key={`${activeSlide}-${index}`}
+              className="aev-hero-transition-slice"
+              style={{
+                left: `${(index / HERO_SLICE_COUNT) * 100}%`,
+                width: `${100 / HERO_SLICE_COUNT}%`
+              }}
+            >
+              <img
+                className="aev-hero-transition-image"
+                src={HERO_SLIDES[nextIndex].image}
+                alt=""
+              />
+            </div>
+          ))}
+        </div>
+
+        <div className="aev-hero-image-overlay" />
+      </div>
+
+
+      {/* =====================================================
+          LEFT CONTENT (~30%): one fixed text
+          ===================================================== */}
+
+      <div className="aev-hero-copy">
+
+        <span className="aev-hero-eyebrow">{HERO_TEXT.eyebrow}</span>
+
+        <h1 className="aev-hero-heading">
+          {HERO_TEXT.title.map((line) => (
+            <span key={line}>{line}</span>
+          ))}
+        </h1>
+
+        <div className="aev-hero-description">{HERO_TEXT.description}</div>
+
+        <div className="aev-hero-navigation">
+
+          {/* plain divs (not <button>) so the site cursor stays the normal dot + ring */}
+          <div
+            role="button"
+            tabIndex={0}
+            className="aev-hero-arrow"
+            onClick={() => changeSlide(-1)}
+            onKeyDown={arrowKey(-1)}
+            aria-label="Previous image"
+          >
+            <span>←</span>
+          </div>
+
+          <div className="aev-hero-counter">
+            <span className="aev-hero-current-number">
+              {String(activeSlide + 1).padStart(2, '0')}
+            </span>
+
+            <span className="aev-hero-counter-line">
+              <span style={{ width: `${((activeSlide + 1) / HERO_SLIDES.length) * 100}%` }} />
+            </span>
+
+            <span>{String(HERO_SLIDES.length).padStart(2, '0')}</span>
+          </div>
+
+          <div
+            role="button"
+            tabIndex={0}
+            className="aev-hero-arrow"
+            onClick={() => changeSlide(1)}
+            onKeyDown={arrowKey(1)}
+            aria-label="Next image"
+          >
+            <span>→</span>
+          </div>
+
+        </div>
+      </div>
+
+      {/* Small number on image */}
+      <div className="aev-hero-index">
+        {String(activeSlide + 1).padStart(2, '0')}
+        <span>/</span>
+        {String(HERO_SLIDES.length).padStart(2, '0')}
+      </div>
+
+    </section>
+  );
+};
+
 const Home = () => {
+
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeSizeId, setActiveSizeId] = useState(null);
   
   const videoPinSecRef = useRef(null);
   const videoWrapperRef = useRef(null);
@@ -115,6 +465,7 @@ const Home = () => {
   const catStageRef = useRef(null);
 
   useEffect(() => {
+    let mm;
     let ctx = gsap.context(() => {
       // 1. Text Stagger Reveal Animation for SplitText
       const titles = gsap.utils.toArray('.split-text-container');
@@ -183,8 +534,8 @@ const Home = () => {
         // Initial scattered state
         shatterPieces.forEach((piece, i) => {
           gsap.set(piece, {
-            x: (Math.random() - 0.5) * 600,
-            y: (Math.random() - 0.5) * 600,
+            x: (Math.random() - 0.5) * Math.min(600, window.innerWidth * 0.6),
+            y: (Math.random() - 0.5) * Math.min(600, window.innerWidth * 0.6),
             rotation: (Math.random() - 0.5) * 90,
             scale: 0.3 + Math.random() * 0.5,
             opacity: 0
@@ -290,6 +641,17 @@ const Home = () => {
 
       // 6. Pinned Category Stage: card stays, text rises in, image changes (scrubbed)
       if (catStageRef.current) {
+       mm = gsap.matchMedia();
+       mm.add(
+        {
+          isDesktop: '(min-width: 1025px)',
+          isTablet: '(min-width: 769px) and (max-width: 1024px)',
+          isPhone: '(max-width: 768px)'
+        },
+        (mmCtx) => {
+        const { isPhone, isTablet } = mmCtx.conditions;
+        // scroll distance per slide: shorter on touch devices so it never feels endless
+        const perSlide = isPhone ? 0.7 : isTablet ? 0.8 : 0.9;
         const stage = catStageRef.current;
         const card = stage.querySelector('.cs-card');
         const layers = gsap.utils.toArray('.cs-layer', stage);
@@ -309,7 +671,7 @@ const Home = () => {
             gsap.set(l.querySelector('img'), { scale: 1.25 });
           }
         });
-        gsap.set(card, { backgroundColor: CATEGORY_SLIDES[0].bg });
+        // gsap.set(card, { backgroundColor: CATEGORY_SLIDES[0].bg });
         dots.forEach((d, i) => gsap.set(d, { width: i === 0 ? 30 : 8, opacity: i === 0 ? 1 : 0.35 }));
 
         const STEP = 2;      // timeline length per slide (hold + transition)
@@ -318,10 +680,11 @@ const Home = () => {
           scrollTrigger: {
             trigger: stage,
             start: 'top top',
-            end: () => '+=' + window.innerHeight * 0.9 * (count - 1) + window.innerHeight * 0.4,
+            end: () => '+=' + (window.innerHeight * perSlide * (count - 1) + window.innerHeight * 0.4),
             pin: true,
-            scrub: 1,               // smooth catch-up
+            scrub: isPhone ? 0.6 : 1,   // snappier follow on touch
             anticipatePin: 1,
+            refreshPriority: 1,         // measure this pin FIRST (it's above the other pins on the page)
             invalidateOnRefresh: true
           }
         });
@@ -345,13 +708,15 @@ const Home = () => {
           tl.to(layers[i - 1].querySelector('img'), { scale: 1.08, duration: 1.3 }, T);
 
           // card colour + progress dots
-          tl.to(card, { backgroundColor: CATEGORY_SLIDES[i].bg, duration: 1.2 }, T);
+          // tl.to(card, { backgroundColor: CATEGORY_SLIDES[i].bg, duration: 1.2 }, T);
           tl.to(dots[i - 1], { width: 8, opacity: 0.35, duration: 0.5 }, T + 0.4);
           tl.to(dots[i], { width: 30, opacity: 1, duration: 0.5 }, T + 0.4);
 
           tl.to({}, { duration: 0.01 }, T + STEP - 0.01); // keep spacing for next hold
         }
         tl.to({}, { duration: 0.3 }); // short hold on last slide before un-pinning
+        }
+       );
       }
 
       // 7. Pronounced Global Text Reveal on Scroll
@@ -362,7 +727,7 @@ const Home = () => {
 
         gsap.fromTo(el,
           { 
-            y: 100, 
+            y: window.innerWidth < 768 ? 50 : 100, 
             opacity: 0
           },
           {
@@ -389,6 +754,7 @@ const Home = () => {
 
     return () => {
       clearTimeout(timeout);
+      if (mm) mm.revert();
       ctx.revert(); // cleanup GSAP!
     };
   }, []);
@@ -417,37 +783,7 @@ const Home = () => {
     <div className="home-page">
       
       {/* Hero Section */}
-      {/* Hero Section */}
-      <section className="hero cinematic-hero">
-        
-        {/* Background Video */}
-        <div className="hero-bg-video">
-          <video autoPlay muted loop playsInline>
-            <source src="/video/reel1.mp4" type="video/mp4" />
-          </video>
-          <div className="hero-overlay"></div>
-        </div>
-
-        <div className="hero-title-wrap" style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', zIndex: 2, position: 'relative' }}>
-          
-          {/* Explicit Kicker */}
-          <div className="hero-kicker" style={{ fontSize: '0.9rem', letterSpacing: '4px', textTransform: 'uppercase', marginBottom: '2rem', color: '#F9F8F6', fontWeight: '600' }}>
-             Luxury Italian Porcelain Slabs & Natural Stone
-          </div>
-
-          <button className="hero-cta-btn" data-cursor-hover>
-            EXPLORE COLLECTION
-          </button>
-        </div>
-
-        {/* Scroll Indicator */}
-        <div className="scroll-indicator">
-          <div className="mouse">
-            <div className="wheel"></div>
-          </div>
-          <span>SCROLL</span>
-        </div>
-      </section>
+      <HeroImageSlider />
 
 
       {/* Brand Legacy Section */}
@@ -640,7 +976,7 @@ const Home = () => {
         className="sizes-carousel-section"
         style={{
           padding: '4rem 4%',
-          background: '#F2F0E9',
+          background: '#1c1c1a',
           width: '100%',
           boxSizing: 'border-box',
         }}
@@ -787,7 +1123,14 @@ const Home = () => {
                 'A compact square format for versatile layouts and distinctive surfaces.',
             },
           ].map((item) => (
-            <SizePanel key={item.id} item={item} />
+            <SizePanel
+              key={item.id}
+              item={item}
+              isActive={activeSizeId === item.id}
+              onActivate={(id) => setActiveSizeId(id)}
+              onDeactivate={(id) => setActiveSizeId((cur) => (cur === id ? null : cur))}
+              onToggle={(id) => setActiveSizeId((cur) => (cur === id ? null : id))}
+            />
           ))}
         </div>
       </section>
@@ -823,6 +1166,9 @@ const Home = () => {
           ))}
         </div>
       </section>
+
+      {/* Inspiration Section (cursor-follow preview) */}
+      <InspirationSection />
 
       {/* Elegant Separator Line */}
       <div style={{ width: '100%', padding: '4rem 0' }}>
