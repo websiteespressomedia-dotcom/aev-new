@@ -444,6 +444,299 @@ const HeroImageSlider = () => {
   );
 };
 
+/* ---------- About / Heritage section ----------
+   Arch-shaped image that opens on scroll, a gold outline that draws itself,
+   heading that fills word by word, counting facts, and a floating inset image.
+   Edit the words / numbers / images below. */
+const ABOUT_HEADING = [
+  [{ t: 'Elevating' }, { t: 'spaces' }, { t: 'with' }],
+  [{ t: 'uncompromising' }],
+  [{ t: 'Italian', gold: true }, { t: 'excellence.', gold: true }]
+];
+
+const ABOUT_FACTS = [
+  { value: 25, suffix: '+', label: 'Years of craftsmanship' },
+  { value: 40, suffix: '+', label: 'Countries served' },
+  { value: 3200, suffix: 'mm', label: 'Largest slab length' }
+];
+
+const ABOUT_IMAGES = {
+  main: '/luxury_tile_craftsmanship.jpg',
+  inset: '/marble_texture.jpg'
+};
+
+const AboutHeritage = () => {
+  const rootRef = useRef(null);
+
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return undefined;
+
+    const q = (sel) => gsap.utils.toArray(sel, root);
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const ctx = gsap.context(() => {
+      const ARCH_CLOSED = 'inset(0% 34% 0% 34% round 999px 999px 0px 0px)';
+      const ARCH_OPEN = 'inset(0% 0% 0% 0% round 999px 999px 0px 0px)';
+      const visual = q('.ah-visual')[0];
+      const arch = q('.ah-arch')[0];
+      const archImg = q('.ah-arch-img')[0];
+      const outline = q('.ah-outline-path')[0];
+      const inset = q('.ah-inset')[0];
+      const insetImg = q('.ah-inset img')[0];
+      const badge = q('.ah-badge')[0];
+      const words = q('.ah-word');
+      const facts = q('.ah-fact');
+      const eyebrowLine = q('.ah-eyebrow-line')[0];
+      const eyebrowText = q('.ah-eyebrow-text')[0];
+      const para = q('.ah-para')[0];
+      const cta = q('.ah-cta')[0];
+      const ghost = q('.ah-ghost')[0];
+
+      /* ---------- reduced motion: show everything, no scroll effects ---------- */
+      if (reduce) {
+        gsap.set(arch, { clipPath: ARCH_OPEN });
+        gsap.set(outline, { strokeDasharray: 1, strokeDashoffset: 0 });
+        gsap.set(inset, { clipPath: 'inset(0% 0% 0% 0%)' });
+        words.forEach((w) => gsap.set(w, { color: w.dataset.fill }));
+        facts.forEach((f) => {
+          f.querySelector('.ah-count').textContent = f.dataset.value;
+          gsap.set(f.querySelector('.ah-fact-label'), { opacity: 1 });
+        });
+        return;
+      }
+
+      /* ---------- 1. arch image opens as you scroll (scrubbed) ---------- */
+      gsap.set(arch, { clipPath: ARCH_CLOSED });
+      gsap.set(archImg, { scale: 1.35 });
+      gsap.set(outline, { strokeDasharray: 1, strokeDashoffset: 1 });
+
+      gsap
+        .timeline({
+          defaults: { ease: 'none' },
+          scrollTrigger: { trigger: visual, start: 'top 85%', end: 'top 20%', scrub: 1 }
+        })
+        .to(arch, { clipPath: ARCH_OPEN, duration: 1, ease: 'power2.inOut' }, 0)
+        .to(archImg, { scale: 1, duration: 1 }, 0)
+        .to(outline, { strokeDashoffset: 0, duration: 0.9 }, 0.25);
+
+      // slow parallax inside the arch while the section passes
+      gsap.fromTo(
+        archImg,
+        { yPercent: -5 },
+        {
+          yPercent: 5,
+          ease: 'none',
+          scrollTrigger: { trigger: visual, start: 'top bottom', end: 'bottom top', scrub: true }
+        }
+      );
+
+      /* ---------- 2. small inset image: wipes up + drifts at a different speed ---------- */
+      gsap.set(inset, { clipPath: 'inset(100% 0% 0% 0%)' });
+      gsap.set(insetImg, { scale: 1.3 });
+      gsap
+        .timeline({ scrollTrigger: { trigger: visual, start: 'top 55%', once: true } })
+        .to(inset, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.4, ease: 'power3.inOut' }, 0)
+        .to(insetImg, { scale: 1, duration: 1.8, ease: 'power3.out' }, 0);
+
+      gsap.fromTo(
+        inset,
+        { y: 70 },
+        {
+          y: -60,
+          ease: 'none',
+          scrollTrigger: { trigger: visual, start: 'top bottom', end: 'bottom top', scrub: true }
+        }
+      );
+
+      /* ---------- 3. rotating badge pops in ---------- */
+      gsap.from(badge, {
+        scale: 0,
+        rotation: -120,
+        duration: 1.3,
+        ease: 'back.out(1.6)',
+        scrollTrigger: { trigger: visual, start: 'top 55%', once: true }
+      });
+
+      /* ---------- 4. eyebrow: line draws, text wipes in ---------- */
+      gsap.set(eyebrowLine, { scaleX: 0, transformOrigin: 'left center' });
+      gsap.set(eyebrowText, { clipPath: 'inset(0% 100% 0% 0%)' });
+      gsap
+        .timeline({ scrollTrigger: { trigger: eyebrowLine, start: 'top 92%', once: true } })
+        .to(eyebrowLine, { scaleX: 1, duration: 1.1, ease: 'power3.inOut' }, 0)
+        .to(eyebrowText, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.1, ease: 'power3.inOut' }, 0.25);
+
+      /* ---------- 5. heading fills word by word with scroll ---------- */
+      gsap.to(words, {
+        color: (i, el) => el.dataset.fill,
+        stagger: 0.5,
+        ease: 'none',
+        scrollTrigger: { trigger: q('.ah-title')[0], start: 'top 82%', end: 'bottom 48%', scrub: true }
+      });
+
+      /* ---------- 6. paragraph comes into focus (blur -> sharp) ---------- */
+      gsap.fromTo(
+        para,
+        { opacity: 0, filter: 'blur(10px)' },
+        {
+          opacity: 1,
+          filter: 'blur(0px)',
+          duration: 1.6,
+          ease: 'power2.out',
+          scrollTrigger: { trigger: para, start: 'top 90%', once: true }
+        }
+      );
+
+      /* ---------- 7. facts: gold line draws + numbers count up ---------- */
+      facts.forEach((f, i) => {
+        const line = f.querySelector('.ah-fact-line');
+        const num = f.querySelector('.ah-count');
+        const label = f.querySelector('.ah-fact-label');
+        const counter = { v: 0 };
+        gsap.set(line, { scaleX: 0, transformOrigin: 'left center' });
+        gsap.set(label, { opacity: 0 });
+
+        gsap
+          .timeline({ delay: i * 0.18, scrollTrigger: { trigger: f, start: 'top 94%', once: true } })
+          .to(line, { scaleX: 1, duration: 1.1, ease: 'power3.inOut' }, 0)
+          .to(
+            counter,
+            {
+              v: Number(f.dataset.value),
+              duration: 2.2,
+              ease: 'power3.out',
+              onUpdate: () => { num.textContent = Math.round(counter.v); }
+            },
+            0.1
+          )
+          .to(label, { opacity: 1, duration: 0.9, ease: 'power2.out' }, 0.5);
+      });
+
+      /* ---------- 8. button opens from the centre ---------- */
+      gsap.fromTo(
+        cta,
+        { clipPath: 'inset(0% 50% 0% 50% round 50px)' },
+        {
+          clipPath: 'inset(0% 0% 0% 0% round 50px)',
+          duration: 1.2,
+          ease: 'power3.inOut',
+          scrollTrigger: { trigger: cta, start: 'top 94%', once: true }
+        }
+      );
+
+      /* ---------- 9. big ghost word drifts sideways ---------- */
+      gsap.fromTo(
+        ghost,
+        { xPercent: -6 },
+        {
+          xPercent: 6,
+          ease: 'none',
+          scrollTrigger: { trigger: root, start: 'top bottom', end: 'bottom top', scrub: true }
+        }
+      );
+    }, root);
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <section className="ah-section" ref={rootRef}>
+      <div className="ah-ghost" aria-hidden="true">Heritage</div>
+
+      <div className="ah-grid">
+        {/* ---------- Left: arch image composition ---------- */}
+        <div className="ah-visual">
+          {/* gold outline that draws itself (offset behind the arch) */}
+          <div className="ah-outline" aria-hidden="true">
+            <svg viewBox="0 0 400 500" fill="none" preserveAspectRatio="none">
+              <path
+                className="ah-outline-path"
+                pathLength="1"
+                d="M2 498 V200 A198 198 0 0 1 398 200 V498"
+                stroke="#C1A673"
+                strokeWidth="1.2"
+              />
+            </svg>
+          </div>
+
+          <div className="ah-arch">
+            <img className="ah-arch-img" src={ABOUT_IMAGES.main} alt="Gold-veined Italian marble surface" />
+          </div>
+
+          <div className="ah-inset">
+            <img src={ABOUT_IMAGES.inset} alt="White marble detail" />
+          </div>
+
+          {/* rotating text badge */}
+          <div className="ah-badge" aria-hidden="true">
+            <div className="ah-badge-ring">
+              <svg viewBox="0 0 120 120">
+                <defs>
+                  <path id="ahBadgePath" d="M60,60 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0" />
+                </defs>
+                <text>
+                  <textPath href="#ahBadgePath" startOffset="0">
+                    ITALIAN CRAFTSMANSHIP • TIMELESS SURFACES •
+                  </textPath>
+                </text>
+              </svg>
+            </div>
+            <span className="ah-badge-star">✦</span>
+          </div>
+        </div>
+
+        {/* ---------- Right: typography ---------- */}
+        <div className="ah-copy">
+          <div className="ah-eyebrow">
+            <span className="ah-eyebrow-line" />
+            <span className="ah-eyebrow-text">Our Heritage</span>
+          </div>
+
+          <h2 className="ah-title">
+            {ABOUT_HEADING.map((line, li) => (
+              <span className="ah-line" key={li}>
+                {line.map((w) => (
+                  <span
+                    className="ah-word"
+                    key={w.t}
+                    data-fill={w.gold ? '#C1A673' : '#1a1a2e'}
+                  >
+                    {w.t}
+                  </span>
+                ))}
+              </span>
+            ))}
+          </h2>
+
+          <p className="ah-para">
+            For decades, Aevitas Ceramics has pioneered the art of large-format porcelain slabs.
+            By merging traditional craftsmanship with cutting-edge technology, we create surfaces
+            that redefine luxury architecture.
+          </p>
+
+          <div className="ah-facts">
+            {ABOUT_FACTS.map((f) => (
+              <div className="ah-fact" key={f.label} data-value={f.value}>
+                <span className="ah-fact-line" />
+                <div className="ah-fact-num">
+                  <span className="ah-count">0</span>
+                  <span className="ah-suffix">{f.suffix}</span>
+                </div>
+                <span className="ah-fact-label">{f.label}</span>
+              </div>
+            ))}
+          </div>
+
+          <button className="pill-btn ah-cta">
+            <span>Discover Our Story</span>
+            <span aria-hidden="true">→</span>
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const Home = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -527,37 +820,6 @@ const Home = () => {
           }
         });
       });
-
-      // 2. 9-Part Shatter Animation
-      const shatterPieces = gsap.utils.toArray('.shatter-piece');
-      if (shatterPieces.length > 0) {
-        // Initial scattered state
-        shatterPieces.forEach((piece, i) => {
-          gsap.set(piece, {
-            x: (Math.random() - 0.5) * Math.min(600, window.innerWidth * 0.6),
-            y: (Math.random() - 0.5) * Math.min(600, window.innerWidth * 0.6),
-            rotation: (Math.random() - 0.5) * 90,
-            scale: 0.3 + Math.random() * 0.5,
-            opacity: 0
-          });
-        });
-
-        // Assemble on scroll
-        gsap.to(shatterPieces, {
-          x: 0,
-          y: 0,
-          rotation: 0,
-          scale: 1,
-          opacity: 1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: ".shatter-wrap",
-            start: "top 85%",
-            end: "center 45%",
-            scrub: 1.5
-          }
-        });
-      }
 
       // 2.5 Horizontal Wipe for Category Hero Section (Standard Entry Animation)
       if (categoryHeroRef.current) {
@@ -723,7 +985,7 @@ const Home = () => {
       const textElements = gsap.utils.toArray("p:not(.hero-desc):not(.cat-split-desc):not(.process-desc), h2:not(:has(.split-text-container)):not(.hero-large-text):not(.cat-split-title), h3:not(.process-head), h4, .diagram-text > div, form > div, .submit-btn, .material-item h3");
       
       textElements.forEach(el => {
-        if (el.closest('.horizontal-section') || el.closest('.collection-section') || el.closest('.sizes-carousel-section') || el.closest('.stats-grid-wrapper') || el.closest('.cs-card')) return;
+        if (el.closest('.horizontal-section') || el.closest('.collection-section') || el.closest('.sizes-carousel-section') || el.closest('.stats-grid-wrapper') || el.closest('.cs-card') || el.closest('.ah-section')) return;
 
         gsap.fromTo(el,
           { 
@@ -786,42 +1048,8 @@ const Home = () => {
       <HeroImageSlider />
 
 
-      {/* Brand Legacy Section */}
-      <section className="brand-legacy-section" style={{ padding: '15rem 4% 8rem 4%', background: '#F2F0E9', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '4rem', minHeight: '80vh' }}>
-        
-        {/* Left: Shattered Image */}
-        <div className="legacy-image-wrap shatter-wrap" style={{ flex: '1', height: '600px', borderRadius: '4px' }}>
-          <div className="shatter-container">
-            <div className="shatter-piece piece-0-0"></div>
-            <div className="shatter-piece piece-0-1"></div>
-            <div className="shatter-piece piece-0-2"></div>
-            <div className="shatter-piece piece-1-0"></div>
-            <div className="shatter-piece piece-1-1"></div>
-            <div className="shatter-piece piece-1-2"></div>
-            <div className="shatter-piece piece-2-0"></div>
-            <div className="shatter-piece piece-2-1"></div>
-            <div className="shatter-piece piece-2-2"></div>
-          </div>
-        </div>
-
-        {/* Right: Typography */}
-        <div className="legacy-text-wrap" style={{ flex: '1', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-          <div className="animate-fade-up" style={{ fontSize: '0.8rem', letterSpacing: '3px', textTransform: 'uppercase', color: '#C1A673', marginBottom: '2rem' }}>
-            Our Heritage
-          </div>
-          <h2 className="animate-fade-up" style={{ fontSize: 'clamp(2.5rem, 4vw, 4rem)', fontFamily: "'Times New Roman', serif", fontWeight: '300', color: '#1a1a2e', lineHeight: '1.2', marginBottom: '2rem' }}>
-            Elevating spaces with <br/>uncompromising <br/>Italian excellence.
-          </h2>
-          <p className="animate-fade-up" style={{ fontSize: '1.1rem', color: '#1a1a2e', opacity: '0.8', lineHeight: '1.8', maxWidth: '500px', marginBottom: '3rem' }}>
-            For decades, Aevitas Ceramics has pioneered the art of large-format porcelain slabs. By merging traditional craftsmanship with cutting-edge technology, we create surfaces that redefine luxury architecture.
-          </p>
-          <div className="animate-fade-up">
-            <button className="pill-btn" style={{ background: '#1a1a2e', color: '#F9F8F6', padding: '1rem 2.5rem', border: 'none', borderRadius: '50px', letterSpacing: '2px', fontSize: '0.8rem', textTransform: 'uppercase', cursor: 'pointer' }}>
-              DISCOVER OUR STORY
-            </button>
-          </div>
-        </div>
-      </section>
+      {/* About / Heritage Section */}
+      <AboutHeritage />
 
       {/* Elegant Separator Line */}
       <div style={{ width: '100%', backgroundColor: '#F2F0E9' }}>

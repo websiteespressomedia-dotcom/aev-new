@@ -2922,3 +2922,301 @@
   .aev-hero-counter-line { width: 36px; }
   .aev-hero-index { right: 6%; bottom: calc(42% + 0.8rem); }
 }
+
+/* =========================================================
+   ABOUT / HERITAGE  (arch image, word-fill heading, counting facts)
+   ========================================================= */
+
+.ah-section {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 11rem 4% 9rem;
+  background: #F2F0E9;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* big outlined word in the background that drifts sideways */
+.ah-ghost {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.14em;
+  z-index: -1;
+  text-align: center;
+  font-family: "Times New Roman", Times, serif;
+  font-size: clamp(7rem, 21vw, 22rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(26, 26, 46, 0.08);
+  pointer-events: none;
+  user-select: none;
+}
+
+.ah-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(3.5rem, 7vw, 8rem);
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+/* ---- left: image composition (fixed 4:5 so the SVG outline always matches) ---- */
+.ah-visual {
+  position: relative;
+  width: min(100%, 560px);
+  aspect-ratio: 4 / 5;
+  justify-self: center;
+}
+
+.ah-outline {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  transform: translate(20px, 20px);
+  pointer-events: none;
+}
+
+.ah-outline svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.ah-arch {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  background: #d9d3c4;
+  will-change: clip-path;
+}
+
+.ah-arch-img {
+  position: absolute;
+  top: -8%;
+  left: 0;
+  width: 100%;
+  height: 116%;
+  object-fit: cover;
+  display: block;
+  will-change: transform;
+}
+
+.ah-inset {
+  position: absolute;
+  right: -10%;
+  bottom: -7%;
+  z-index: 3;
+  width: 44%;
+  aspect-ratio: 3 / 4;
+  box-sizing: border-box;
+  border: 6px solid #F2F0E9;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 30px 60px rgba(26, 26, 46, 0.22);
+  will-change: transform, clip-path;
+}
+
+.ah-inset img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ---- rotating badge ---- */
+.ah-badge {
+  position: absolute;
+  top: -30px;
+  right: -30px;
+  z-index: 4;
+  width: 118px;
+  height: 118px;
+  border-radius: 50%;
+  background: #F2F0E9;
+  box-shadow: 0 10px 30px rgba(26, 26, 46, 0.12);
+  display: grid;
+  place-items: center;
+}
+
+.ah-badge-ring {
+  position: absolute;
+  inset: 0;
+  animation: ah-spin 22s linear infinite;
+}
+
+.ah-badge-ring svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.ah-badge-ring text {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 9.2px;
+  letter-spacing: 2.1px;
+  fill: #C1A673;
+}
+
+.ah-badge-star {
+  position: relative;
+  font-size: 1.1rem;
+  color: #C1A673;
+}
+
+@keyframes ah-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ---- right: copy ---- */
+.ah-copy {
+  max-width: 600px;
+}
+
+.ah-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ah-eyebrow-line {
+  display: block;
+  width: 56px;
+  height: 1px;
+  background: #C1A673;
+}
+
+.ah-eyebrow-text {
+  display: block;
+  font-size: 0.8rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #C1A673;
+}
+
+.ah-title {
+  margin: 1.75rem 0 2rem;
+  font-family: "Times New Roman", Times, serif;
+  font-size: clamp(2.5rem, 3.9vw, 4rem);
+  font-weight: 300;
+  line-height: 1.15;
+  text-transform: none;
+}
+
+.ah-line { display: block; }
+
+.ah-word {
+  display: inline-block;
+  margin-right: 0.26em;
+  color: rgba(26, 26, 46, 0.14);   /* filled to its data-fill colour while scrolling */
+}
+
+.ah-para {
+  max-width: 500px;
+  margin: 0 0 2.75rem;
+  font-size: 1.05rem;
+  line-height: 1.85;
+  color: rgba(26, 26, 46, 0.8);
+}
+
+/* ---- facts ---- */
+.ah-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2rem;
+  max-width: 540px;
+  margin: 0 0 3rem;
+}
+
+.ah-fact-line {
+  display: block;
+  height: 1px;
+  margin-bottom: 1rem;
+  background: #C1A673;
+}
+
+.ah-fact-num {
+  font-family: "Times New Roman", Times, serif;
+  font-size: clamp(2rem, 2.8vw, 2.8rem);
+  line-height: 1;
+  color: #1a1a2e;
+}
+
+.ah-suffix {
+  margin-left: 0.12em;
+  font-size: 0.5em;
+  color: #C1A673;
+}
+
+.ah-fact-label {
+  display: block;
+  margin-top: 0.6rem;
+  font-size: 0.7rem;
+  letter-spacing: 1.5px;
+  line-height: 1.5;
+  text-transform: uppercase;
+  color: rgba(26, 26, 46, 0.65);
+}
+
+/* ---- button ---- */
+.ah-cta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 1rem 2.5rem;
+  border: 0;
+  border-radius: 50px;
+  overflow: hidden;
+  background: #1a1a2e;
+  color: #F9F8F6;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.45s ease;
+}
+
+.ah-cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #C1A673;
+  transform: translateY(101%);
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ah-cta > span {
+  position: relative;
+  z-index: 1;
+}
+
+.ah-cta:hover { color: #1a1a2e; }
+.ah-cta:hover::before { transform: translateY(0); }
+
+/* ---- tablet / phone ---- */
+@media (max-width: 900px) {
+  .ah-section { padding: 7rem 6% 6rem; }
+
+  .ah-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4.5rem;
+  }
+
+  .ah-visual { width: min(84%, 420px); }
+  .ah-inset { right: -8%; }
+  .ah-badge { top: -22px; right: -16px; width: 92px; height: 92px; }
+  .ah-badge-ring text { font-size: 9.6px; }
+
+  .ah-copy { max-width: none; }
+  .ah-facts { gap: 1rem; }
+  .ah-fact-label { font-size: 0.62rem; letter-spacing: 1px; }
+  .ah-ghost { font-size: 28vw; }
+}
