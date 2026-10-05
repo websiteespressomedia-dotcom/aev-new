@@ -466,7 +466,7 @@ const ABOUT_TEXT = {
 
 const ABOUT_IMAGES = {
   main: '/luxury_tile_craftsmanship.jpg',   // band + full-screen view
-  final: '/marble_texture.jpg'              // image inside the final frame
+  final: '/floor_preview.jpg'              // image inside the final frame
 };
 
 const AboutHeritage = () => {
