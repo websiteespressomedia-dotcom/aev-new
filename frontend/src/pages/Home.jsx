@@ -37,9 +37,9 @@ const SizePanel = ({ item, isActive, onActivate, onDeactivate, onToggle }) => {
       tabIndex={0}
       aria-label={`${item.size} ${item.type}`}
     >
-      <div className="size-panel-image"  />
+      <div className="size-panel-image" />
 
-      <div className="size-panel-overlay"  />
+      <div className="size-panel-overlay" />
 
       <div className="size-panel-vertical">
         <span className="size-panel-vertical-size">
@@ -213,12 +213,12 @@ const InspirationSection = () => {
    ========================================================= */
 
 const HERO_SLIDES = [
-  { id: 'villa',       image: '/terrace_preview.jpg',    alt: 'Villa terrace with porcelain flooring' },
+  { id: 'villa', image: '/terrace_preview.jpg', alt: 'Villa terrace with porcelain flooring' },
   { id: 'residential', image: '/residential_preview.png', alt: 'Residential living space' },
-  { id: 'office',      image: '/office_preview.png',      alt: 'Office interior with large-format surfaces' },
-  { id: 'commercial',  image: '/commercial_preview.png',  alt: 'Commercial space with porcelain surfaces' },
-  { id: 'hotel',       image: '/kitchen_preview.png',     alt: 'Kitchen with premium porcelain finishes' },
-  { id: 'porcelain',   image: '/floor_preview.jpg',       alt: 'Contemporary floor in porcelain' }
+  { id: 'office', image: '/office_preview.png', alt: 'Office interior with large-format surfaces' },
+  { id: 'commercial', image: '/commercial_preview.png', alt: 'Commercial space with porcelain surfaces' },
+  { id: 'hotel', image: '/kitchen_preview.png', alt: 'Kitchen with premium porcelain finishes' },
+  { id: 'porcelain', image: '/floor_preview.jpg', alt: 'Contemporary floor in porcelain' }
 ];
 
 const HERO_SLICE_COUNT = 7;
@@ -644,22 +644,182 @@ const AboutHeritage = () => {
   );
 };
 
+/* =========================================================
+   AEVITAS COLLECTIONS — VERTICAL TAB EXPERIENCE
+   ========================================================= */
+
+const COLLECTION_ITEMS = [
+  {
+    id: 'floor',
+    number: '01',
+    title: 'Floor Tiles',
+    description: 'Crafted for strength, designed for spaces that inspire.',
+    image: '/floor_preview.jpg',
+  },
+  {
+    id: 'wall',
+    number: '02',
+    title: 'Wall Tiles',
+    description: 'Refined surfaces that bring depth, character and balance to every wall.',
+    image: '/wall_preview.jpg',
+  },
+  {
+    id: 'terrace',
+    number: '03',
+    title: 'Terrace Tiles',
+    description: 'Durable outdoor surfaces designed to connect architecture with nature.',
+    image: '/terrace_preview.jpg',
+  },
+  {
+    id: 'kitchen',
+    number: '04',
+    title: 'Kitchen Tiles',
+    description: 'Beautiful, hygienic surfaces made for the rhythm of contemporary kitchens.',
+    image: '/kitchen_bg.jpg',
+  },
+  {
+    id: 'bathroom',
+    number: '05',
+    title: 'Bathroom Tiles',
+    description: 'Quiet luxury and lasting performance for spaces of everyday retreat.',
+    image: '/bathroom_preview.jpg',
+  },
+  {
+    id: 'parking',
+    number: '06',
+    title: 'Parking Tiles',
+    description: 'Engineered for demanding spaces without compromising visual appeal.',
+    image: '/parking_preview.png',
+  },
+];
+
+const CollectionsSection = () => {
+  const [active, setActive] = useState(0);
+  const timerRef = useRef(null);
+
+  const startAutoPlay = () => {
+    clearInterval(timerRef.current);
+
+    timerRef.current = setInterval(() => {
+      setActive((current) => (current + 1) % COLLECTION_ITEMS.length);
+    }, 5000);
+  };
+
+  useEffect(() => {
+    startAutoPlay();
+
+    return () => clearInterval(timerRef.current);
+  }, []);
+
+  const handleInteraction = (index) => {
+    setActive(index);
+    startAutoPlay();
+  };
+
+  const current = COLLECTION_ITEMS[active];
+  const progress = `${(active / (COLLECTION_ITEMS.length - 1)) * 100}%`;
+
+  return (
+    <section className="collection-section" data-cursor-simple="true">
+      <div className="collection-inner">
+
+        <div className="collection-heading">
+          <h2>Surfaces designed for every space.</h2>
+        </div>
+        
+        <div className="sizes-divider" />
+
+        <div className="collection-experience">
+
+          {/* LEFT — REFERENCE-STYLE VERTICAL NAVIGATION */}
+          <div className="collection-tabs" aria-label="Collections">
+            <div className="collection-tab-line" aria-hidden="true">
+              <span
+                className="collection-tab-progress"
+                style={{ height: progress }}
+              />
+            </div>
+
+            {COLLECTION_ITEMS.map((item, index) => (
+              <button
+                key={item.id}
+                type="button"
+                className={`collection-tab ${active === index ? 'is-active' : ''}`}
+                onMouseEnter={() => handleInteraction(index)}
+                onFocus={() => handleInteraction(index)}
+                onClick={() => handleInteraction(index)}
+                aria-current={active === index ? 'true' : undefined}
+              >
+                <span className="collection-tab-number">{item.number}</span>
+                <span className="collection-tab-title">{item.title}</span>
+                <span className="collection-tab-active-mark" aria-hidden="true" />
+              </button>
+            ))}
+          </div>
+
+          {/* RIGHT — FEATURE IMAGE */}
+          <div className="collection-feature">
+            <div className="collection-image-wrap">
+              {COLLECTION_ITEMS.map((item, index) => (
+                <img
+                  key={item.id}
+                  src={item.image}
+                  alt={item.title}
+                  className={`collection-feature-image ${active === index ? 'is-active' : ''}`}
+                />
+              ))}
+
+              <div className="collection-image-shade" />
+
+              <div className="collection-feature-content" key={current.id}>
+                <span className="collection-feature-number">
+                  {current.number} / {String(COLLECTION_ITEMS.length).padStart(2, '0')}
+                </span>
+
+                <h3>{current.title}</h3>
+                <p>{current.description}</p>
+
+                <a href="/collections" className="collection-explore">
+                  <span>Explore Collection</span>
+                  <span className="collection-explore-arrow" aria-hidden="true">↗</span>
+                </a>
+              </div>
+
+              <div className="collection-progress">
+                <span>{current.number}</span>
+                <div className="collection-progress-track">
+                  <div
+                    className="collection-progress-fill"
+                    style={{ width: `${((active + 1) / COLLECTION_ITEMS.length) * 100}%` }}
+                  />
+                </div>
+                <span>{String(COLLECTION_ITEMS.length).padStart(2, '0')}</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const Home = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeSizeId, setActiveSizeId] = useState(null);
-  
+
   const videoPinSecRef = useRef(null);
   const videoWrapperRef = useRef(null);
   const modalVideoRef = useRef(null);
-  
+
+  //   const processPinRef = useRef(null);
+  // const processSliderRef = useRef(null);
+
   const historySectionRef = useRef(null);
   const historySliderRef = useRef(null);
   const teamSliderRef = useRef(null);
-  const processPinRef = useRef(null);
-  const processSliderRef = useRef(null);
-  // const sizesSectionRef = useRef(null);
-  // const sizesSliderRef = useRef(null);
+
   const wipeContainerRef = useRef(null);
   const categoryHeroRef = useRef(null);
   const catStageRef = useRef(null);
@@ -672,7 +832,7 @@ const Home = () => {
       titles.forEach(title => {
         const words = title.querySelectorAll('.animated-word');
         if (words.length === 0) return;
-        
+
         gsap.to(words, {
           scrollTrigger: {
             trigger: title,
@@ -699,9 +859,9 @@ const Home = () => {
           delay: 0.2
         });
       }
-      
+
       // Animate kicker, CTA, and scroll indicator
-      gsap.fromTo(['.hero-kicker', '.hero-cta-btn', '.scroll-indicator'], 
+      gsap.fromTo(['.hero-kicker', '.hero-cta-btn', '.scroll-indicator'],
         { y: 30, opacity: 0 },
         {
           y: 0,
@@ -761,7 +921,7 @@ const Home = () => {
 
       // 2.5 Horizontal Wipe for Category Hero Section (Standard Entry Animation)
       if (categoryHeroRef.current) {
-        gsap.fromTo(categoryHeroRef.current, 
+        gsap.fromTo(categoryHeroRef.current,
           { xPercent: 100 },
           {
             xPercent: 0,
@@ -777,20 +937,20 @@ const Home = () => {
       }
 
       // 3. Horizontal Scroll for Collection Process Section
-      if (processSliderRef.current && processPinRef.current) {
-        gsap.to(processSliderRef.current, {
-          x: () => -(processSliderRef.current.scrollWidth - window.innerWidth + 150),
-          ease: "none",
-          scrollTrigger: {
-            trigger: processPinRef.current,
-            pin: true,
-            start: "center center",
-            end: () => "+=" + processSliderRef.current.scrollWidth,
-            scrub: 1,
-            invalidateOnRefresh: true
-          }
-        });
-      }
+      // if (processSliderRef.current && processPinRef.current) {
+      //   gsap.to(processSliderRef.current, {
+      //     x: () => -(processSliderRef.current.scrollWidth - window.innerWidth + 150),
+      //     ease: "none",
+      //     scrollTrigger: {
+      //       trigger: processPinRef.current,
+      //       pin: true,
+      //       start: "center center",
+      //       end: () => "+=" + processSliderRef.current.scrollWidth,
+      //       scrub: 1,
+      //       invalidateOnRefresh: true
+      //     }
+      //   });
+      // }
 
       // 3.5 Sizes Carousel Pinned Horizontal Scroll (Moved for DOM order)
       // if (sizesSectionRef.current && sizesSliderRef.current) {
@@ -809,7 +969,7 @@ const Home = () => {
       // }
 
       // 4. Staggered Scroll Animation for Stats Cards
-      gsap.fromTo(".stat-info-card", 
+      gsap.fromTo(".stat-info-card",
         { y: 50, opacity: 0 },
         {
           y: 0,
@@ -841,93 +1001,95 @@ const Home = () => {
 
       // 6. Pinned Category Stage: card stays, text rises in, image changes (scrubbed)
       if (catStageRef.current) {
-       mm = gsap.matchMedia();
-       mm.add(
-        {
-          isDesktop: '(min-width: 1025px)',
-          isTablet: '(min-width: 769px) and (max-width: 1024px)',
-          isPhone: '(max-width: 768px)'
-        },
-        (mmCtx) => {
-        const { isPhone, isTablet } = mmCtx.conditions;
-        // scroll distance per slide: shorter on touch devices so it never feels endless
-        const perSlide = isPhone ? 0.7 : isTablet ? 0.8 : 0.9;
-        const stage = catStageRef.current;
-        const card = stage.querySelector('.cs-card');
-        const layers = gsap.utils.toArray('.cs-layer', stage);
-        const slides = gsap.utils.toArray('.cs-slide', stage);
-        const dots = gsap.utils.toArray('.cs-dot', stage);
-        const count = slides.length;
-        const kids = (slide) => gsap.utils.toArray('.cs-item', slide);
+        mm = gsap.matchMedia();
+        mm.add(
+          {
+            isDesktop: '(min-width: 1025px)',
+            isTablet: '(min-width: 769px) and (max-width: 1024px)',
+            isPhone: '(max-width: 768px)'
+          },
+          (mmCtx) => {
+            const { isPhone, isTablet } = mmCtx.conditions;
+            // scroll distance per slide: shorter on touch devices so it never feels endless
+            const perSlide = isPhone ? 0.7 : isTablet ? 0.8 : 0.9;
+            const stage = catStageRef.current;
+            const card = stage.querySelector('.cs-card');
+            const layers = gsap.utils.toArray('.cs-layer', stage);
+            const slides = gsap.utils.toArray('.cs-slide', stage);
+            const dots = gsap.utils.toArray('.cs-dot', stage);
+            const count = slides.length;
+            const kids = (slide) => gsap.utils.toArray('.cs-item', slide);
 
-        // initial state: slide 0 visible, the rest waiting below
-        slides.forEach((s, i) => {
-          gsap.set(s, { autoAlpha: i === 0 ? 1 : 0 });
-          if (i > 0) gsap.set(kids(s), { y: 90, opacity: 0 });
-        });
-        layers.forEach((l, i) => {
-          if (i > 0) {
-            gsap.set(l, { clipPath: 'inset(100% 0% 0% 0%)' });
-            gsap.set(l.querySelector('img'), { scale: 1.25 });
+            // initial state: slide 0 visible, the rest waiting below
+            slides.forEach((s, i) => {
+              gsap.set(s, { autoAlpha: i === 0 ? 1 : 0 });
+              if (i > 0) gsap.set(kids(s), { y: 90, opacity: 0 });
+            });
+            layers.forEach((l, i) => {
+              if (i > 0) {
+                gsap.set(l, { clipPath: 'inset(100% 0% 0% 0%)' });
+                gsap.set(l.querySelector('img'), { scale: 1.25 });
+              }
+            });
+            // gsap.set(card, { backgroundColor: CATEGORY_SLIDES[0].bg });
+            dots.forEach((d, i) => gsap.set(d, { width: i === 0 ? 30 : 8, opacity: i === 0 ? 1 : 0.35 }));
+
+            const STEP = 2;      // timeline length per slide (hold + transition)
+            const tl = gsap.timeline({
+              defaults: { ease: 'none' },
+              scrollTrigger: {
+                trigger: stage,
+                start: 'top top',
+                end: () => '+=' + (window.innerHeight * perSlide * (count - 1) + window.innerHeight * 0.4),
+                pin: true,
+                scrub: isPhone ? 0.6 : 1,   // snappier follow on touch
+                anticipatePin: 1,
+                refreshPriority: 1,         // measure this pin FIRST (it's above the other pins on the page)
+                invalidateOnRefresh: true
+              }
+            });
+
+            tl.to({}, { duration: 0.3 }); // short hold on slide 1 before anything moves
+
+            for (let i = 1; i < count; i++) {
+              const T = 0.3 + (i - 1) * STEP;
+
+              // outgoing text slides up and fades
+              tl.to(kids(slides[i - 1]), { y: -90, opacity: 0, duration: 0.8, stagger: 0.06, ease: 'power2.in' }, T);
+              tl.fromTo(slides[i - 1], { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.01, immediateRender: false }, T + 1.1);
+
+              // incoming text rises from the bottom
+              tl.fromTo(slides[i], { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01, immediateRender: false }, T + 0.5);
+              tl.to(kids(slides[i]), { y: 0, opacity: 1, duration: 0.9, stagger: 0.08, ease: 'power2.out' }, T + 0.55);
+
+              // image: next one wipes up over the previous, with a slow zoom-out
+              tl.to(layers[i], { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.3, ease: 'power2.inOut' }, T);
+              tl.to(layers[i].querySelector('img'), { scale: 1, duration: 1.5, ease: 'power2.out' }, T);
+              tl.to(layers[i - 1].querySelector('img'), { scale: 1.08, duration: 1.3 }, T);
+
+              // card colour + progress dots
+              // tl.to(card, { backgroundColor: CATEGORY_SLIDES[i].bg, duration: 1.2 }, T);
+              tl.to(dots[i - 1], { width: 8, opacity: 0.35, duration: 0.5 }, T + 0.4);
+              tl.to(dots[i], { width: 30, opacity: 1, duration: 0.5 }, T + 0.4);
+
+              tl.to({}, { duration: 0.01 }, T + STEP - 0.01); // keep spacing for next hold
+            }
+            tl.to({}, { duration: 0.3 }); // short hold on last slide before un-pinning
           }
-        });
-        // gsap.set(card, { backgroundColor: CATEGORY_SLIDES[0].bg });
-        dots.forEach((d, i) => gsap.set(d, { width: i === 0 ? 30 : 8, opacity: i === 0 ? 1 : 0.35 }));
-
-        const STEP = 2;      // timeline length per slide (hold + transition)
-        const tl = gsap.timeline({
-          defaults: { ease: 'none' },
-          scrollTrigger: {
-            trigger: stage,
-            start: 'top top',
-            end: () => '+=' + (window.innerHeight * perSlide * (count - 1) + window.innerHeight * 0.4),
-            pin: true,
-            scrub: isPhone ? 0.6 : 1,   // snappier follow on touch
-            anticipatePin: 1,
-            refreshPriority: 1,         // measure this pin FIRST (it's above the other pins on the page)
-            invalidateOnRefresh: true
-          }
-        });
-
-        tl.to({}, { duration: 0.3 }); // short hold on slide 1 before anything moves
-
-        for (let i = 1; i < count; i++) {
-          const T = 0.3 + (i - 1) * STEP;
-
-          // outgoing text slides up and fades
-          tl.to(kids(slides[i - 1]), { y: -90, opacity: 0, duration: 0.8, stagger: 0.06, ease: 'power2.in' }, T);
-          tl.fromTo(slides[i - 1], { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.01, immediateRender: false }, T + 1.1);
-
-          // incoming text rises from the bottom
-          tl.fromTo(slides[i], { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01, immediateRender: false }, T + 0.5);
-          tl.to(kids(slides[i]), { y: 0, opacity: 1, duration: 0.9, stagger: 0.08, ease: 'power2.out' }, T + 0.55);
-
-          // image: next one wipes up over the previous, with a slow zoom-out
-          tl.to(layers[i], { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.3, ease: 'power2.inOut' }, T);
-          tl.to(layers[i].querySelector('img'), { scale: 1, duration: 1.5, ease: 'power2.out' }, T);
-          tl.to(layers[i - 1].querySelector('img'), { scale: 1.08, duration: 1.3 }, T);
-
-          // card colour + progress dots
-          // tl.to(card, { backgroundColor: CATEGORY_SLIDES[i].bg, duration: 1.2 }, T);
-          tl.to(dots[i - 1], { width: 8, opacity: 0.35, duration: 0.5 }, T + 0.4);
-          tl.to(dots[i], { width: 30, opacity: 1, duration: 0.5 }, T + 0.4);
-
-          tl.to({}, { duration: 0.01 }, T + STEP - 0.01); // keep spacing for next hold
-        }
-        tl.to({}, { duration: 0.3 }); // short hold on last slide before un-pinning
-        }
-       );
+        );
       }
 
       // 7. Pronounced Global Text Reveal on Scroll
-      const textElements = gsap.utils.toArray("p:not(.hero-desc):not(.cat-split-desc):not(.process-desc), h2:not(:has(.split-text-container)):not(.hero-large-text):not(.cat-split-title), h3:not(.process-head), h4, .diagram-text > div, form > div, .submit-btn, .material-item h3");
+      const textElements = gsap.utils.toArray(
+        "p:not(.hero-desc):not(.cat-split-desc):not(.process-desc), h2:not(:has(.split-text-container)):not(.hero-large-text):not(.cat-split-title), h3:not(.process-head), h4, .diagram-text > div, .material-item h3"
+      );
       
       textElements.forEach(el => {
         if (el.closest('.horizontal-section') || el.closest('.collection-section') || el.closest('.sizes-carousel-section') || el.closest('.stats-grid-wrapper') || el.closest('.cs-card') || el.closest('.ah-section')) return;
 
         gsap.fromTo(el,
-          { 
-            y: window.innerWidth < 768 ? 50 : 100, 
+          {
+            y: window.innerWidth < 768 ? 50 : 100,
             opacity: 0
           },
           {
@@ -981,7 +1143,7 @@ const Home = () => {
 
   return (
     <div className="home-page">
-      
+
       {/* Hero Section */}
       <HeroImageSlider />
 
@@ -1042,20 +1204,20 @@ const Home = () => {
       <section className="category-hero-section" ref={categoryHeroRef}>
         <div className="hero-bg" style={{ backgroundImage: 'url(/bathroom_preview.jpg)' }}></div>
         <div className="hero-overlay"></div>
-        
+
         <div className="hero-content">
           <div className="hero-glass-box">
             <h2 className="hero-large-text">
-              <SplitText text="EXPLORING OUR" /><br/><SplitText text="CATEGORIES" />
+              <SplitText text="EXPLORING OUR" /><br /><SplitText text="CATEGORIES" />
             </h2>
             <p className="hero-desc animate-fade-up">
               We curate the world’s finest materials, organizing them into distinct categories to help architects and designers find the exact expression of luxury they envision. From timeless natural stone to cutting-edge technical ceramics.
             </p>
-            <br/>
+            <br />
             <a href="#" className="hero-link animate-fade-up" style={{ color: 'white', borderBottomColor: 'rgba(255,255,255,0.5)' }}>EXPLORE MORE ↗</a>
           </div>
         </div>
-        </section>
+      </section>
 
       {/* Elegant Separator Line Above */}
       <div style={{ width: '100%', backgroundColor: '#F2F0E9' }}>
@@ -1063,80 +1225,13 @@ const Home = () => {
       </div>
 
       {/* Collections / Editorial Process Layout */}
-      <section className="collection-section" ref={processPinRef}>
-        <div className="collections-process-grid" ref={processSliderRef}>
-          <div className="process-col">
-            <div className="process-num">01</div>
-            <h3 className="process-head">Floor Tiles</h3>
-            <p className="process-desc">We translate strategy into a clear spatial concept with our stunning premium floor tiles, testing ideas against brand and feasibility.</p>
-            <a href="#" className="process-link">Learn more ↗</a>
-            <div className="process-img-wrapper">
-              <img src="/floor_preview.jpg" alt="Floor Tiles" />
-            </div>
-          </div>
-          
-          {/* 02 */}
-          <div className="process-col">
-            <div className="process-num">02</div>
-            <h3 className="process-head">Wall Tiles</h3>
-            <p className="process-desc">We develop the concept into coordinated layouts and systems, resolving key decisions for vertical spaces.</p>
-            <a href="#" className="process-link">Learn more ↗</a>
-            <div className="process-img-wrapper">
-              <img src="/wall_preview.jpg" alt="Wall Tiles" />
-            </div>
-          </div>
-          
-          {/* 03 */}
-          <div className="process-col">
-            <div className="process-num">03</div>
-            <h3 className="process-head">Terrace Tiles</h3>
-            <p className="process-desc">We develop the design intent outdoors with our highly durable, weather-resistant luxury terrace tiles and systems.</p>
-            <a href="#" className="process-link">Learn more ↗</a>
-            <div className="process-img-wrapper">
-              <img src="/terrace_preview.jpg" alt="Terrace Tiles" />
-            </div>
-          </div>
-          
-          {/* 04 */}
-          <div className="process-col">
-            <div className="process-num">04</div>
-            <h3 className="process-head">Kitchen Tiles</h3>
-            <p className="process-desc">We prepare clear, coordinated culinary spaces with our beautiful, high-performance and hygienic kitchen surfaces.</p>
-            <a href="#" className="process-link">Learn more ↗</a>
-            <div className="process-img-wrapper">
-              <img src="/kitchen_bg.jpg" alt="Kitchen Tiles" />
-            </div>
-          </div>
-
-          {/* 05 */}
-          <div className="process-col">
-            <div className="process-num">05</div>
-            <h3 className="process-head">Bathroom Tiles</h3>
-            <p className="process-desc">Transform personal spaces into luxury sanctuaries with our premium bathroom tile collections and bespoke finishes.</p>
-            <a href="#" className="process-link">Learn more ↗</a>
-            <div className="process-img-wrapper">
-              <img src="/bathroom_preview.jpg" alt="Bathroom Tiles" />
-            </div>
-          </div>
-          
-          {/* 06 */}
-          <div className="process-col">
-            <div className="process-num">06</div>
-            <h3 className="process-head">Parking Tiles</h3>
-            <p className="process-desc">We create robust, heavy-duty tiles designed to withstand vehicular load while maintaining an elegant aesthetic for your parking spaces.</p>
-            <a href="#" className="process-link">Learn more ↗</a>
-            <div className="process-img-wrapper">
-              <img src="/tile_nero.jpg" alt="Parking Tiles" />
-            </div>
-          </div>
-        </div>
-      </section>
+      <CollectionsSection />
 
       {/* Elegant Separator Line Below */}
       <div style={{ width: '100%', backgroundColor: '#F2F0E9' }}>
         <div style={{ width: '100%', height: '1px', background: 'rgba(26, 26, 46, 0.1)' }}></div>
       </div>
-      
+
       {/* Sizes / Formats — Expanding Panels */}
       <section
         className="sizes-carousel-section"
@@ -1356,21 +1451,63 @@ const Home = () => {
       </section>
 
       {/* Contact Section */}
-      <section className="section contact-container">
-        <h2 className="section-title" style={{ marginBottom: '3rem' }}>
-          <SplitText text="Contact us" />
-        </h2>
-        <form id="contactForm" onSubmit={handleSubmit}>
-          <div className="form-group animate-fade-up"><input type="text" placeholder="First name *" className="form-input" required /></div>
-          <div className="form-group animate-fade-up"><input type="text" placeholder="Last name *" className="form-input" required /></div>
-          <div className="form-group animate-fade-up"><input type="email" placeholder="E-mail *" className="form-input" required /></div>
-          <div className="form-group animate-fade-up"><textarea placeholder="Text *" className="form-input" rows="4" required></textarea></div>
-          <div style={{ marginBottom: '2rem', textAlign: 'left', opacity: 0.7 }} className="animate-fade-up">
-            <input type="checkbox" id="privacy" required />
-            <label htmlFor="privacy" style={{ marginLeft: '10px' }}>I declare that I have read and understood the privacy policy *</label>
+      <section className="contact-section">
+        <div className="contact-inner">
+          <div className="contact-intro">
+            <span className="contact-eyebrow">Contact</span>
+            <h2 className="contact-title">
+              <span>Let&apos;s create</span>
+              <em>something timeless.</em>
+            </h2>
+            <p className="contact-description">
+              Tell us about your space, your vision, or the surface you are looking for.
+              Our team will help you find the right material for your project.
+            </p>
+            <div className="contact-note">
+              <span className="contact-note-line" />
+              <span>We&apos;d love to hear from you.</span>
+            </div>
           </div>
-          <button type="submit" className="submit-btn animate-fade-up">SUBMIT ↗</button>
-        </form>
+
+          <div className="contact-form-wrap">
+            <form id="contactForm" className="contact-form" onSubmit={handleSubmit}>
+              <div className="contact-form-grid">
+                <div className="form-group animate-fade-up">
+                  <label htmlFor="firstName">First name <span>*</span></label>
+                  <input id="firstName" name="firstName" type="text" className="form-input" autoComplete="given-name" required />
+                </div>
+
+                <div className="form-group animate-fade-up">
+                  <label htmlFor="lastName">Last name <span>*</span></label>
+                  <input id="lastName" name="lastName" type="text" className="form-input" autoComplete="family-name" required />
+                </div>
+              </div>
+
+              <div className="form-group animate-fade-up">
+                <label htmlFor="email">E-mail <span>*</span></label>
+                <input id="email" name="email" type="email" className="form-input" autoComplete="email" required />
+              </div>
+
+              <div className="form-group form-message-group animate-fade-up">
+                <label htmlFor="message">Tell us about your project <span>*</span></label>
+                <textarea id="message" name="message" className="form-input form-textarea" rows="5" required />
+              </div>
+
+              <div className="contact-form-footer animate-fade-up">
+                <label className="privacy-field" htmlFor="privacy">
+                  <input type="checkbox" id="privacy" name="privacy" required />
+                  <span className="privacy-box" aria-hidden="true" />
+                  <span>I have read and understood the privacy policy <strong>*</strong></span>
+                </label>
+
+                <button type="submit" className="submit-btn">
+                  <span>Send enquiry</span>
+                  <span className="submit-btn-arrow" aria-hidden="true">↗</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       </section>
 
       {/* Video Modal Overlay */}

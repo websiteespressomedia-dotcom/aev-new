@@ -9,6 +9,7 @@
   pointer-events: none;
   z-index: 99999;
   mix-blend-mode: difference;
+  transform-origin: center;
 }
 
 .cursor-follower {
@@ -25,18 +26,8 @@
   align-items: center;
   justify-content: center;
   mix-blend-mode: difference;
+  transform-origin: center;
   transition: border-color 0.3s ease;
-}
-
-.cursor-text {
-  color: var(--color-black);
-  font-size: 4px;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  opacity: 0;
-  transform: scale(0.5);
-  font-family: var(--font-sans);
 }
 
 /* Hide default cursor on desktop */
@@ -44,7 +35,11 @@
   body {
     cursor: none;
   }
-  a, button, input {
+
+  a,
+  button,
+  input,
+  [role="button"] {
     cursor: none;
   }
 }
