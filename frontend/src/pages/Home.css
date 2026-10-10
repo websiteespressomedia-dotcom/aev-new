@@ -621,7 +621,7 @@
 /* =========================================================
    CONTACT — AEVITAS EDITORIAL FORM
    ========================================================= */
-.contact-section {
+.home-contact-section {
   position: relative;
   width: 100%;
   padding: clamp(7rem, 11vw, 11rem) clamp(1.5rem, 5vw, 5rem);
@@ -630,7 +630,7 @@
   overflow: hidden;
 }
 
-.contact-section::before {
+.home-contact-section::before {
   content: "";
   position: absolute;
   top: 0;
@@ -640,7 +640,7 @@
   background: rgba(26, 26, 46, 0.12);
 }
 
-.contact-inner {
+.home-contact-inner {
   width: 100%;
   max-width: 1480px;
   margin: 0 auto;
@@ -650,13 +650,13 @@
   align-items: start;
 }
 
-.contact-intro {
+.home-contact-intro {
   position: sticky;
   top: 8rem;
   padding-top: 0.4rem;
 }
 
-.contact-eyebrow {
+.home-contact-eyebrow {
   display: flex;
   align-items: center;
   gap: 0.8rem;
@@ -668,14 +668,14 @@
   text-transform: uppercase;
 }
 
-.contact-eyebrow::before {
+.home-contact-eyebrow::before {
   content: "";
   width: 28px;
   height: 1px;
   background: #C1A673;
 }
 
-.contact-title {
+.home-contact-title {
   margin: 0;
   font-family: "Times New Roman", Times, serif;
   font-size: clamp(3.8rem, 6.2vw, 7rem);
@@ -685,18 +685,18 @@
   color: #1a1a2e;
 }
 
-.contact-title span,
-.contact-title em {
+.home-contact-section span,
+.home-contact-title em {
   display: block;
 }
 
-.contact-title em {
+.home-contact-title em {
   margin-left: clamp(1.5rem, 5vw, 5rem);
   color: #8d7951;
   font-style: italic;
 }
 
-.contact-description {
+.home-contact-section .contact-description {
   max-width: 390px;
   margin: 2.8rem 0 0;
   color: rgba(26, 26, 46, 0.68);
@@ -928,16 +928,16 @@
 }
 
 @media (max-width: 1000px) {
-  .contact-inner {
+  .home-contact-inner {
     grid-template-columns: 1fr;
     gap: 4rem;
   }
 
-  .contact-intro {
+  .home-contact-intro {
     position: static;
   }
 
-  .contact-title {
+  .home-contact-title {
     max-width: 800px;
     font-size: clamp(3.6rem, 9vw, 6rem);
   }
@@ -948,15 +948,15 @@
 }
 
 @media (max-width: 650px) {
-  .contact-section {
+  .home-contact-section {
     padding: 5.5rem 1.2rem;
   }
 
-  .contact-title {
+  .home-contact-section {
     font-size: clamp(3rem, 15vw, 4.8rem);
   }
 
-  .contact-title em {
+  .home-contact-section em {
     margin-left: 1.2rem;
   }
 
@@ -1748,13 +1748,7 @@
   isolation: isolate;
   cursor: pointer;
 
-  background:
-    linear-gradient(
-      145deg,
-      #34322f 0%,
-      #292825 50%,
-      #22211f 100%
-    );
+  background: transparent !important;
   border-radius: 4px;
   outline: none;
   font-family: var(--size-font);
@@ -1778,8 +1772,8 @@
   background-size: cover;
   background-position: center;
 
-  opacity: 0;
-  transform: scale(1.05);
+  opacity: 1 !important;
+  transform: scale(1) !important;
 
   transition:
     opacity 0.55s ease,
@@ -1787,8 +1781,8 @@
 }
 
 .size-panel.is-active .size-panel-image {
-  opacity: 1;
-  transform: scale(1);
+  opacity: 1 !important;
+  transform: scale(1) !important;
 }
 
 /* Gradient: image stays clear on top, fades to dark under the label */
@@ -1798,22 +1792,16 @@
   inset: 0;
   z-index: -1;
 
-  opacity: 0;
+  opacity: 0 !important;
 
-  background: linear-gradient(
-    180deg,
-    rgba(20, 20, 20, 0) 0%,
-    rgba(20, 20, 20, 0) 35%,
-    rgba(24, 24, 24, 0.55) 65%,
-    rgba(18, 18, 18, 0.92) 100%
-  );
+  background: none !important;
   pointer-events: none;
 
   transition: opacity 0.5s ease;
 }
 
 .size-panel.is-active .size-panel-overlay {
-  opacity: 1;
+  opacity: 0 !important;
 }
 
 /* -------- Vertical label --------
@@ -1848,6 +1836,8 @@
   text-transform: uppercase;
   font-family: var(--size-font);
   font-variant-numeric: lining-nums;
+  color: #25231f !important;
+  text-shadow: 0 1px 5px rgba(255, 255, 255, 0.35);
 }
 
 .size-panel-vertical-size {
@@ -1950,6 +1940,8 @@
   padding-bottom: 0.45rem;
   color: #fff;
   border-bottom: 1px solid rgba(255, 255, 255, 0.65);
+
+  border-bottom-color: rgba(37, 35, 31, 0.65) !important;
 
   text-decoration: none;
   font-family: var(--size-font);
@@ -4015,4 +4007,21 @@
     left: 8%;
     bottom: 5%;
   }
+}
+
+/* Horizontal / expanded content */
+.size-panel-content,
+.size-panel-content h3,
+.size-panel-content p,
+.size-panel-content small,
+.size-panel-index,
+.size-panel-meta,
+.size-panel-meta span,
+.size-panel-link {
+  color: #25231f !important;
+  text-shadow: 0 1px 5px rgba(255, 255, 255, 0.35);
+}
+
+.size-panel-link span {
+  color: #25231f !important;
 }

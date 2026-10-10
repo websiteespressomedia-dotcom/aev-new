@@ -9,6 +9,8 @@ import Navigation from './components/Navigation';
 import CustomCursor from './components/CustomCursor';
 import GlobalBackground from './components/GlobalBackground';
 import FullscreenMenu from './components/FullscreenMenu';
+import WhatsAppButton from './components/WhatsAppButton';
+
 
 // Pages
 import Home from './pages/Home';
@@ -16,6 +18,7 @@ import About from './pages/About';
 import Collections from './pages/Collections';
 import Catalogue from './pages/Catalogue';
 import ContactPage from './pages/ContactPage';
+import ProductDetailPage from "./pages/ProductDetailPage";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -86,6 +89,8 @@ function App() {
         <Navigation onMenuClick={() => setIsMenuOpen(true)} />
         <FullscreenMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
 
+        <WhatsAppButton />
+
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
@@ -93,6 +98,9 @@ function App() {
             <Route path="/collections" element={<PageWrapper><Collections /></PageWrapper>} />
             <Route path="/catalogue" element={<PageWrapper><Catalogue /></PageWrapper>} />
             <Route path="/contact" element={<PageWrapper><ContactPage /></PageWrapper>} />
+            <Route path="/porcelain-floor-tiles/:slug" element={<ProductDetailPage />} />
+            <Route path="/large-format-porcelain-tiles/:slug" element={<ProductDetailPage />} />
+            <Route path="/porcelain-slab-tiles/:slug" element={<ProductDetailPage />} />
           </Routes>
         </AnimatePresence>
       </main>

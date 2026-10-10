@@ -1451,11 +1451,11 @@ const Home = () => {
       </section>
 
       {/* Contact Section */}
-      <section className="contact-section">
-        <div className="contact-inner">
-          <div className="contact-intro">
-            <span className="contact-eyebrow">Contact</span>
-            <h2 className="contact-title">
+      <section className="home-contact-section">
+        <div className="home-contact-inner">
+          <div className="home-contact-intro">
+            <span className="home-contact-eyebrow">Contact</span>
+            <h2 className="home-contact-title">
               <span>Let&apos;s create</span>
               <em>something timeless.</em>
             </h2>
