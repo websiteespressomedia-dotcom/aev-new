@@ -1,0 +1,388 @@
+/* =========================================================
+   AEVITAS CERAMICS  ·  QUALITY CONTROL
+   beige page, dark video tiles, gold labels
+   ========================================================= */
+
+.qc {
+  position: relative;
+  width: 100%;
+  background: #F2F0E9;
+  color: #1a1a2e;
+  overflow: hidden;
+}
+
+.qc-inner {
+  width: min(1560px, 100%);
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 9rem 5% 8rem;
+}
+
+
+/* ---------- header ---------- */
+
+.qc-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.8fr);
+  align-items: end;
+  gap: clamp(2rem, 5vw, 6rem);
+  margin-bottom: 4.5rem;
+}
+
+.qc-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.6rem;
+}
+
+.qc-eyebrow i {
+  display: block;
+  width: 44px;
+  height: 1px;
+  background: #C1A673;
+}
+
+.qc-eyebrow span {
+  font-size: 0.72rem;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: #C1A673;
+}
+
+.qc-title {
+  margin: 0;
+  font-family: "Times New Roman", Times, serif;
+  font-size: clamp(3.4rem, 9vw, 8.5rem);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  text-transform: none;
+  color: #1a1a2e;
+}
+
+/* each word rises out of its own mask */
+.qc-title-row {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+
+.qc-title-row:last-child {
+  color: #C1A673;
+  font-style: italic;
+}
+
+.qc-title-word {
+  display: inline-block;
+  will-change: transform;
+}
+
+.qc-text {
+  max-width: 420px;
+  margin: 0 0 0.6rem;
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: rgba(26, 26, 46, 0.72);
+}
+
+
+/* ---------- mosaic (12 columns, desktop) ---------- */
+
+.qc-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-auto-rows: clamp(110px, 10.5vw, 180px);
+  gap: 14px;
+}
+
+.qc-tile:nth-child(1) {
+  grid-column: 1 / 7;
+  grid-row: 1 / 4;
+}
+
+.qc-tile:nth-child(2) {
+  grid-column: 7 / 10;
+  grid-row: 1 / 3;
+}
+
+.qc-tile:nth-child(3) {
+  grid-column: 10 / 13;
+  grid-row: 1 / 3;
+}
+
+.qc-tile:nth-child(4) {
+  grid-column: 7 / 13;
+  grid-row: 3 / 4;
+}
+
+.qc-tile:nth-child(5) {
+  grid-column: 1 / 5;
+  grid-row: 4 / 6;
+}
+
+.qc-tile:nth-child(6) {
+  grid-column: 5 / 9;
+  grid-row: 4 / 6;
+}
+
+.qc-tile:nth-child(7) {
+  grid-column: 9 / 13;
+  grid-row: 4 / 6;
+}
+
+.qc-tile:nth-child(8) {
+  grid-column: 1 / 7;
+  grid-row: 6 / 7;
+}
+
+.qc-tile:nth-child(9) {
+  grid-column: 7 / 13;
+  grid-row: 6 / 7;
+}
+
+
+/* ---------- tile ---------- */
+
+.qc-tile {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #222220;
+  cursor: inherit;
+  outline: none;
+  isolation: isolate;
+}
+
+.qc-media {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+.qc-media video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.7;
+  transform: scale(1.02);
+  transition:
+    opacity 0.9s ease,
+    transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.qc-tile:hover .qc-media video,
+.qc-tile.is-playing .qc-media video,
+.qc-tile:focus-visible .qc-media video {
+  opacity: 1;
+  transform: scale(1.07);
+}
+
+.qc-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(20, 20, 19, 0.1) 40%,
+    rgba(20, 20, 19, 0.8) 100%
+  );
+  transition: opacity 0.6s ease;
+}
+
+.qc-tile.is-playing .qc-shade {
+  opacity: 0.6;
+}
+
+
+/* gold corner marks that grow on hover */
+
+.qc-corner {
+  position: absolute;
+  z-index: 3;
+  width: 14px;
+  height: 14px;
+  border-color: #C1A673;
+  border-style: solid;
+  opacity: 0;
+  transition:
+    opacity 0.4s ease,
+    width 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    height 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.qc-corner-tl {
+  top: 14px;
+  left: 14px;
+  border-width: 1px 0 0 1px;
+}
+
+.qc-corner-br {
+  right: 14px;
+  bottom: 14px;
+  border-width: 0 1px 1px 0;
+}
+
+.qc-tile:hover .qc-corner,
+.qc-tile.is-playing .qc-corner,
+.qc-tile:focus-visible .qc-corner {
+  opacity: 1;
+  width: 28px;
+  height: 28px;
+}
+
+.qc-tile:focus-visible {
+  box-shadow: 0 0 0 2px #C1A673;
+}
+
+
+/* play ring (hidden while playing) */
+
+.qc-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  margin: -28px 0 0 -28px;
+  border: 1px solid rgba(242, 240, 233, 0.5);
+  border-radius: 50%;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  transition:
+    opacity 0.4s ease,
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.qc-play span {
+  display: block;
+  width: 0;
+  height: 0;
+  margin-left: 3px;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-left: 11px solid #F2F0E9;
+}
+
+.qc-tile:hover .qc-play,
+.qc-tile.is-playing .qc-play {
+  opacity: 0;
+  transform: scale(0.7);
+}
+
+
+/* label */
+
+.qc-label {
+  position: absolute;
+  left: 1.2rem;
+  bottom: 1.1rem;
+  right: 1.2rem;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.qc-code {
+  font-size: 0.62rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #C1A673;
+}
+
+.qc-name {
+  font-family: "Times New Roman", Times, serif;
+  font-size: clamp(1rem, 1.5vw, 1.45rem);
+  line-height: 1.15;
+  color: #F2F0E9;
+  transform: translateY(0);
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.qc-tile:hover .qc-name {
+  transform: translateY(-4px);
+}
+
+
+/* ---------- tablet ---------- */
+
+@media (max-width: 1000px) {
+  .qc-inner {
+    padding: 7rem 5% 6rem;
+  }
+
+  .qc-head {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: 1.8rem;
+    margin-bottom: 3rem;
+  }
+
+  .qc-text {
+    max-width: 520px;
+    margin: 0;
+  }
+
+  .qc-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: clamp(190px, 38vw, 340px);
+  }
+
+  .qc-tile:nth-child(n) {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .qc-tile:nth-child(1) {
+    grid-column: 1 / 3;
+  }
+
+  .qc-tile:nth-child(n+7) {
+    display: none;
+  }
+}
+
+
+/* ---------- phone ---------- */
+
+@media (max-width: 600px) {
+  .qc-inner {
+    padding: 5.5rem 5% 4.5rem;
+  }
+
+  .qc-eyebrow span {
+    font-size: 0.64rem;
+    letter-spacing: 0.32em;
+  }
+
+  .qc-title {
+    font-size: clamp(3rem, 15vw, 4.6rem);
+  }
+
+  .qc-text {
+    font-size: 0.95rem;
+  }
+
+  .qc-grid {
+    gap: 10px;
+    grid-auto-rows: clamp(200px, 56vw, 300px);
+  }
+
+  .qc-label {
+    left: 0.9rem;
+    bottom: 0.8rem;
+    right: 0.9rem;
+  }
+
+  .qc-play {
+    width: 46px;
+    height: 46px;
+    margin: -23px 0 0 -23px;
+  }
+}

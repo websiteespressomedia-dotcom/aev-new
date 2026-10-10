@@ -1,0 +1,322 @@
+/* =========================================================
+   AEVITAS CERAMICS  ·  CORE VALUES
+   charcoal + gold, pinned pile of cards
+   ========================================================= */
+
+.cv {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  min-height: 640px;
+  overflow: hidden;
+  background: #222220;
+  color: #F2F0E9;
+  isolation: isolate;
+}
+
+.cv::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(55% 45% at 12% 18%, rgba(193, 166, 115, 0.1), rgba(193, 166, 115, 0) 70%);
+}
+
+.cv-inner {
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  padding: 6.5rem 5% 2.5rem;
+  display: grid;
+  grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+  gap: clamp(2rem, 5vw, 6rem);
+}
+
+
+/* ---------- left ---------- */
+
+.cv-aside {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+
+.cv-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.6rem;
+}
+
+.cv-eyebrow i {
+  display: block;
+  width: 44px;
+  height: 1px;
+  background: #C1A673;
+}
+
+.cv-eyebrow span {
+  font-size: 0.72rem;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: #C1A673;
+}
+
+.cv-title {
+  margin: 0 0 1.4rem;
+  font-family: "Times New Roman", Times, serif;
+  font-size: clamp(2.8rem, 5.2vw, 5.4rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  color: #F2F0E9;
+}
+
+.cv-intro {
+  max-width: 380px;
+  margin: 0 0 2.6rem;
+  font-size: 1rem;
+  line-height: 1.75;
+  color: rgba(242, 240, 233, 0.68);
+}
+
+.cv-counter {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  font-family: "Times New Roman", Times, serif;
+}
+
+.cv-count-num {
+  display: inline-block;
+  font-size: clamp(3.4rem, 6vw, 6rem);
+  line-height: 1;
+  color: #C1A673;
+  animation: cv-count 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes cv-count {
+  from { opacity: 0; transform: translateY(40%); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.cv-count-total {
+  font-size: 1rem;
+  letter-spacing: 0.2em;
+  color: rgba(242, 240, 233, 0.5);
+}
+
+/* the five names double as an index */
+.cv-ticks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 1.8rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cv-tick {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(242, 240, 233, 0.38);
+  transition: color 0.5s ease;
+}
+
+.cv-tick i {
+  display: block;
+  width: 18px;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1), background 0.5s ease;
+}
+
+.cv-tick { cursor: inherit; outline: none; }
+.cv-tick:hover { color: rgba(242, 240, 233, 0.85); }
+.cv-tick:hover i { width: 30px; }
+.cv-tick:focus-visible { color: #C1A673; }
+
+.cv-tick.is-active { color: #F2F0E9; }
+.cv-tick.is-active i { width: 44px; background: #C1A673; }
+
+
+/* ---------- right: the pile ---------- */
+
+.cv-stage {
+  position: relative;
+  min-width: 0;
+  height: 100%;
+  overflow: hidden;      /* clips cards that are still waiting below */
+}
+
+.cv-card {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 64px;             /* band above = where the cards underneath peek out */
+  bottom: 0;
+  overflow: hidden;
+  border-radius: 18px;
+  background: linear-gradient(160deg, #4a4338 0%, #1d1c1a 100%);
+  box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.35);
+  will-change: transform;
+}
+
+.cv-card-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  will-change: transform;
+}
+
+.cv-card-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(20, 20, 19, 0.3) 0%, rgba(20, 20, 19, 0) 35%, rgba(20, 20, 19, 0.9) 100%);
+}
+
+.cv-card-dim {
+  position: absolute;
+  inset: 0;
+  background: #0f0f0e;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.cv-card-top {
+  position: absolute;
+  top: 1.6rem;
+  left: 2rem;
+  right: 2rem;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.66rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(242, 240, 233, 0.85);
+}
+
+.cv-card-body {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: clamp(1.5rem, 3vw, 3rem);
+}
+
+.cv-card-num {
+  display: block;
+  font-family: "Times New Roman", Times, serif;
+  font-size: clamp(2rem, 3vw, 3rem);
+  line-height: 1;
+  color: #C1A673;
+}
+
+.cv-card-title {
+  margin: 0.9rem 0;
+  font-family: "Times New Roman", Times, serif;
+  font-size: clamp(1.9rem, 3.2vw, 3.4rem);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: #F2F0E9;
+}
+
+.cv-card-desc {
+  max-width: 480px;
+  margin: 0 0 1.4rem;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: rgba(242, 240, 233, 0.84);
+}
+
+.cv-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.cv-tags span {
+  padding: 0.5rem 1rem;
+  border: 1px solid rgba(193, 166, 115, 0.6);
+  border-radius: 999px;
+  font-size: 0.66rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #F2F0E9;
+}
+
+
+/* ---------- tablet / phone ---------- */
+
+@media (max-width: 900px) {
+  .cv-inner {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: 1rem;
+    padding: 5.5rem 5% 1.5rem;
+  }
+
+  .cv-aside { justify-content: flex-start; }
+  .cv-eyebrow { margin-bottom: 0.8rem; }
+  .cv-eyebrow span { font-size: 0.64rem; letter-spacing: 0.32em; }
+  .cv-title { margin: 0; font-size: clamp(2.2rem, 9vw, 3rem); }
+  .cv-title br { display: none; }
+  .cv-intro,
+  .cv-ticks { display: none; }
+
+  .cv-counter {
+    position: absolute;
+    right: 5%;
+    top: 5.9rem;
+  }
+  .cv-count-num { font-size: 2.6rem; }
+  .cv-count-total { font-size: 0.8rem; }
+
+  .cv-card { border-radius: 14px; top: 48px; }
+  .cv-card-top { top: 1.1rem; left: 1.25rem; right: 1.25rem; }
+  .cv-card-body { padding: 1.25rem; }
+  .cv-card-title { margin: 0.6rem 0; font-size: 1.8rem; }
+  .cv-card-desc { margin-bottom: 1rem; font-size: 0.9rem; line-height: 1.6; }
+  .cv-tags span { padding: 0.4rem 0.8rem; font-size: 0.58rem; }
+}
+
+@media (max-height: 700px) and (max-width: 900px) {
+  .cv-card-desc { display: none; }
+}
+
+
+/* ---------- reduced motion: plain vertical list ---------- */
+
+.cv-static { height: auto; overflow: visible; }
+
+.cv-static .cv-inner {
+  position: static;
+  display: block;
+  padding: 6rem 5%;
+}
+
+.cv-static .cv-counter,
+.cv-static .cv-ticks { display: none; }
+
+.cv-static .cv-stage { height: auto; overflow: visible; margin-top: 3rem; }
+
+.cv-static .cv-card {
+  position: relative;
+  top: auto;
+  height: 70vh;
+  min-height: 420px;
+  margin-bottom: 1.5rem;
+}

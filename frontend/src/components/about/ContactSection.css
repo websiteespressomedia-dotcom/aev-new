@@ -1,0 +1,770 @@
+/* =========================================================
+   AEVITAS CERAMICS · CONTACT
+   Compact editorial contact section
+   ========================================================= */
+
+.contact-section {
+  position: relative;
+  width: 100%;
+  min-height: 0;
+  overflow: hidden;
+  background: #222220;
+  color: #f2f0e9;
+  isolation: isolate;
+}
+
+.contact-inner {
+  position: relative;
+  z-index: 5;
+  width: min(1420px, 100%);
+  margin: 0 auto;
+  padding: 2.8rem 5% 2.5rem;
+}
+
+/* ---------- background ---------- */
+
+.contact-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -3;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      38% 70% at 78% 45%,
+      rgba(193, 166, 115, 0.09),
+      transparent 70%
+    ),
+    radial-gradient(
+      35% 50% at 8% 85%,
+      rgba(193, 166, 115, 0.045),
+      transparent 70%
+    );
+}
+
+.contact-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.018),
+    transparent 40%,
+    rgba(0, 0, 0, 0.16)
+  );
+}
+
+.contact-noise {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+}
+
+.contact-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+.contact-bg-word {
+  width: max-content;
+  font-family: "Times New Roman", Times, serif;
+  font-size: clamp(6rem, 11vw, 11rem);
+  font-weight: 400;
+  line-height: 0.72;
+  letter-spacing: -0.07em;
+  white-space: nowrap;
+  text-transform: uppercase;
+  color: rgba(242, 240, 233, 0.025);
+  will-change: transform;
+}
+
+.contact-bg-word-two {
+  margin-left: -8vw;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(193, 166, 115, 0.055);
+}
+
+/* ---------- top ---------- */
+
+.contact-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.contact-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: #c1a673;
+  font-size: 0.62rem;
+  letter-spacing: 0.34em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.contact-eyebrow-line {
+  width: 38px;
+  height: 1px;
+  background: #c1a673;
+}
+
+/* ---------- main ---------- */
+
+.contact-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 190px;
+  align-items: center;
+  gap: 3rem;
+  padding: 1.8rem 0 2rem;
+}
+
+.contact-copy {
+  min-width: 0;
+}
+
+.contact-title {
+  margin: 0;
+  font-family: "Times New Roman", Times, serif;
+  font-size: clamp(3.5rem, 5.2vw, 5.4rem);
+  font-weight: 400;
+  line-height: 0.82;
+  letter-spacing: -0.06em;
+  color: #f2f0e9;
+}
+
+.contact-title-mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+.contact-title-line {
+  display: inline-block;
+  will-change: transform;
+}
+
+.contact-title-accent {
+  color: #c1a673;
+  font-style: italic;
+}
+
+.contact-intro {
+  max-width: 450px;
+  margin: 1rem 0 0;
+  padding-left: 0.15rem;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: rgba(242, 240, 233, 0.58);
+}
+
+/* ---------- CTA ---------- */
+
+.contact-cta {
+  position: relative;
+  width: 178px;
+  height: 178px;
+  display: grid;
+  place-items: center;
+  justify-self: end;
+  border: 1px solid rgba(193, 166, 115, 0.42);
+  border-radius: 50%;
+  color: #f2f0e9;
+  text-decoration: none;
+  isolation: isolate;
+  transition: border-color 0.45s ease;
+}
+
+.contact-cta::before {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  border: 1px solid rgba(242, 240, 233, 0.09);
+  border-radius: 50%;
+  transition:
+    inset 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.4s ease;
+}
+
+.contact-cta-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #f2f0e9;
+  transform: scale(0);
+  transition: transform 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+  z-index: -1;
+}
+
+.contact-cta-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  will-change: transform;
+  transition: color 0.4s ease;
+}
+
+.contact-cta-small {
+  font-size: 0.56rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.contact-cta-arrow {
+  font-size: 1.8rem;
+  font-weight: 300;
+  line-height: 1;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.contact-cta:hover {
+  border-color: #f2f0e9;
+  color: #222220;
+}
+
+.contact-cta:hover::before {
+  inset: 16px;
+  border-color: rgba(34, 34, 32, 0.1);
+}
+
+.contact-cta:hover .contact-cta-ring {
+  transform: scale(1);
+}
+
+.contact-cta:hover .contact-cta-arrow {
+  transform: translate(4px, -4px);
+}
+
+/* ---------- divider ---------- */
+
+.contact-rule {
+  width: 100%;
+  height: 1px;
+  background: rgba(242, 240, 233, 0.11);
+  transform-origin: left center;
+}
+
+/* ---------- bottom ---------- */
+
+.contact-bottom {
+  display: grid;
+  grid-template-columns: 0.7fr 1fr 1fr 0.75fr;
+  gap: 2.5rem;
+  padding-top: 1.4rem;
+}
+
+.contact-bottom-label {
+  padding-top: 0.15rem;
+  color: #c1a673;
+}
+
+.contact-offices {
+  display: contents;
+}
+
+.contact-office {
+  min-width: 0;
+}
+
+.contact-office-top {
+  display: flex;
+  align-items: baseline;
+  gap: 0.65rem;
+  margin-bottom: 0.7rem;
+}
+
+.contact-office-number {
+  color: #c1a673;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 0.85rem;
+}
+
+.contact-office-name {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1.15rem;
+  color: #f2f0e9;
+}
+
+.contact-office-address {
+  margin: 0;
+  font-size: 0.72rem;
+  line-height: 1.55;
+  color: rgba(242, 240, 233, 0.48);
+}
+
+.contact-office-map {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 0.8rem;
+  padding-bottom: 0.2rem;
+  border-bottom: 1px solid rgba(193, 166, 115, 0.3);
+  color: rgba(242, 240, 233, 0.65);
+  font-size: 0.55rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition:
+    color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.contact-office-map span {
+  font-size: 0.8rem;
+  transition: transform 0.3s ease;
+}
+
+.contact-office-map:hover {
+  color: #c1a673;
+  border-color: #c1a673;
+}
+
+.contact-office-map:hover span {
+  transform: translate(3px, -3px);
+}
+
+.contact-direct {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.55rem;
+  padding-top: 0.15rem;
+}
+
+.contact-direct > span {
+  color: rgba(242, 240, 233, 0.3);
+}
+
+.contact-direct a {
+  color: #f2f0e9;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1.05rem;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.3s ease;
+}
+
+.contact-direct a:hover {
+  color: #c1a673;
+}
+
+/* ---------- tablet ---------- */
+
+@media (max-width: 1050px) {
+  .contact-inner {
+    padding-top: 4rem;
+    padding-bottom: 3.2rem;
+  }
+
+  .contact-main {
+    grid-template-columns: minmax(0, 1fr) 170px;
+    gap: 3rem;
+    padding: 2.8rem 0 3rem;
+  }
+
+  .contact-title {
+    font-size: clamp(3.7rem, 7.5vw, 5.8rem);
+  }
+
+  .contact-cta {
+    width: 160px;
+    height: 160px;
+  }
+
+  .contact-bottom {
+    grid-template-columns: 0.55fr 1fr 1fr;
+  }
+
+  .contact-direct {
+    grid-column: 2 / 4;
+    align-items: flex-start;
+    margin-top: 1.3rem;
+  }
+}
+
+/* ---------- mobile ---------- */
+
+@media (max-width: 700px) {
+  .contact-inner {
+    padding: 3.8rem 6% 3rem;
+  }
+
+  .contact-eyebrow {
+    font-size: 0.56rem;
+    letter-spacing: 0.25em;
+  }
+
+  .contact-eyebrow-line {
+    width: 28px;
+  }
+
+  .contact-main {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2.2rem;
+    padding: 2.8rem 0 2.8rem;
+  }
+
+  .contact-title {
+    font-size: clamp(3.4rem, 17vw, 5.4rem);
+    line-height: 0.84;
+  }
+
+  .contact-intro {
+    max-width: 380px;
+    margin-top: 1.4rem;
+    font-size: 0.82rem;
+    line-height: 1.65;
+  }
+
+  .contact-cta {
+    width: 145px;
+    height: 145px;
+    align-self: flex-end;
+  }
+
+  .contact-cta-small {
+    font-size: 0.5rem;
+  }
+
+  .contact-cta-arrow {
+    font-size: 1.6rem;
+  }
+
+  .contact-bottom {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.8rem;
+    padding-top: 1.8rem;
+  }
+
+  .contact-bottom-label {
+    padding: 0;
+  }
+
+  .contact-office {
+    padding-top: 1.3rem;
+    border-top: 1px solid rgba(242, 240, 233, 0.08);
+  }
+
+  .contact-office:first-of-type {
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .contact-office-name {
+    font-size: 1.05rem;
+  }
+
+  .contact-direct {
+    grid-column: auto;
+    align-items: flex-start;
+    margin-top: 0;
+    padding-top: 1.3rem;
+    border-top: 1px solid rgba(242, 240, 233, 0.08);
+  }
+
+  .contact-bg-word {
+    font-size: 22vw;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-bg-word {
+    transform: none !important;
+  }
+
+  .contact-title-line,
+  .contact-eyebrow,
+  .contact-intro,
+  .contact-cta,
+  .contact-office,
+  .contact-rule {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+
+/* =========================================
+   AEVITAS CONTACT — LAYOUT FIX + MOTION
+   Scoped to this component only
+========================================= */
+
+.contact-section.aev-contact-section {
+  width: 100%;
+  min-height: auto;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  background: #222220;
+  color: #f2f0e9;
+}
+
+/* Prevent Home.css from changing this layout */
+.aev-contact-section .contact-inner {
+  display: block;
+  width: min(1240px, calc(100% - 80px));
+  max-width: none;
+  margin: 0 auto;
+  padding: 38px 0 32px;
+  box-sizing: border-box;
+}
+
+/* Compact top label */
+.aev-contact-section .contact-top {
+  margin-bottom: 0;
+}
+
+/* Balanced heading + CTA */
+.aev-contact-section .contact-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 150px;
+  align-items: center;
+  gap: 48px;
+  padding: 34px 0 32px;
+}
+
+.aev-contact-section .contact-copy {
+  position: relative;
+  min-width: 0;
+}
+
+.aev-contact-section .contact-title {
+  max-width: 600px;
+  margin: 0;
+  font-family: "Times New Roman", Times, serif;
+  font-size: clamp(46px, 5vw, 72px);
+  font-weight: 400;
+  line-height: 0.91;
+  letter-spacing: -0.055em;
+  color: #f2f0e9;
+}
+
+.aev-contact-section .contact-title-mask {
+  display: block;
+}
+
+.aev-contact-section .contact-title-line {
+  display: inline-block;
+}
+
+.aev-contact-section .contact-title-accent {
+  color: #c1a673;
+  font-style: italic;
+}
+
+.aev-contact-section .contact-intro {
+  position: static;
+  max-width: 430px;
+  margin: 16px 0 0;
+  padding: 0;
+  font-size: 13px;
+  line-height: 1.7;
+  color: rgba(242, 240, 233, 0.64);
+}
+
+/* Smaller, more refined circular CTA */
+.aev-contact-section .contact-cta {
+  width: 146px;
+  height: 146px;
+  justify-self: center;
+  flex-shrink: 0;
+}
+
+.aev-contact-section .contact-cta-small {
+  font-size: 9px;
+  letter-spacing: 0.18em;
+}
+
+/* Reduce the gap before office details */
+.aev-contact-section .contact-rule {
+  margin-top: 0;
+  background: rgba(242, 240, 233, 0.15);
+}
+
+.aev-contact-section .contact-bottom {
+  display: grid;
+  grid-template-columns: 0.8fr 1fr 1fr 1fr;
+  align-items: start;
+  gap: 28px;
+  padding-top: 24px;
+}
+
+.aev-contact-section .contact-bottom-label {
+  padding-top: 4px;
+}
+
+.aev-contact-section .contact-office-top {
+  gap: 9px;
+  margin-bottom: 10px;
+}
+
+.aev-contact-section .contact-office-name {
+  font-size: 19px;
+}
+
+.aev-contact-section .contact-office-address {
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.aev-contact-section .contact-office-map {
+  margin-top: 12px;
+}
+
+.aev-contact-section .contact-direct {
+  align-items: flex-end;
+  padding-top: 4px;
+}
+
+/* Subtle interactive motion */
+.aev-contact-section .contact-office {
+  transition: transform 0.35s ease;
+}
+
+.aev-contact-section .contact-office:hover {
+  transform: translateY(-3px);
+}
+
+.aev-contact-section .contact-cta {
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.4s ease;
+}
+
+.aev-contact-section .contact-cta:hover {
+  transform: scale(1.04);
+}
+
+/* Keep background typography subtle */
+.aev-contact-section .contact-bg-word {
+  font-size: clamp(70px, 9vw, 130px);
+  color: rgba(242, 240, 233, 0.018);
+}
+
+.aev-contact-section .contact-bg-word-two {
+  -webkit-text-stroke-color: rgba(193, 166, 115, 0.035);
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .aev-contact-section .contact-inner {
+    width: calc(100% - 48px);
+    padding: 32px 0 28px;
+  }
+
+  .aev-contact-section .contact-main {
+    grid-template-columns: minmax(0, 1fr) 120px;
+    gap: 24px;
+    padding: 30px 0;
+  }
+
+  .aev-contact-section .contact-title {
+    font-size: clamp(42px, 6vw, 58px);
+  }
+
+  .aev-contact-section .contact-cta {
+    width: 116px;
+    height: 116px;
+  }
+
+  .aev-contact-section .contact-bottom {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  .aev-contact-section .contact-direct {
+    grid-column: auto;
+    align-items: flex-start;
+    margin-top: 0;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .aev-contact-section .contact-inner {
+    width: calc(100% - 36px);
+    padding: 28px 0 24px;
+  }
+
+  .aev-contact-section .contact-meta {
+    font-size: 9px;
+  }
+
+  .aev-contact-section .contact-main {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+    padding: 28px 0 24px;
+  }
+
+  .aev-contact-section .contact-title {
+    font-size: clamp(42px, 12vw, 58px);
+    line-height: 0.94;
+  }
+
+  .aev-contact-section .contact-intro {
+    max-width: 360px;
+    font-size: 13px;
+    line-height: 1.65;
+  }
+
+  .aev-contact-section .contact-cta {
+    width: 100px;
+    height: 100px;
+    justify-self: start;
+  }
+
+  .aev-contact-section .contact-cta-arrow {
+    font-size: 23px;
+  }
+
+  .aev-contact-section .contact-bottom {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+    padding-top: 20px;
+  }
+
+  .aev-contact-section .contact-office,
+  .aev-contact-section .contact-direct {
+    padding-top: 16px;
+    border-top: 1px solid rgba(242, 240, 233, 0.12);
+  }
+
+  .aev-contact-section .contact-office:first-of-type {
+    padding-top: 16px;
+    border-top: 1px solid rgba(242, 240, 233, 0.12);
+  }
+
+  .aev-contact-section .contact-bg-word {
+    font-size: 20vw;
+  }
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .aev-contact-section *,
+  .aev-contact-section *::before,
+  .aev-contact-section *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

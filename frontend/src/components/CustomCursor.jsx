@@ -5,12 +5,10 @@ import './CustomCursor.css';
 const CustomCursor = () => {
   const cursorRef = useRef(null);
   const followerRef = useRef(null);
-  const textRef = useRef(null);
 
   useEffect(() => {
     const cursor = cursorRef.current;
     const follower = followerRef.current;
-    const text = textRef.current;
 
     // Set initial position
     gsap.set(cursor, { xPercent: -50, yPercent: -50 });
@@ -38,43 +36,56 @@ const CustomCursor = () => {
       });
     };
 
+    // Simple, consistent hover treatment for every link/button.
+    // No VIEW text, no large white circle.
     const onMouseOver = (e) => {
-      const target = e.target.closest('a, button, .tile-card, .ring-item, .stack-card, .hg-slide, [data-cursor-hover]');
-      if (target) {
-        const hoverText = target.getAttribute('data-cursor-text') || 'VIEW';
-        text.innerText = hoverText;
-        
-        gsap.to(follower, {
-          scale: 3,
-          backgroundColor: 'var(--color-white)',
-          mixBlendMode: 'normal',
-          duration: 0.3,
-        });
+      const target = e.target.closest(
+        'a, button, [role="button"], [data-cursor-hover]'
+      );
 
-        gsap.to(text, {
-          opacity: 1,
-          scale: 1,
-          duration: 0.3,
-        });
-      }
+      if (!target) return;
+
+      gsap.to(follower, {
+        scale: 1.28,
+        borderColor: 'var(--color-accent)',
+        backgroundColor: 'transparent',
+        mixBlendMode: 'difference',
+        duration: 0.28,
+        ease: 'power2.out',
+      });
+
+      gsap.to(cursor, {
+        scale: 0.72,
+        duration: 0.22,
+        ease: 'power2.out',
+      });
     };
 
     const onMouseOut = (e) => {
-      const target = e.target.closest('a, button, .tile-card, .ring-item, .stack-card, .hg-slide, [data-cursor-hover]');
-      if (target) {
-        gsap.to(follower, {
-          scale: 1,
-          backgroundColor: 'transparent',
-          mixBlendMode: 'difference',
-          duration: 0.3,
-        });
+      const target = e.target.closest(
+        'a, button, [role="button"], [data-cursor-hover]'
+      );
 
-        gsap.to(text, {
-          opacity: 0,
-          scale: 0.5,
-          duration: 0.3,
-        });
-      }
+      if (!target) return;
+
+      // Ignore mouseout when moving between children of the same
+      // interactive element.
+      if (target.contains(e.relatedTarget)) return;
+
+      gsap.to(follower, {
+        scale: 1,
+        borderColor: 'rgba(255, 255, 255, 0.5)',
+        backgroundColor: 'transparent',
+        mixBlendMode: 'difference',
+        duration: 0.28,
+        ease: 'power2.out',
+      });
+
+      gsap.to(cursor, {
+        scale: 1,
+        duration: 0.22,
+        ease: 'power2.out',
+      });
     };
 
     window.addEventListener('mousemove', onMouseMove);
@@ -91,9 +102,7 @@ const CustomCursor = () => {
   return (
     <>
       <div className="cursor-dot" ref={cursorRef}></div>
-      <div className="cursor-follower" ref={followerRef}>
-        <span className="cursor-text" ref={textRef}>VIEW</span>
-      </div>
+      <div className="cursor-follower" ref={followerRef}></div>
     </>
   );
 };

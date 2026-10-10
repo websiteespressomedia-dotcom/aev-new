@@ -7,5 +7,5 @@ export default function Catalogue() {
         <main>
             <CreativeCatalogue />
         </main>
-    )
+    );
 }
