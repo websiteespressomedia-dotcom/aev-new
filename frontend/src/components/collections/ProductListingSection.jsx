@@ -17,9 +17,9 @@ const FINISH_FILTERS = [
 
 const SIZE_FILTERS = [
   "All",
+  "600x1200",
   "800x1600",
   "800x2400",
-  "600x1200",
   "1200x1800",
 ];
 
