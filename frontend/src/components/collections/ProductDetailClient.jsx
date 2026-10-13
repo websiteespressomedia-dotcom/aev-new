@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Share2 } from "lucide-react";
+import { ArrowLeft, Share2, MessageCircle } from "lucide-react";
 import gsap from "gsap";
 import "./ProductDetailClient.css";
 
@@ -53,6 +53,27 @@ export default function ProductDetailClient({ group }) {
     setActiveSize(size);
     const next = variations.find((item) => item.size === size);
     if (next) setActiveVariation(next);
+  };
+
+  const handleWhatsAppEnquiry = () => {
+    const productName = activeVariation?.name || group?.name || "this tile design";
+    const productSize = activeVariation?.size || group?.size || "Not specified";
+    const productFinish = activeVariation?.category || group?.category || "Not specified";
+    const productUrl = window.location.href;
+
+    const message = [
+      "Hello, I'm Interested in this tile design and would like to know more details.",
+      "",
+      `Design: ${productName}`,
+      `Size: ${productSize} mm`,
+      `Finish: ${productFinish}`,
+      `Product link: ${productUrl}`,
+      "",
+      "Could you please share the price, availability, and more details about this design?",
+    ].join("\n");
+
+    const whatsappUrl = `https://wa.me/919265901137?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, "_blank", "noopener,noreferrer");
   };
 
   const handleShare = async () => {
@@ -165,10 +186,21 @@ export default function ProductDetailClient({ group }) {
               </div>
             )}
 
-            <button className="aev-detail-share" type="button" onClick={handleShare}>
-              <Share2 size={15} />
-              Share design
-            </button>
+            <div className="aev-detail-actions">
+              <button className="aev-detail-share" type="button" onClick={handleShare}>
+                <Share2 size={15} />
+                Share design
+              </button>
+              <button
+                className="aev-detail-whatsapp"
+                type="button"
+                onClick={handleWhatsAppEnquiry}
+                aria-label={`Request details about ${activeVariation.name}`}
+              >
+                <MessageCircle size={16} />
+                Request for details
+              </button>
+            </div>
 
             <p className="aev-detail-description">
               Crafted with precision, the {activeVariation.name} collection delivers

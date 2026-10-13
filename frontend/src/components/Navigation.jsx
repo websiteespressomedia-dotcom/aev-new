@@ -87,11 +87,17 @@ export default function Navigation({ products = [] }) {
     const searchTerm = value.trim();
     if (!searchTerm) return;
 
-    setQuery(searchTerm);
+    setQuery("");
     setSearchOpen(false);
     setMenuOpen(false);
 
-    const isSize = /^\d{2,4}\s*x\s*\d{2,4}$/i.test(searchTerm);
+    // Accept 600x1200, 600X1200, 600 x 1200, and 600 × 1200.
+    const normalizedTerm = searchTerm
+      .toLowerCase()
+      .replace(/×/g, "x")
+      .replace(/\s+/g, "");
+
+    const isSize = /^\d{2,4}x\d{2,4}$/.test(normalizedTerm);
     const matchingFinish = FINISH_OPTIONS.find(
       (finish) => finish.toLowerCase() === searchTerm.toLowerCase()
     );
@@ -99,21 +105,16 @@ export default function Navigation({ products = [] }) {
     const params = new URLSearchParams();
 
     if (isSize) {
-      params.set("size", searchTerm.replace(/\s/g, ""));
+      params.set("size", normalizedTerm);
     } else if (matchingFinish) {
       params.set("finish", matchingFinish);
     } else {
       params.set("search", searchTerm);
     }
 
+    // Let the Collections page own scrolling after its filters are applied.
+    // A second scroll here caused the page to jump when both components scrolled.
     navigate(`/collections?${params.toString()}#product-listing`);
-
-    window.setTimeout(() => {
-      document.getElementById("product-listing")?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }, 500);
   };
 
   const chooseSuggestion = (value) => {
@@ -136,18 +137,11 @@ export default function Navigation({ products = [] }) {
     >
       <div className="nav-container">
         <Link to="/" className="nav-logo" aria-label="Aevitas Ceramics home">
-          <svg
-            className="logo-icon"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-          >
-            <path d="M12 2L2 22h20L12 2Z" fill="currentColor" />
-          </svg>
-
-          <span className="logo-text">
-            <span className="brand-name">AEVITAS</span>
-            <span className="brand-sub">CERAMICS</span>
-          </span>
+          <img
+            className="nav-logo-image"
+            src="/images/logo/Aevitas_Logo_W.png"
+            alt="Aevitas Ceramics Logo"
+          />
         </Link>
 
         <div className="nav-links">
@@ -155,6 +149,7 @@ export default function Navigation({ products = [] }) {
           <Link to="/about" className="nav-link">About</Link>
           <Link to="/collections" className="nav-link">Collections</Link>
           <Link to="/catalogue" className="nav-link">Catalogue</Link>
+          <Link to="/tile-calculator" className="nav-link">Tile Calculator</Link>
           <Link to="/contact" className="nav-link">Contact</Link>
         </div>
 

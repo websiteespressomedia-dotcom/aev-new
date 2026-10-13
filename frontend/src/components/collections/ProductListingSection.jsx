@@ -26,8 +26,9 @@ const SIZE_FILTERS = [
 const normalize = (value) =>
   String(value ?? "").trim().toLowerCase();
 
+// Treat x, X, and the multiplication sign (×) as the same size separator.
 const normalizeSize = (value) =>
-  normalize(value).replace(/\s/g, "");
+  normalize(value).replace(/×/g, "x").replace(/\s/g, "");
 
 export default function ProductListingSection({ initialProducts = [] }) {
   const sectionRef = useRef(null);
@@ -60,21 +61,32 @@ export default function ProductListingSection({ initialProducts = [] }) {
 
     setVisibleCount(8);
 
-    if (
+    const shouldScrollToResults =
       location.hash === "#product-listing" ||
-      sizeFromUrl ||
-      finishFromUrl ||
-      filterFromUrl ||
-      searchFromUrl
-    ) {
-      const timer = window.setTimeout(() => {
-        document.getElementById("product-listing")?.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      }, 350);
+      Boolean(sizeFromUrl || finishFromUrl || filterFromUrl || searchFromUrl);
 
-      return () => window.clearTimeout(timer);
+    if (shouldScrollToResults) {
+      // Scroll from one place only, after React has applied the URL filters.
+      // Refresh ScrollTrigger first because pinned sections above the listing
+      // can otherwise make the target position stale.
+      let secondFrame = 0;
+
+      const firstFrame = window.requestAnimationFrame(() => {
+        ScrollTrigger.refresh();
+
+        secondFrame = window.requestAnimationFrame(() => {
+          const target = document.getElementById("product-listing");
+          if (!target) return;
+
+          const top = target.getBoundingClientRect().top + window.scrollY;
+          window.scrollTo({ top, behavior: "auto" });
+        });
+      });
+
+      return () => {
+        window.cancelAnimationFrame(firstFrame);
+        if (secondFrame) window.cancelAnimationFrame(secondFrame);
+      };
     }
   }, [location.search, location.hash]);
 
