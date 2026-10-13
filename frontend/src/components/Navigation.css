@@ -38,9 +38,16 @@
   display: inline-flex;
   flex-shrink: 0;
   align-items: center;
-  gap: 10px;
-  color: #f4f0e7;
   text-decoration: none;
+}
+
+.nav-logo-image {
+  display: block;
+  width: clamp(155px, 14vw, 225px);
+  height: auto;
+  max-height: 48px;
+  object-fit: contain;
+  object-position: left center;
 }
 
 .logo-icon {
@@ -586,19 +593,9 @@
     gap: 10px;
   }
 
-  .logo-icon {
-    width: 24px;
-    height: 24px;
-  }
-
-  .brand-name {
-    font-size: 14px;
-    letter-spacing: 0.15em;
-  }
-
-  .brand-sub {
-    font-size: 7px;
-    letter-spacing: 0.27em;
+  .nav-logo-image {
+    width: clamp(112px, 31vw, 155px);
+    max-height: 34px;
   }
 
   .nav-right {
@@ -740,19 +737,9 @@
     flex-shrink: 0;
   }
 
-  .logo-icon {
-    width: 21px;
-    height: 21px;
-  }
-
-  .brand-name {
-    font-size: 12px;
-    letter-spacing: 0.12em;
-  }
-
-  .brand-sub {
-    font-size: 6px;
-    letter-spacing: 0.2em;
+  .nav-logo-image {
+    width: clamp(100px, 29vw, 138px);
+    max-height: 29px;
   }
 
   .nav-right {

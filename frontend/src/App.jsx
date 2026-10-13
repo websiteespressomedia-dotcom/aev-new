@@ -19,6 +19,7 @@ import Collections from './pages/Collections';
 import Catalogue from './pages/Catalogue';
 import ContactPage from './pages/ContactPage';
 import ProductDetailPage from "./pages/ProductDetailPage";
+import TileCalculatorPage from "./pages/TileCalculatorPage";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -101,6 +102,7 @@ function App() {
             <Route path="/porcelain-floor-tiles/:slug" element={<ProductDetailPage />} />
             <Route path="/large-format-porcelain-tiles/:slug" element={<ProductDetailPage />} />
             <Route path="/porcelain-slab-tiles/:slug" element={<ProductDetailPage />} />
+            <Route path="/tile-calculator" element={<PageWrapper><TileCalculatorPage /></PageWrapper>} />
           </Routes>
         </AnimatePresence>
       </main>
