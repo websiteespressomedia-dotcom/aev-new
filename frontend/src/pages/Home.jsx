@@ -3,6 +3,8 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import SplitText from '../components/SplitText';
+
+import ReelInspiration from './ReelInspiration';
 import './Home.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -1449,6 +1451,9 @@ const Home = () => {
           <div className="material-item animate-fade-up"><div className="material-thumb" style={{ backgroundImage: 'url(/tile_calacatta.jpg)', backgroundSize: 'cover' }}></div><h3>Ceramic</h3></div>
         </div>
       </section>
+
+      {/* Aevitas Reel Journal */}
+      <ReelInspiration />
 
       {/* Contact Section */}
       <section className="home-contact-section">
