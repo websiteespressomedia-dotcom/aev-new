@@ -86,7 +86,7 @@ export default function CollectionsClient({ products }) {
       className="relative bg-black min-h-[300vh]"
     >
       {/* Background video */}
-      <div className="bg-container fixed inset-0 z-0 opacity-80 will-change-transform">
+      {/* <div className="bg-container fixed inset-0 z-0 opacity-80 will-change-transform">
         <video
           autoPlay
           loop
@@ -97,7 +97,7 @@ export default function CollectionsClient({ products }) {
           <source src="/videos/reel1.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
-      </div>
+      </div> */}
 
       {/* Page sections */}
       <HeroSection ref={heroRef} />

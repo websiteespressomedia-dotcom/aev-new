@@ -271,7 +271,7 @@ const MissionVision = () => {
           duration: 1.35,
           ease: "power4.inOut",
         },
-        "-=0.7"
+        0.2 // Timeline ke start ke 0.2 seconds baad
       );
 
       if (meta) {
@@ -296,7 +296,7 @@ const MissionVision = () => {
           duration: 1,
           ease: "power4.out",
         },
-        "-=0.7"
+        0.35
       );
 
       entrance.to(
@@ -822,6 +822,9 @@ const MissionVision = () => {
             <img
               src={MISSION_IMAGE}
               alt="Aevitas Ceramics mission"
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
             />
 
             <div className="mv-image-overlay" />
@@ -836,6 +839,9 @@ const MissionVision = () => {
             <img
               src={VISION_IMAGE}
               alt="Aevitas Ceramics vision"
+              loading="eager"
+              fetchPriority="auto"
+              decoding="async"
             />
 
             <div className="mv-secondary-overlay" />

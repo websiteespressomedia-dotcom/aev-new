@@ -10,6 +10,7 @@ import CustomCursor from './components/CustomCursor';
 import GlobalBackground from './components/GlobalBackground';
 import FullscreenMenu from './components/FullscreenMenu';
 import WhatsAppButton from './components/WhatsAppButton';
+import Footer from './components/Footer';
 
 
 // Pages
@@ -25,11 +26,31 @@ gsap.registerPlugin(ScrollTrigger);
 
 // Sub-component to handle smooth scrolling reset on route change
 const ScrollManager = () => {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
+    const isProductDetailRoute =
+      /^\/(porcelain-floor-tiles|large-format-porcelain-tiles|porcelain-slab-tiles)\//.test(
+        pathname
+      );
+
+    const isReturningToListing =
+      pathname === "/collections" &&
+      hash === "#product-listing";
+
+    // Let the destination page handle its own scroll position.
+    // This prevents the old collection page from jumping to its heading
+    // while AnimatePresence is running its exit animation.
+    if (isProductDetailRoute || isReturningToListing) {
+      return;
+    }
+
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "auto",
+    });
+  }, [pathname, hash]);
 
   return null;
 };
@@ -106,6 +127,8 @@ function App() {
           </Routes>
         </AnimatePresence>
       </main>
+
+      <Footer />
     </>
   );
 }

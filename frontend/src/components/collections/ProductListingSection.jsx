@@ -128,7 +128,10 @@ export default function ProductListingSection({ initialProducts = [] }) {
     });
   }, [initialProducts, search, activeFilter, activeSizeFilter]);
 
-  const displayedProducts = filteredProducts.slice(0, visibleCount);
+  const displayedProducts = useMemo(
+    () => filteredProducts.slice(0, visibleCount),
+    [filteredProducts, visibleCount]
+  );
 
   useEffect(() => {
     setVisibleCount(8);
@@ -392,6 +395,8 @@ export default function ProductListingSection({ initialProducts = [] }) {
                         alt={product.name || "Ceramic tile"}
                         className="aev-product-card__img"
                         loading="lazy"
+                        decoding="async"
+                        draggable={false}
                       />
                     </div>
 
@@ -402,6 +407,8 @@ export default function ProductListingSection({ initialProducts = [] }) {
                           alt={`${product.name || "Tile"} in an interior`}
                           className="aev-product-card__img"
                           loading="lazy"
+                          decoding="async"
+                          draggable={false}
                         />
                       </div>
                     )}

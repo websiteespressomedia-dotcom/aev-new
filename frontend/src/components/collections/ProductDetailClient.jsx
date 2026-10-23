@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Share2, MessageCircle } from "lucide-react";
 import gsap from "gsap";
@@ -19,6 +19,14 @@ export default function ProductDetailClient({ group }) {
   const sizeVariations = variations.filter(
     (item) => !activeSize || item.size === activeSize
   );
+
+  useLayoutEffect(() => {
+  window.scrollTo({
+    top: 0,
+    left: 0,
+    behavior: "auto",
+  });
+}, [group?.id]);
 
   useEffect(() => {
     if (!variations.length) return;
