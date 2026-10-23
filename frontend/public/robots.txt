@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://aev-new.vercel.app/sitemap.xml
