@@ -58,39 +58,55 @@ export default function ProductDetailClient({ group }) {
   }, [group?.id]);
 
   
-  useEffect(() => {
-    if (!group || !activeVariation) return;
+useEffect(() => {
+  if (!group) return;
 
-    const name = activeVariation.name || group.name;
-    const size = activeVariation.size || group.size || "";
-    const finish = activeVariation.category || group.category || "";
+  const productName = group.baseName || group.name;
+  const sizes = [
+    ...new Set(
+      group.variations.map((item) => item.size).filter(Boolean)
+    ),
+  ];
+  const finishes = [
+    ...new Set(
+      group.variations.map((item) => item.category).filter(Boolean)
+    ),
+  ];
 
-    document.title = `${name} Tiles${size ? ` ${size} mm` : ""} | Aevitas Ceramics`;
+  document.title =
+    `${productName} Porcelain Tiles | Aevitas Ceramics`;
 
-    const description =
-      `Explore ${name} porcelain tiles${size ? ` in ${size} mm size` : ""}` +
-      `${finish ? ` with ${finish} finish` : ""}. View design details from Aevitas Ceramics.`;
+  const description =
+    `Explore ${productName} porcelain tiles by Aevitas Ceramics` +
+    `${sizes.length ? `. Available sizes: ${sizes.join(", ")} mm` : ""}` +
+    `${finishes.length ? `. Finishes: ${finishes.join(", ")}` : ""}.` +
+    ` Request product details and availability.`;
 
-    let meta = document.querySelector('meta[name="description"]');
+  let meta = document.querySelector(
+    'meta[name="description"]'
+  );
 
-    if (!meta) {
-      meta = document.createElement("meta");
-      meta.name = "description";
-      document.head.appendChild(meta);
-    }
+  if (!meta) {
+    meta = document.createElement("meta");
+    meta.name = "description";
+    document.head.appendChild(meta);
+  }
 
-    meta.content = description;
+  meta.content = description;
 
-    let canonical = document.querySelector('link[rel="canonical"]');
+  let canonical = document.querySelector(
+    'link[rel="canonical"]'
+  );
 
-    if (!canonical) {
-      canonical = document.createElement("link");
-      canonical.rel = "canonical";
-      document.head.appendChild(canonical);
-    }
+  if (!canonical) {
+    canonical = document.createElement("link");
+    canonical.rel = "canonical";
+    document.head.appendChild(canonical);
+  }
 
-    canonical.href = window.location.origin + window.location.pathname;
-  }, [group, activeVariation]);
+  canonical.href =
+    window.location.origin + window.location.pathname;
+}, [group]);
 
   const handleSizeClick = (size) => {
     setActiveSize(size);
