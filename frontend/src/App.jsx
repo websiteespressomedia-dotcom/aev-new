@@ -72,6 +72,75 @@ function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
 
+  
+  useEffect(() => {
+    const seoPages = {
+      "/": {
+        title: "Premium Tiles & Surfaces | Aevitas Ceramics",
+        description:
+          "Explore premium porcelain tiles, marble-inspired surfaces, floor tiles and wall tiles by Aevitas Ceramics."
+      },
+      "/about": {
+        title: "About Us | Aevitas Ceramics",
+        description:
+          "Discover Aevitas Ceramics and our approach to premium tile designs and architectural surfaces."
+      },
+      "/collections": {
+        title: "Porcelain Tile Collections | Aevitas Ceramics",
+        description:
+          "Explore porcelain floor tiles, wall tiles, large-format tiles and premium tile designs for modern spaces."
+      },
+      "/catalogue": {
+        title: "Tile Catalogue | Aevitas Ceramics",
+        description:
+          "Browse the Aevitas Ceramics tile catalogue to explore designs, finishes and tile collections."
+      },
+      "/contact": {
+        title: "Contact Us | Aevitas Ceramics",
+        description:
+          "Contact Aevitas Ceramics for premium tile collections, product information and business enquiries."
+      },
+      "/tile-calculator": {
+        title: "Tile Calculator | Aevitas Ceramics",
+        description:
+          "Estimate your tile requirements for your space with the Aevitas Ceramics tile calculator."
+      }
+    };
+
+    const path = location.pathname.replace(/\/+$/, "") || "/";
+    const page = seoPages[path];
+
+    // Product pages already set their own dynamic SEO metadata.
+    if (!page) return;
+
+    document.title = page.title;
+
+    let description = document.querySelector(
+      'meta[name="description"]'
+    );
+
+    if (!description) {
+      description = document.createElement("meta");
+      description.name = "description";
+      document.head.appendChild(description);
+    }
+
+    description.content = page.description;
+
+    let canonical = document.querySelector(
+      'link[rel="canonical"]'
+    );
+
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.rel = "canonical";
+      document.head.appendChild(canonical);
+    }
+
+    canonical.href = window.location.origin + path;
+  }, [location.pathname]);
+
+
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.8,
