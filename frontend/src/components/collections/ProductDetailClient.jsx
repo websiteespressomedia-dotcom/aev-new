@@ -92,44 +92,6 @@ export default function ProductDetailClient({ group }) {
     canonical.href = window.location.origin + window.location.pathname;
   }, [group, activeVariation]);
 
-  
-useEffect(() => {
-  if (!group || !activeVariation) return;
-
-  const productName = activeVariation.name || group.name;
-  const imageUrl = activeVariation.image || group.image;
-
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: productName,
-    description:
-      `Explore ${productName} tiles by Aevitas Ceramics.`,
-    image: imageUrl
-      ? [new URL(imageUrl, window.location.origin).href]
-      : undefined,
-    brand: {
-      "@type": "Brand",
-      name: "Aevitas Ceramics"
-    },
-    url: window.location.href
-  };
-
-  let script = document.querySelector(
-    'script[data-product-schema="true"]'
-  );
-
-  if (!script) {
-    script = document.createElement("script");
-    script.type = "application/ld+json";
-    script.dataset.productSchema = "true";
-    document.head.appendChild(script);
-  }
-
-  script.textContent = JSON.stringify(schema);
-}, [group, activeVariation]);
-
-
   const handleSizeClick = (size) => {
     setActiveSize(size);
     const next = variations.find((item) => item.size === size);
