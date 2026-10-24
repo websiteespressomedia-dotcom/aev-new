@@ -57,6 +57,42 @@ export default function ProductDetailClient({ group }) {
     return () => ctx.revert();
   }, [group?.id]);
 
+  
+  useEffect(() => {
+    if (!group || !activeVariation) return;
+
+    const name = activeVariation.name || group.name;
+    const size = activeVariation.size || group.size || "";
+    const finish = activeVariation.category || group.category || "";
+
+    document.title = `${name} Tiles${size ? ` ${size} mm` : ""} | Aevitas Ceramics`;
+
+    const description =
+      `Explore ${name} porcelain tiles${size ? ` in ${size} mm size` : ""}` +
+      `${finish ? ` with ${finish} finish` : ""}. View design details from Aevitas Ceramics.`;
+
+    let meta = document.querySelector('meta[name="description"]');
+
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.name = "description";
+      document.head.appendChild(meta);
+    }
+
+    meta.content = description;
+
+    let canonical = document.querySelector('link[rel="canonical"]');
+
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.rel = "canonical";
+      document.head.appendChild(canonical);
+    }
+
+    canonical.href = window.location.origin + window.location.pathname;
+  }, [group, activeVariation]);
+
+
   const handleSizeClick = (size) => {
     setActiveSize(size);
     const next = variations.find((item) => item.size === size);
