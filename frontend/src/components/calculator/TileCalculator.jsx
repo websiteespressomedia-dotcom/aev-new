@@ -235,11 +235,11 @@ export default function TileCalculator() {
                     <span className="aev-result-box__icon" aria-hidden="true">▤</span>
                     <div><small>ESTIMATED PACKAGING</small><strong>{results.boxes.toLocaleString("en-IN")} <span>boxes</span></strong><p>Assuming {results.perBox} tiles per box</p></div>
                   </div>
-                  <div className="aev-result-coverage"><span>Coverage including full boxes</span><strong>{numberFormat(results.coverage, 2)} m²</strong></div>
+                  {/* <div className="aev-result-coverage"><span>Coverage including full boxes</span><strong>{numberFormat(results.coverage, 2)} m²</strong></div> */}
                 </motion.div>
               )}
             </AnimatePresence>
-            <div className="aev-result-footnote">Planning estimate only. Actual box quantities vary by product; please confirm packaging details with the Aevitas team or your installer.</div>
+            {/* <div className="aev-result-footnote">Planning estimate only. Actual box quantities vary by product; please confirm packaging details with the Aevitas team or your installer.</div> */}
           </motion.aside>
         </div>
       </section>
