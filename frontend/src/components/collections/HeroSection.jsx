@@ -53,13 +53,15 @@ const HeroSection = forwardRef(function HeroSection(_props, ref) {
       <div ref={contentRef} className="aev-hero__content">
         <p className="aev-hero__kicker">A considered study in surface</p>
         <h1 id="aev-hero-title" className="aev-hero__title">
-          Curated<br /><em>Collections.</em>
+          Premium Porcelain<br /><em>Tile Collections.</em>
         </h1>
         <div className="aev-hero__bottom">
           <span className="aev-hero__rule" aria-hidden="true" />
           <p className="aev-hero__description">
-            A celebration of craftsmanship and timeless elegance, designed
-            for spaces where every detail matters.
+            Explore premium porcelain tile designs by Aevitas Ceramics.
+            Discover refined finishes, contemporary surfaces and tile
+            formats for residential and commercial spaces. Browse the
+            collection and contact our team for product details.
           </p>
         </div>
       </div>

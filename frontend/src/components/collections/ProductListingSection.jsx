@@ -392,7 +392,7 @@ export default function ProductListingSection({ initialProducts = [] }) {
                     <div className="aev-product-card__image aev-product-card__image--base">
                       <img
                         src={product.image}
-                        alt={product.name || "Ceramic tile"}
+                        alt={`${product.name || "Premium"} porcelain tile design by Aevitas Ceramics`}
                         className="aev-product-card__img"
                         loading="lazy"
                         decoding="async"

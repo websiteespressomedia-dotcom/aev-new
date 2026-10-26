@@ -6,7 +6,7 @@ const ADDRESSES = [
   { city: "Morbi", text: "410, Pavansut Plaza, National Highway - 8, Morbi, Gujarat, India" },
 ];
 
-const PHONE_NUMBER = "+91 87581 17559";
+const PHONE_NUMBER = "+91 92659 01137";
 const CONTACT_EMAIL = ""; // Add the official email when confirmed.
 
 const FINISHES = ["Liso", "Carving", "Highglossy", "Glossy", "Liso + Carving"];

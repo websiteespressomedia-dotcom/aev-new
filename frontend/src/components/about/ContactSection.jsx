@@ -6,7 +6,7 @@ import "./ContactSection.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const WHATSAPP_URL = "https://wa.me/918758117559";
+const WHATSAPP_URL = "https://wa.me/919265901137";
 
 const OFFICES = [
   {
@@ -250,9 +250,9 @@ const ContactSection = () => {
           </a>
         </div>
 
-        <div className="contact-rule" />
+        {/* <div className="contact-rule" /> */}
 
-        <div className="contact-bottom">
+        {/* <div className="contact-bottom">
           <div className="contact-bottom-label contact-meta">
             Our locations
           </div>
@@ -283,7 +283,7 @@ const ContactSection = () => {
             <span>Direct</span>
             <a href="tel:+918758117559">+91 87581 17559</a>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );

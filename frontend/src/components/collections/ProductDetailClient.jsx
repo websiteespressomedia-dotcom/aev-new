@@ -1,6 +1,9 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Share2, MessageCircle } from "lucide-react";
+
+import { groupedProducts } from "../../lib/productData";
+
 import gsap from "gsap";
 import "./ProductDetailClient.css";
 
@@ -63,14 +66,10 @@ useEffect(() => {
 
   const productName = group.baseName || group.name;
   const sizes = [
-    ...new Set(
-      group.variations.map((item) => item.size).filter(Boolean)
-    ),
+    ...new Set(variations.map((item) => item.size).filter(Boolean)),
   ];
   const finishes = [
-    ...new Set(
-      group.variations.map((item) => item.category).filter(Boolean)
-    ),
+    ...new Set(variations.map((item) => item.category).filter(Boolean)),
   ];
 
   document.title =
@@ -104,9 +103,48 @@ useEffect(() => {
     document.head.appendChild(canonical);
   }
 
-  canonical.href =
-    window.location.origin + window.location.pathname;
+  canonical.href = `https://aev-new.vercel.app/porcelain-floor-tiles/${group.id}`;
 }, [group]);
+
+
+useEffect(() => {
+  if (!group) return;
+
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://aev-new.vercel.app/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Collections",
+        "item": "https://aev-new.vercel.app/collections"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": group.baseName || group.name,
+        "item": `https://aev-new.vercel.app/porcelain-floor-tiles/${group.id}`
+      }
+    ]
+  };
+
+  const script = document.createElement("script");
+  script.type = "application/ld+json";
+  script.dataset.seoBreadcrumb = "true";
+  script.textContent = JSON.stringify(schema);
+
+  document.head.appendChild(script);
+
+  return () => script.remove();
+}, [group]);
+
 
   const handleSizeClick = (size) => {
     setActiveSize(size);
@@ -154,6 +192,25 @@ useEffect(() => {
     }
   };
 
+  const relatedProducts = useMemo(() => {
+  if (!group) return [];
+
+  const sizes = new Set(variations.map((item) => item.size).filter(Boolean));
+  const finishes = new Set(variations.map((item) => item.category).filter(Boolean));
+
+  return groupedProducts
+    .filter((item) => item.id !== group.id)
+    .map((item) => ({
+      ...item,
+      score:
+        (item.variations.some((v) => finishes.has(v.category)) ? 2 : 0) +
+        (item.variations.some((v) => sizes.has(v.size)) ? 1 : 0),
+    }))
+    .filter((item) => item.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 4);
+}, [group]);
+
   if (!activeVariation) return null;
 
   const hasUniquePreview =
@@ -184,7 +241,7 @@ useEffect(() => {
             >
               <img
                 src={activeVariation.image}
-                alt={activeVariation.name}
+                alt={`${activeVariation.name || group.name} porcelain tile by Aevitas Ceramics`}
                 draggable="false"
                 fetchPriority="high"
               />
@@ -238,7 +295,11 @@ useEffect(() => {
                       aria-label={`Show ${variation.name}`}
                       onContextMenu={(event) => event.preventDefault()}
                     >
-                      <img src={variation.image} alt={variation.name} draggable="false" />
+                      <img
+                        src={variation.image}
+                        alt={`${variation.name || group.name} tile variation`}
+                        draggable="false"
+                      />
                     </button>
                   ))}
                 </div>
@@ -262,8 +323,11 @@ useEffect(() => {
             </div>
 
             <p className="aev-detail-description">
-              Crafted with precision, the {activeVariation.name} collection delivers
-              authentic texture and visual depth to elevate any architectural space.
+              Explore {group.baseName || group.name} porcelain tiles by Aevitas Ceramics.
+              Available in {allSizes.length ? allSizes.join(", ") : "selected"} mm sizes,
+              this design brings distinctive surface detail to residential and commercial
+              interiors. Contact our team for product specifications, availability, and
+              finish options.
             </p>
           </section>
         </div>
@@ -278,13 +342,37 @@ useEffect(() => {
           </div>
           <img
             src={activeVariation.previewImage}
-            alt={`${activeVariation.name} room preview`}
+            alt={`${activeVariation.name || group.name} porcelain tile installed in an interior`}
             loading="lazy"
             draggable="false"
             onContextMenu={(event) => event.preventDefault()}
           />
         </section>
       )}
+      <section className="aev-related">
+  <h2>Explore Related Tile Designs</h2>
+  <p>Discover more porcelain tile designs from Aevitas Ceramics.</p>
+
+  <div className="aev-related-grid">
+    {relatedProducts.map((product) => (
+      <Link
+        key={product.id}
+        to={`/porcelain-floor-tiles/${product.id}`}
+        className="aev-related-card"
+      >
+        <img
+          src={product.image}
+          alt={`${product.name} porcelain tile design`}
+          loading="lazy"
+        />
+
+        <h3>{product.name}</h3>
+        <p>{product.size || "Available formats"} mm</p>
+        <span>Explore design ↗</span>
+      </Link>
+    ))}
+  </div>
+</section>
     </main>
   );
 }
