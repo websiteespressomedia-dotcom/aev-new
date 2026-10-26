@@ -85,6 +85,7 @@
 .aev-detail-actions .aev-detail-share {
   margin-top: 0;
 }
+
 .aev-detail-whatsapp {
   display: inline-flex;
   align-items: center;
@@ -92,22 +93,29 @@
   gap: 9px;
   min-height: 42px;
   padding: 13px 20px;
-  border: 1px solid #218c50;
-  background: rgb(2, 190, 190);
+  border: 1px solid #3d2b1f;
+  background: #3d2b1f;
   border-radius: 2px;
-  color: #1a1a2e;
+  color: #f3f0eb;
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: .11em;
+  letter-spacing: 0.11em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: background .2s ease, border-color .2s ease, transform .2s ease;
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease;
 }
+
 .aev-detail-whatsapp:hover {
-  background: #1a1a2e;
-  color: #f2f0e9;
+  background: #a77a32;
+  border-color: #a77a32;
+  color: #ffffff;
   transform: translateY(-1px);
 }
+
 .aev-detail-whatsapp:focus-visible,
 .aev-detail-share:focus-visible {
   outline: 2px solid #a77a32;

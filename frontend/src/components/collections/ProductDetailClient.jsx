@@ -192,25 +192,57 @@ useEffect(() => {
     }
   };
 
+
   const relatedProducts = useMemo(() => {
-  if (!group) return [];
+    if (!group) return [];
 
-  const sizes = new Set(variations.map((item) => item.size).filter(Boolean));
-  const finishes = new Set(variations.map((item) => item.category).filter(Boolean));
+    const sizes = new Set(
+      variations.map((item) => item.size).filter(Boolean)
+    );
+    const finishes = new Set(
+      variations.map((item) => item.category).filter(Boolean)
+    );
 
-  return groupedProducts
-    .filter((item) => item.id !== group.id)
-    .map((item) => ({
-      ...item,
-      score:
-        (item.variations.some((v) => finishes.has(v.category)) ? 2 : 0) +
-        (item.variations.some((v) => sizes.has(v.size)) ? 1 : 0),
-    }))
-    .filter((item) => item.score > 0)
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 4);
-}, [group]);
+    // Treat R1, R2, R3, etc. as faces/versions of the same design.
+    const normalizeDesignName = (name = "") =>
+      String(name)
+        .replace(/[\s_-]+R\d+\s*$/i, "")
+        .trim()
+        .toLowerCase()
+        .replace(/[_\s-]+/g, " ");
 
+    const currentDesign = normalizeDesignName(
+      group.baseName || group.name
+    );
+
+    const uniqueDesigns = new Map();
+
+    groupedProducts.forEach((item) => {
+      const designName = normalizeDesignName(
+        item.baseName || item.name
+      );
+
+      // Exclude every version of the currently opened design.
+      if (!designName || designName === currentDesign) return;
+
+      // Keep only one card per unique design.
+      if (!uniqueDesigns.has(designName)) {
+        uniqueDesigns.set(designName, item);
+      }
+    });
+
+    return [...uniqueDesigns.values()]
+      .map((item) => ({
+        ...item,
+        score:
+          (item.variations.some((v) => finishes.has(v.category)) ? 2 : 0) +
+          (item.variations.some((v) => sizes.has(v.size)) ? 1 : 0),
+      }))
+      .filter((item) => item.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 4);
+  }, [group, variations]);
+  
   if (!activeVariation) return null;
 
   const hasUniquePreview =

@@ -522,61 +522,94 @@ const AboutHeritage = () => {
       gsap.set(finalWrap, { autoAlpha: 0 });
       gsap.set(finalKids, { opacity: 0, y: 50 });
 
-      const tl = gsap.timeline({
-        defaults: { ease: 'power2.inOut' },
+            const tl = gsap.timeline({
+        defaults: { ease: "power2.inOut" },
         scrollTrigger: {
           trigger: root,
-          start: 'top top',
-          end: '+=600%',
+          start: "top top",
+          end: "+=300%",
           pin: true,
-          scrub: 1.2,               // smooth catch-up
+          scrub: 1.5,
           anticipatePin: 1,
           invalidateOnRefresh: true,
-          refreshPriority: 2        // this pin is the first one on the page: measure it first
-        }
+          refreshPriority: 2,
+        },
       });
 
-      const T2 = 0.4;   // step 1 -> 2
-      const T3 = 1.6;   // step 2 -> 3
-      const T4 = 2.8;   // step 3 -> 4
-      const T5 = 5.4;   // step 4 -> 5
+      // SCROLL 1: Show the full-screen image and material content
+      tl.to(
+        media,
+        { top: "0%", height: "100%", duration: 1.8 },
+        0
+      )
+        .to(imgA, { scale: 1, duration: 1.8 }, 0)
+        .to(
+          [eyebrow, hl1, hl2, vline, hint],
+          { autoAlpha: 0, duration: 0.4 },
+          0
+        )
+        .to(veil, { opacity: 1, duration: 0.4 }, 0.5)
+        .to(
+          matKids,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            stagger: 0.08,
+            ease: "power2.out",
+          },
+          0.7
+        );
 
-      /* ---------- step 1 -> 2 : text separates, a thin band opens ---------- */
-      tl.to(media, { top: '48%', height: '12%', duration: 1 }, T2)
-        .to(eyebrow, { y: vh(-5), duration: 1 }, T2)
-        .to(hl1, { y: vh(-6), duration: 1 }, T2)
-        .to(hl2, { y: vh(27), duration: 1 }, T2)
-        .to(vline, { top: vh(37), height: vh(49), duration: 1 }, T2)
-        .to(hint, { opacity: 0, y: 12, duration: 0.6 }, T2)
-        .to(imgA, { scale: 1, duration: T4 + 1.3 - T2, ease: 'none' }, T2);   // slow zoom-out until full view
-
-      /* ---------- step 2 -> 3 : image reveal expands, text turns ghostly ---------- */
-      tl.to(media, { top: '33%', height: '42%', duration: 1 }, T3)
-        .to(eyebrow, { y: vh(-8), duration: 1 }, T3)
-        .to(hl1, { y: vh(-12), opacity: 0.22, duration: 1 }, T3)
-        .to(hl2, { y: vh(33), opacity: 0.22, duration: 1 }, T3)
-        .to(vline, { opacity: 0, duration: 0.8 }, T3);
-
-      /* ---------- step 3 -> 4 : full material view ---------- */
-      tl.to(media, { top: '0%', height: '100%', duration: 1.3 }, T4)
-        .to(hl1, { y: vh(-20), opacity: 0, duration: 1 }, T4)
-        .to(hl2, { y: vh(45), opacity: 0, duration: 1 }, T4)
-        .to(eyebrow, { y: vh(-12), opacity: 0, duration: 1 }, T4)
-        .to(veil, { opacity: 1, duration: 0.8 }, T4 + 0.5)
-        .to(matKids, { opacity: 1, y: 0, duration: 0.9, stagger: 0.12, ease: 'power2.out' }, T4 + 0.8);
-
-      /* ---------- step 4 -> 5 : image shrinks into a frame, final text arrives ---------- */
-      tl.to(matKids, { opacity: 0, y: -30, duration: 0.6, stagger: 0.05, ease: 'power2.in' }, T5)
-        .to(veil, { opacity: 0, duration: 0.8 }, T5)
+      // SCROLL 2: Shrink image and reveal the About content
+      tl.to(
+        matKids,
+        {
+          opacity: 0,
+          y: -20,
+          duration: 0.3,
+          stagger: 0.03,
+          ease: "power2.in",
+        },
+        1.2
+      )
+        .to(veil, { opacity: 0, duration: 0.4 }, 1.2)
         .to(
           media,
-          { left: frame.left, top: frame.top, width: frame.width, height: frame.height, borderRadius: 6, duration: 1.5 },
-          T5
+          {
+            left: frame.left,
+            top: frame.top,
+            width: frame.width,
+            height: frame.height,
+            borderRadius: 6,
+            duration: 0.8,
+          },
+          1.3
         )
-        .to(imgB, { opacity: 1, duration: 0.8, ease: 'none' }, T5 + 0.6)
-        .fromTo(finalWrap, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.01, immediateRender: false }, T5 + 0.7)
-        .to(finalKids, { opacity: 1, y: 0, duration: 1, stagger: 0.12, ease: 'power2.out' }, T5 + 0.8);
+        .to(imgB, { opacity: 1, duration: 0.4 }, 1.7)
+        .fromTo(
+          finalWrap,
+          { autoAlpha: 0 },
+          {
+            autoAlpha: 1,
+            duration: 0.01,
+            immediateRender: false,
+          },
+          1.7
+        )
+        .to(
+          finalKids,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            stagger: 0.08,
+            ease: "power2.out",
+          },
+          1.7
+        );
 
+      tl.to({}, { duration: 0.2 });
       tl.to({}, { duration: 0.5 });   // short hold on the final layout before un-pinning
     }, root);
 
@@ -636,8 +669,10 @@ const AboutHeritage = () => {
           <p className="ah-final-p">{ABOUT_TEXT.finalText}</p>
           <div>
             <button className="pill-btn ah-cta">
-              <span className="ah-cta-circle" aria-hidden="true">→</span>
-              <span className="ah-cta-label">{ABOUT_TEXT.cta}</span>
+               <a href="/about">
+                <span className="ah-cta-circle" aria-hidden="true">→</span>
+                <span className="ah-cta-label">{ABOUT_TEXT.cta}</span>
+              </a>
             </button>
           </div>
         </div>
@@ -976,8 +1011,8 @@ const Home = () => {
         {
           y: 0,
           opacity: 1,
-          duration: 0.6,
-          stagger: 0.05,
+          duration: 0.8,
+          stagger: 0.12,
           ease: "power2.out",
           scrollTrigger: {
             trigger: ".stats-grid-wrapper",
