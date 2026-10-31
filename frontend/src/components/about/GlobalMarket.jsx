@@ -11,6 +11,8 @@ const PARAGRAPHS = [
   "We believe successful international partnerships are built on quality, consistency, and trust. As we expand our global reach, our goal is to establish lasting relationships with buyers and distribution partners by delivering thoughtfully designed porcelain surfaces backed by a commitment to dependable service.",
 ];
 
+const [LEAD, ...REST] = PARAGRAPHS;
+
 export default function GlobalMarket() {
   const sectionRef = useRef(null);
 
@@ -19,63 +21,52 @@ export default function GlobalMarket() {
     if (!section) return undefined;
 
     const ctx = gsap.context(() => {
-      const targets = (selector) => gsap.utils.toArray(selector, section);
-      const eyebrow = section.querySelector(".gm-eyebrow");
-      const titleLines = targets(".gm-title-line");
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      const q = (s) => gsap.utils.toArray(s, section);
+      const titleLines = q(".gm-title-line");
+      const lead = section.querySelector(".gm-lead");
+      const cols = q(".gm-col");
       const rule = section.querySelector(".gm-rule");
-      const paragraphs = targets(".gm-copy p");
+      const note = section.querySelector(".gm-bottom-note");
       const frame = section.querySelector(".gm-image-frame");
+      const block = section.querySelector(".gm-visual-block");
       const image = section.querySelector(".gm-image");
-      const labels = targets(".gm-image-label, .gm-bottom-note");
 
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        gsap.set(section.querySelectorAll("*"), { clearProps: "all" });
-        return;
-      }
-
-      gsap.set(eyebrow, { autoAlpha: 0, y: 14 });
-      gsap.set(titleLines, { autoAlpha: 0, yPercent: 105, rotateX: 5 });
+      gsap.set(titleLines, { yPercent: 108 });
+      gsap.set([lead, ...cols, note], { autoAlpha: 0, y: 22 });
       gsap.set(rule, { scaleX: 0, transformOrigin: "left center" });
-      gsap.set(paragraphs, { autoAlpha: 0, y: 18 });
-      gsap.set(frame, { clipPath: "inset(0 0 0 100%)" });
-      gsap.set(image, { scale: 1.08 });
-      gsap.set(labels, { autoAlpha: 0, y: 10 });
+      gsap.set(frame, { clipPath: "inset(100% 0 0 0)" });
+      gsap.set(block, { scaleY: 0, transformOrigin: "bottom center" });
+      gsap.set(image, { scale: 1.18 });
 
-      const entrance = gsap.timeline({
-        scrollTrigger: { trigger: section, start: "top 72%", once: true },
-        defaults: { ease: "power3.out" },
-      });
+      gsap
+        .timeline({
+          scrollTrigger: { trigger: section, start: "top 70%", once: true },
+          defaults: { ease: "power3.out" },
+        })
+        .to(titleLines, { yPercent: 0, duration: 1.1, stagger: 0.12, ease: "power4.out" })
+        .to(block, { scaleY: 1, duration: 0.9, ease: "power3.inOut" }, 0.2)
+        .to(frame, { clipPath: "inset(0% 0 0 0)", duration: 1.2, ease: "power4.inOut" }, 0.3)
+        .to(image, { scale: 1, duration: 1.6 }, 0.3)
+        .to(lead, { autoAlpha: 1, y: 0, duration: 0.9 }, 0.55)
+        .to(rule, { scaleX: 1, duration: 0.9, ease: "power3.inOut" }, 0.9)
+        .to(cols, { autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.12 }, 1)
+        .to(note, { autoAlpha: 1, y: 0, duration: 0.7 }, 1.3);
 
-      entrance
-        .to(eyebrow, { autoAlpha: 1, y: 0, duration: 0.5 })
-        .to(titleLines, {
-          autoAlpha: 1,
-          yPercent: 0,
-          rotateX: 0,
-          duration: 0.75,
-          stagger: 0.1,
-        }, "-=0.15")
-        .to(rule, { scaleX: 1, duration: 0.55 }, "-=0.25")
-        .to(paragraphs, { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.1 }, "-=0.1")
-        .to(frame, { clipPath: "inset(0 0 0 0%)", duration: 0.9, ease: "power3.inOut" }, 0.15)
-        .to(image, { scale: 1, duration: 1.1, ease: "power3.out" }, "<")
-        .to(labels, { autoAlpha: 1, y: 0, duration: 0.4, stagger: 0.06 }, "-=0.25");
-
+      /* the photo drifts a little slower than the page */
       gsap.to(image, {
         yPercent: -4,
         ease: "none",
-        scrollTrigger: {
-          trigger: section,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1.6,
-        },
+        scrollTrigger: { trigger: section, start: "top bottom", end: "bottom top", scrub: 1.6 },
       });
-
-      requestAnimationFrame(() => ScrollTrigger.refresh());
     }, section);
 
-    return () => ctx.revert();
+    const t = window.setTimeout(() => ScrollTrigger.refresh(), 400);
+    return () => {
+      window.clearTimeout(t);
+      ctx.revert();
+    };
   }, []);
 
   return (
@@ -84,9 +75,7 @@ export default function GlobalMarket() {
       className="about-global-markets-section"
       aria-labelledby="global-markets-title"
     >
-
-      <header className="gm-heading-block">
-
+      <div className="gm-wrap">
         <h2 className="gm-title" id="global-markets-title">
           <span className="gm-title-mask">
             <span className="gm-title-line">Bringing Premium Porcelain Tile</span>
@@ -95,34 +84,38 @@ export default function GlobalMarket() {
             <span className="gm-title-line">Solutions to Global Markets</span>
           </span>
         </h2>
-      </header>
 
-      <div className="gm-rule" />
-
-      <div className="gm-layout">
-        <div className="gm-content">
-          <div className="gm-copy">
-            {PARAGRAPHS.map((paragraph, i) => (
-              <p key={i}>{paragraph}</p>
-            ))}
+        <div className="gm-layout">
+          {/* ---------- photo (left): tall portrait on a flat colour block ---------- */}
+          <div className="gm-visual">
+            <span className="gm-visual-block" aria-hidden="true" />
+            <div className="gm-image-frame">
+              <img
+                className="gm-image"
+                src="/images/global-markets-porcelain.png"
+                alt="Premium porcelain surfaces in a contemporary architectural interior"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
           </div>
 
-          <div className="gm-bottom-note">
-            <span className="gm-bottom-line" aria-hidden="true" />
-            <span>Quality · Consistency · Trust</span>
-          </div>
-        </div>
+          {/* ---------- text (right): lead paragraph, then two supporting ones ---------- */}
+          <div className="gm-content">
+            <p className="gm-lead">{LEAD}</p>
 
-        <div className="gm-visual">
-          <div className="gm-image-frame">
-            <img
-              className="gm-image"
-              src="/images/global-markets-porcelain.png"
-              alt="Premium porcelain surfaces in a contemporary architectural interior"
-              loading="lazy"
-              decoding="async"
-            />
-            <div className="gm-image-shade" aria-hidden="true" />
+            <div className="gm-rule" />
+
+            <div className="gm-cols">
+              {REST.map((paragraph, i) => (
+                <p className="gm-col" key={i}>{paragraph}</p>
+              ))}
+            </div>
+
+            <div className="gm-bottom-note">
+              <span className="gm-bottom-line" aria-hidden="true" />
+              <span>Quality · Consistency · Trust</span>
+            </div>
           </div>
         </div>
       </div>

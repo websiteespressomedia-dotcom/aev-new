@@ -269,20 +269,20 @@
 }
  
 .mv-main-image {
-  left: 4%;
-  top: 8%;
-  width: 76%;
-  height: 70%;
+  left: 0;
+  top: 2%;
+  width: 58%;
+  height: 84%;
   z-index: 1;
   border: 0 solid var(--mv-bg);
   background: var(--aev-mv-bg-soft);
 }
  
 .mv-secondary-image {
-  left: 50%;
-  top: 55%;
-  width: 50%;
-  height: 39%;
+  left: 42%;
+  top: 54%;
+  width: 58%;
+  height: 44%;
   z-index: 15;
   border: 5px solid var(--mv-bg);
   background: var(--aev-mv-bg-cloud);
@@ -291,9 +291,12 @@
  
 .mv-main-image img,
 .mv-secondary-image img {
+  position: absolute;
+  top: -8%;
+  left: 0;
   display: block;
   width: 100%;
-  height: 100%;
+  height: 116%;
   object-fit: cover;
 }
  
@@ -318,11 +321,11 @@
  
 .mv-frame {
   position: absolute;
-  left: 23%;
-  bottom: 1%;
-  z-index: 4;
-  width: 49%;
-  height: 30%;
+  left: 5%;
+  top: 7%;
+  z-index: 0;
+  width: 58%;
+  height: 84%;
   border: 1px solid rgba(var(--aev-mv-accent-rgb), 0.7);
   pointer-events: none;
   will-change: transform, clip-path;
@@ -458,7 +461,6 @@
   .mv-description { max-width: 560px; }
   .mv-visual { height: 570px; }
  
-  .mv-secondary-image { left: 48%; width: 52%; }
 }
  
  
@@ -493,9 +495,9 @@
   .mv-visual { height: 450px; margin-top: 60px; }
   .mv-image-meta { top: -26px; font-size: 9px; }
  
-  .mv-main-image { left: 0; top: 6%; width: 86%; height: 70%; }
-  .mv-secondary-image { left: 41%; top: 60%; width: 59%; height: 35%; border-width: 4px; }
-  .mv-frame { left: 17%; width: 59%; height: 25%; }
+  .mv-main-image { left: 0; top: 2%; width: 66%; height: 82%; }
+  .mv-secondary-image { left: 38%; top: 58%; width: 62%; height: 40%; border-width: 4px; }
+  .mv-frame { left: 5%; top: 7%; width: 66%; height: 82%; }
  
   .mv-image-line,
   .mv-progress,
@@ -513,8 +515,9 @@
   .mv-shell { padding-left: 16px; padding-right: 16px; }
   .mv-heading { font-size: 40px; }
   .mv-visual { height: 410px; }
-  .mv-main-image { width: 88%; height: 68%; }
-  .mv-secondary-image { left: 38%; top: 62%; width: 62%; height: 33%; }
+  .mv-main-image { width: 68%; height: 80%; }
+  .mv-secondary-image { left: 36%; top: 60%; width: 64%; height: 38%; }
+  .mv-frame { width: 68%; height: 80%; }
 }
  
 

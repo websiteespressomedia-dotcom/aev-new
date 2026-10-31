@@ -126,13 +126,13 @@ const MissionVision = () => {
 
       gsap.set(main, {
         clipPath:
-          "polygon(0 100%, 100% 100%, 100% 100%, 0 100%)",
+          "inset(100% 0% 0% 0%)",
         scale: 1.1,
       });
 
       gsap.set(second, {
         clipPath:
-          "polygon(100% 0, 100% 0, 100% 100%, 100% 100%)",
+          "inset(0% 0% 0% 100%)",
         scale: 1.08,
       });
 
@@ -266,7 +266,7 @@ const MissionVision = () => {
         main,
         {
           clipPath:
-            "polygon(0 0, 100% 0, 96% 88%, 84% 100%, 0 100%)",
+            "inset(0% 0% 0% 0%)",
           scale: 1,
           duration: 1.35,
           ease: "power4.inOut",
@@ -291,7 +291,7 @@ const MissionVision = () => {
         second,
         {
           clipPath:
-            "polygon(12% 0, 100% 0, 100% 100%, 0 100%, 0 18%)",
+            "inset(0% 0% 0% 0%)",
           scale: 1,
           duration: 1,
           ease: "power4.out",
@@ -591,7 +591,7 @@ const MissionVision = () => {
       ===================================================== */
 
       gsap.to(".mv-main-image img", {
-        yPercent: -8,
+        yPercent: -5,
         ease: "none",
 
         scrollTrigger: {
@@ -603,7 +603,7 @@ const MissionVision = () => {
       });
 
       gsap.to(".mv-secondary-image img", {
-        yPercent: 10,
+        yPercent: 5,
         ease: "none",
 
         scrollTrigger: {
@@ -616,7 +616,7 @@ const MissionVision = () => {
 
       gsap.to(second, {
         y: 28,
-        rotate: -1.2,
+        rotate: 0,
         ease: "none",
 
         scrollTrigger: {
