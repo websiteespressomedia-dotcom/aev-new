@@ -89,7 +89,7 @@ export default function TileCalculator() {
 
   return (
     <main className="aev-calc">
-      <section className="aev-calc-hero">
+      {/* <section className="aev-calc-hero">
         <div className="aev-calc-hero__texture" aria-hidden="true" />
         <motion.div
           className="aev-calc-hero__content"
@@ -107,7 +107,7 @@ export default function TileCalculator() {
             Start your estimate <span aria-hidden="true">↓</span>
           </a>
         </motion.div>
-      </section>
+      </section> */}
 
       <section className="aev-calc-workspace" id="tile-estimator">
         <div className="aev-calc-workspace__heading">

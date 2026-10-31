@@ -230,7 +230,7 @@ export default function CreativeCatalogue() {
                 <option value={collection.title} key={collection.slug}>{collection.title}</option>
               ))}
             </select>
-            <span aria-hidden="true">⌄</span>
+            <span className="cc-select-arrow" aria-hidden="true">▾</span>
           </label>
 
           <label className="cc-select-wrap cc-sort">
@@ -246,7 +246,7 @@ export default function CreativeCatalogue() {
               <option value="az">Name: A to Z</option>
               <option value="za">Name: Z to A</option>
             </select>
-            <span aria-hidden="true">⌄</span>
+            <span className="cc-select-arrow" aria-hidden="true">▾</span>
           </label>
 
           <label className="cc-select-wrap cc-page-size">
@@ -262,7 +262,7 @@ export default function CreativeCatalogue() {
                 <option value={size} key={size}>{size} per page</option>
               ))}
             </select>
-            <span aria-hidden="true">⌄</span>
+            <span className="cc-select-arrow" aria-hidden="true">▾</span>
           </label>
         </div>
 

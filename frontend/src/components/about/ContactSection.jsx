@@ -216,15 +216,12 @@ const ContactSection = () => {
           <div className="contact-copy">
             <h2 className="contact-title">
               <span className="contact-title-mask">
-                <span className="contact-title-line">Let's</span>
+                <span className="contact-title-line">Get in</span>
               </span>
               <span className="contact-title-mask">
                 <span className="contact-title-line contact-title-accent">
-                  make it
+                  Touch!
                 </span>
-              </span>
-              <span className="contact-title-mask">
-                <span className="contact-title-line">happen.</span>
               </span>
             </h2>
 
@@ -244,7 +241,7 @@ const ContactSection = () => {
           >
             <span className="contact-cta-ring" />
             <span className="contact-cta-inner">
-              <span className="contact-cta-small">Get in touch</span>
+              <span className="contact-cta-small">Contact Us</span>
               <span className="contact-cta-arrow">↗</span>
             </span>
           </a>

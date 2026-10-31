@@ -70,28 +70,14 @@ const Footer = () => {
   return (
     <footer className="site-footer">
       <div className="sf-shell">
-        {/* Top call-to-action strip */}
-        <div className="sf-cta">
-          <div className="sf-cta-copy">
-            <h2 className="sf-cta-title">Let&rsquo;s create spaces made to last.</h2>
-            <p className="sf-cta-text">
-              Have a project, collection or requirement in mind? Our team will help you
-              choose the right surface for your space.
-            </p>
-          </div>
-          <Link to="/contact" className="sf-btn">
-            <span>Talk to our team</span>
-            <span className="sf-btn-arrow" aria-hidden="true">↗</span>
-          </Link>
-        </div>
-
+        
         <div className="sf-main">
           {/* Column 1: Logo + addresses + phone (sketch: logo box, address/phone box) */}
           <section className="sf-brand" aria-label="Aevitas Ceramics contact details">
             <Link to="/" className="sf-logo-link" aria-label="Aevitas Ceramics home">
               <img
                 className="sf-logo"
-                src="/images/logo/Aevitas_Logo_W.png"
+                src="/images/logo/Aevitas_Logo_B.png"
                 alt="Aevitas Ceramics"
                 loading="lazy"
               />
@@ -189,7 +175,7 @@ const Footer = () => {
 
         <div className="sf-bottom">
           {/* <p className="sf-copy">© {new Date().getFullYear()} Aevitas Ceramics. All rights reserved.</p> */}
-          <p className="sf-copy">Designed & Developed by The Espresso Media</p>
+          <p className="sf-copy">Designed & Developed by <a href="https://espressomedia.in/" target="_blank">The Espresso Media</a></p>
           <nav className="sf-legal" aria-label="Legal">
             <Link to="/privacy-policy">Privacy Policy</Link>
             <Link to="/terms-and-conditions">Terms &amp; Conditions</Link>

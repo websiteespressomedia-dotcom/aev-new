@@ -1,13 +1,13 @@
 /* =========================================================
    AEVITAS CERAMICS — CONTACT INTRO
-   Scoped styles only. Palette aligned with Home.css.
+   Dark warm-slate hero. Tokens inherited from ContactPage.css.
    ========================================================= */
 
 .ci-section {
-  --ci-ivory: #f2f0e9;
-  --ci-gold: #c1a673;
-  --ci-charcoal: #222220;
-  --ci-muted: rgba(242, 240, 233, 0.66);
+  --ci-ivory: var(--aev-text-on-dark, #F6F3F0);
+  --ci-gold: var(--aev-accent, #A78350);
+  --ci-charcoal: var(--aev-bg-dark, #5B555A);
+  --ci-muted: rgba(246, 243, 240, 0.72);
 
   position: relative;
   isolation: isolate;
@@ -34,8 +34,8 @@
   z-index: -2;
   overflow: hidden;
   background:
-    radial-gradient(ellipse at 72% 45%, rgba(193, 166, 115, 0.14), transparent 38%),
-    linear-gradient(120deg, #292824 0%, #1d1d1b 70%, #24231f 100%);
+    radial-gradient(ellipse at 72% 45%, rgba(167, 131, 80, 0.16), transparent 38%),
+    linear-gradient(120deg, #625C60 0%, #5B555A 58%, #4D484D 100%);
 }
 
 .ci-video {
@@ -49,8 +49,8 @@
 
 .ci-video-shade {
   background:
-    linear-gradient(90deg, rgba(28, 28, 26, 0.96) 0%, rgba(28, 28, 26, 0.79) 43%, rgba(28, 28, 26, 0.48) 100%),
-    linear-gradient(0deg, rgba(20, 20, 18, 0.45), transparent 45%);
+    linear-gradient(90deg, rgba(53, 41, 52, 0.96) 0%, rgba(53, 41, 52, 0.79) 43%, rgba(53, 41, 52, 0.48) 100%),
+    linear-gradient(0deg, rgba(53, 41, 52, 0.45), transparent 45%);
 }
 
 .ci-grain {
@@ -113,7 +113,7 @@
 }
 
 .ci-index {
-  color: rgba(242, 240, 233, 0.6);
+  color: rgba(246, 243, 240, 0.6);
   letter-spacing: 0.16em;
 }
 
@@ -223,7 +223,7 @@
 .ci-orbit {
   position: absolute;
   inset: 0;
-  border: 1px solid rgba(193, 166, 115, 0.48);
+  border: 1px solid rgba(167, 131, 80, 0.48);
   border-radius: 50%;
 }
 
@@ -251,7 +251,7 @@
 
 .ci-orbit-inner {
   inset: 13%;
-  border-color: rgba(242, 240, 233, 0.18);
+  border-color: rgba(246, 243, 240, 0.18);
   border-style: dashed;
 }
 
@@ -262,15 +262,15 @@
   justify-content: center;
   width: 66%;
   aspect-ratio: 1;
-  border: 1px solid rgba(193, 166, 115, 0.24);
+  border: 1px solid rgba(167, 131, 80, 0.24);
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(193, 166, 115, 0.09), rgba(34, 34, 32, 0.04) 68%);
+  background: radial-gradient(circle, rgba(167, 131, 80, 0.09), rgba(53, 41, 52, 0.04) 68%);
   text-align: center;
 }
 
 .ci-core-caption,
 .ci-core-number {
-  color: rgba(242, 240, 233, 0.58);
+  color: rgba(246, 243, 240, 0.58);
   font-size: 8px;
   font-weight: 600;
   letter-spacing: 0.25em;
@@ -329,11 +329,11 @@
 
 .ci-bottomline {
   padding-top: 18px;
-  border-top: 1px solid rgba(242, 240, 233, 0.16);
+  border-top: 1px solid rgba(246, 243, 240, 0.16);
 }
 
 .ci-meta {
-  color: rgba(242, 240, 233, 0.5);
+  color: rgba(246, 243, 240, 0.5);
   font-size: 8px;
   letter-spacing: 0.18em;
 }
@@ -470,8 +470,8 @@
 
   .ci-video-shade {
     background:
-      linear-gradient(90deg, rgba(28, 28, 26, 0.91), rgba(28, 28, 26, 0.65)),
-      linear-gradient(0deg, rgba(20, 20, 18, 0.4), transparent 50%);
+      linear-gradient(90deg, rgba(53, 41, 52, 0.91), rgba(53, 41, 52, 0.65)),
+      linear-gradient(0deg, rgba(53, 41, 52, 0.4), transparent 50%);
   }
 }
 

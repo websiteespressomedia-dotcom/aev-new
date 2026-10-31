@@ -1,3 +1,34 @@
+/* =========================================================
+   AEVITAS COLLECTIONS — HERO COLOUR TOKENS
+   Edit these values to update the Hero palette in one place.
+   ========================================================= */
+:root {
+  --aev-hero-bg-light: #EAE8E6;
+  --aev-hero-bg-soft: #F4F2F0;
+  --aev-hero-bg-cloud: #D6D3D1;
+  --aev-hero-bg-dark: #5B555A;
+
+  --aev-hero-text-primary: #352934;
+  --aev-hero-text-muted: #625C60;
+  --aev-hero-text-on-dark: #F6F3F0;
+
+  --aev-hero-accent: #A78350;
+  --aev-hero-button-bg: #5D5D5D;
+  --aev-hero-button-text: #FFFFFF;
+
+  --aev-hero-line: rgba(53, 41, 52, 0.16);
+  --aev-hero-grid-line: rgba(53, 41, 52, 0.025);
+  --aev-hero-accent-glow: rgba(167, 131, 80, 0.12);
+  --aev-hero-accent-ring: rgba(167, 131, 80, 0.24);
+  --aev-hero-accent-ring-soft: rgba(167, 131, 80, 0.055);
+  --aev-hero-accent-ring-faint: rgba(167, 131, 80, 0.025);
+  --aev-hero-muted: rgba(53, 41, 52, 0.58);
+  --aev-hero-muted-strong: rgba(53, 41, 52, 0.68);
+  --aev-hero-description: rgba(53, 41, 52, 0.78);
+  --aev-hero-scroll-track: rgba(53, 41, 52, 0.22);
+  --aev-hero-side-note: rgba(53, 41, 52, 0.42);
+  --aev-hero-accent-shadow: rgba(167, 131, 80, 0.20);
+}
 
 /* ========================================
    AEVITAS CERAMICS — HERO SECTION
@@ -20,19 +51,19 @@
   padding: clamp(6.5rem, 10vh, 8rem)
     clamp(1.5rem, 6.5vw, 7.5rem) 2rem;
 
-  color: #f4f0e8;
+  color: var(--aev-hero-text-primary);
 
   background:
     radial-gradient(
       ellipse at 76% 42%,
-      rgba(193, 166, 115, 0.075),
+      var(--aev-hero-accent-glow),
       transparent 38%
     ),
     linear-gradient(
       125deg,
-      #11110f 0%,
-      #080808 58%,
-      #10100e 100%
+      var(--aev-hero-bg-light) 0%,
+      var(--aev-hero-bg-soft) 58%,
+      var(--aev-hero-bg-light) 100%
     );
 }
 
@@ -44,7 +75,7 @@
   inset: 0;
 
   background-image: linear-gradient(
-    rgba(255, 255, 255, 0.022) 1px,
+    var(--aev-hero-grid-line) 1px,
     transparent 1px
   );
 
@@ -74,12 +105,12 @@
   width: min(55vw, 48rem);
   aspect-ratio: 1;
 
-  border: 1px solid rgba(193, 166, 115, 0.13);
+  border: 1px solid var(--aev-hero-accent-ring);
   border-radius: 50%;
 
   box-shadow:
-    0 0 0 4rem rgba(193, 166, 115, 0.018),
-    0 0 0 8rem rgba(193, 166, 115, 0.014);
+    0 0 0 4rem var(--aev-hero-accent-ring-soft),
+    0 0 0 8rem var(--aev-hero-accent-ring-faint);
 
   content: "";
   pointer-events: none;
@@ -96,7 +127,7 @@
   width: 100%;
   padding-bottom: 1rem;
 
-  border-bottom: 1px solid rgba(244, 240, 232, 0.18);
+  border-bottom: 1px solid var(--aev-hero-line);
 }
 
 .aev-hero__eyebrow,
@@ -117,7 +148,7 @@
   align-items: center;
   gap: 0.65rem;
 
-  color: #e0c99d;
+  color: var(--aev-hero-accent);
 }
 
 .aev-hero__eyebrow-dot {
@@ -128,12 +159,12 @@
   height: 6px;
 
   border-radius: 50%;
-  background: #c1a673;
-  box-shadow: 0 0 12px rgba(193, 166, 115, 0.45);
+  background: var(--aev-hero-accent);
+  box-shadow: 0 0 12px var(--aev-hero-accent-shadow);
 }
 
 .aev-hero__index {
-  color: rgba(244, 240, 232, 0.45);
+  color: var(--aev-hero-muted);
   text-align: right;
 }
 
@@ -152,12 +183,12 @@
   will-change: transform, opacity;
 }
 
-/* Small gold introductory text */
+/* Small champagne-bronze introductory text */
 
 .aev-hero__kicker {
   margin: 0 0 clamp(1.25rem, 2.5vh, 1.8rem) 0.25rem;
 
-  color: #c1a673;
+  color: var(--aev-hero-accent);
   font-size: 0.65rem;
   letter-spacing: 0.24em;
 }
@@ -180,7 +211,7 @@
   text-transform: uppercase;
   text-wrap: balance;
 
-  color: #f4f0e8;
+  color: var(--aev-hero-text-primary);
 }
 
 /* Italic second line */
@@ -188,7 +219,7 @@
 .aev-hero__title em {
   display: inline-block;
 
-  color: #d9d0c0;
+  color: var(--aev-hero-accent);
   font-weight: 400;
   font-style: italic;
   letter-spacing: -0.07em;
@@ -211,14 +242,14 @@
   height: 1px;
   margin-top: 0.85rem;
 
-  background: #c1a673;
+  background: var(--aev-hero-accent);
 }
 
 .aev-hero__description {
   max-width: 26rem;
   margin: 0;
 
-  color: rgba(244, 240, 232, 0.68);
+  color: var(--aev-hero-description);
 
   font-size: clamp(0.9rem, 1.05vw, 1rem);
   font-weight: 300;
@@ -232,7 +263,7 @@
   align-items: center;
   gap: 1rem;
 
-  color: rgba(244, 240, 232, 0.55);
+  color: var(--aev-hero-muted-strong);
 
   font-size: 0.55rem;
   letter-spacing: 0.2em;
@@ -246,14 +277,14 @@
   height: 1px;
 
   overflow: hidden;
-  background: rgba(244, 240, 232, 0.22);
+  background: var(--aev-hero-scroll-track);
 }
 
 .aev-hero__scroll-line span {
   position: absolute;
   inset: 0;
 
-  background: #c1a673;
+  background: var(--aev-hero-accent);
 
   transform: translateX(-100%);
   animation: aev-hero-scroll-line 2.2s ease-in-out infinite;
@@ -266,7 +297,7 @@
   top: 50%;
   right: 1.25rem;
 
-  color: rgba(244, 240, 232, 0.28);
+  color: var(--aev-hero-side-note);
   font-size: 0.52rem;
 
   writing-mode: vertical-rl;

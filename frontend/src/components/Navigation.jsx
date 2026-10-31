@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Navigation.css";
 
@@ -22,10 +22,14 @@ export default function Navigation({ products = [] }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
+  const searchRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 40);
+    const handleScroll = () => {
+      const threshold = Math.max(160, window.innerHeight * 0.65);
+      setScrolled(window.scrollY > threshold);
+    };
     window.addEventListener("scroll", handleScroll);
 
     return () => window.removeEventListener("scroll", handleScroll);
@@ -48,6 +52,23 @@ export default function Navigation({ products = [] }) {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [menuOpen]);
+
+  // Close the search suggestions when the user clicks/taps anywhere outside search.
+  useEffect(() => {
+    if (!searchOpen) return;
+
+    const handleOutsidePointer = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setSearchOpen(false);
+      }
+    };
+
+    document.addEventListener("pointerdown", handleOutsidePointer);
+
+    return () => {
+      document.removeEventListener("pointerdown", handleOutsidePointer);
+    };
+  }, [searchOpen]);
 
   const designNames = useMemo(() => {
     const names = products
@@ -139,7 +160,7 @@ export default function Navigation({ products = [] }) {
         <Link to="/" className="nav-logo" aria-label="Aevitas Ceramics home">
           <img
             className="nav-logo-image"
-            src="/images/logo/Aevitas_Logo_W.png"
+            src="/images/logo/Aevitas_Logo_B.png"
             alt="Aevitas Ceramics Logo"
           />
         </Link>
@@ -148,13 +169,14 @@ export default function Navigation({ products = [] }) {
           <Link to="/" className="nav-link">Home</Link>
           <Link to="/about" className="nav-link">About</Link>
           <Link to="/collections" className="nav-link">Collections</Link>
+          <Link to="/export" className="nav-link">Export</Link>
           <Link to="/catalogue" className="nav-link">Catalogue</Link>
           <Link to="/tile-calculator" className="nav-link">Tile Calculator</Link>
           <Link to="/contact" className="nav-link">Contact</Link>
         </div>
 
         <div className="nav-right">
-          <div className={`nav-search ${searchOpen ? "is-open" : ""}`}>
+          <div ref={searchRef} className={`nav-search ${searchOpen ? "is-open" : ""}`}>
             <form
               className="nav-search-form"
               onSubmit={(event) => {
@@ -209,13 +231,6 @@ export default function Navigation({ products = [] }) {
 
             {searchOpen && (
               <>
-                <button
-                  type="button"
-                  className="search-dismiss"
-                  aria-label="Close suggestions"
-                  onClick={() => setSearchOpen(false)}
-                />
-
                 <div className="search-dropdown">
                   <div className="search-dropdown-heading">
                     <span>
@@ -334,11 +349,17 @@ export default function Navigation({ products = [] }) {
               <Link to="/collections" className="mobile-nav-link" onClick={closeMobileMenu}>
                 <span>03</span><strong>Collections</strong>
               </Link>
+              <Link to="/export" className="mobile-nav-link" onClick={closeMobileMenu}>
+                <span>04</span><strong>Export</strong>
+              </Link>
               <Link to="/catalogue" className="mobile-nav-link" onClick={closeMobileMenu}>
-                <span>04</span><strong>Catalogue</strong>
+                <span>05</span><strong>Catalogue</strong>
+              </Link>
+              <Link to="/tile-calculator" className="mobile-nav-link" onClick={closeMobileMenu}>
+                <span>06</span><strong>Tile Calculator</strong>
               </Link>
               <Link to="/contact" className="mobile-nav-link" onClick={closeMobileMenu}>
-                <span>05</span><strong>Contact</strong>
+                <span>07</span><strong>Contact</strong>
               </Link>
             </div>
 

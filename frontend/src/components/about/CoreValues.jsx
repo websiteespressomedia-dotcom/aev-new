@@ -16,41 +16,41 @@ const INTRO =
 const VALUES = [
   {
     id: "01",
-    title: "Curated Excellence",
+    title: "Innovation First",
     description:
-      "We carefully select tile collections from trusted manufacturing partners to offer designs that balance aesthetics, performance, and market demand.",
+      "We embrace evolving design trends and modern tile aesthetics to create porcelain surface solutions that bring fresh perspectives to contemporary architecture and interior spaces.",
     tags: ["Selection", "Design", "Performance"],
     image: "/images/hero/core1.avif",
   },
   {
     id: "02",
-    title: "Reliable Supply",
+    title: "Quality Without Compromise",
     description:
-      "Our focus is on consistency, transparency, and smooth coordination — ensuring our partners receive the right solutions when they need them.",
+      "We believe quality lies in the details. Our focus is on product consistency, refined finishes, and dependable specifications that meet the expectations of our customers and business partners.",
     tags: ["Consistency", "Transparency", "On time"],
     image: "/images/hero/core2.avif",
   },
   {
     id: "03",
-    title: "Global Approach",
+    title: "Design Excellence",
     description:
-      "We understand diverse market needs and deliver tile solutions designed to serve international showrooms, projects, and professionals.",
+      "We combine contemporary inspiration with versatile porcelain tile designs, offering surfaces that complement diverse architectural styles and transform ordinary spaces into distinctive environments.",
     tags: ["Showrooms", "Projects", "Export"],
     image: "/images/hero/core3.avif",
   },
   {
     id: "04",
-    title: "Quality Assurance",
+    title: "Customer Commitment",
     description:
-      "Every collection is aligned with expectations of durability, finish, and long-term performance.",
+      "We put our customers at the center of every relationship, prioritizing clear communication, responsive service, and solutions aligned with their product and business requirements.",
     tags: ["Durability", "Finish", "Testing"],
     image: "/images/hero/core4.avif",
   },
   {
     id: "05",
-    title: "Partnership Driven",
+    title: "Trust Through Partnerships",
     description:
-      "We build lasting relationships by supporting our clients beyond supply — becoming a dependable extension of their business.",
+      "We value transparency, reliability, and long-term collaboration, building meaningful relationships with distributors, wholesalers, importers, and project buyers through shared goals and mutual trust.",
     tags: ["Support", "Trust", "Long term"],
     image: "/marble_texture.jpg",
   },
@@ -245,11 +245,11 @@ const CoreValues = () => {
                 <span className="cv-card-num">{v.id}</span>
                 <h3 className="cv-card-title">{v.title}</h3>
                 <p className="cv-card-desc">{v.description}</p>
-                <div className="cv-tags">
+                {/* <div className="cv-tags">
                   {v.tags.map((t) => (
                     <span key={t}>{t}</span>
                   ))}
-                </div>
+                </div> */}
               </div>
  
               <div className="cv-card-dim" />

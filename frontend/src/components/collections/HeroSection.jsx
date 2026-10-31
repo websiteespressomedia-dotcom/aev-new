@@ -42,13 +42,6 @@ const HeroSection = forwardRef(function HeroSection(_props, ref) {
 
   return (
     <section ref={ref} className="aev-hero" aria-labelledby="aev-hero-title">
-      <div className="aev-hero__topline" aria-hidden="true">
-        <span className="aev-hero__eyebrow">
-          <span className="aev-hero__eyebrow-dot" />
-          AEVITAS CERAMICS
-        </span>
-        <span className="aev-hero__index">DESIGN / MATERIAL / SPACE</span>
-      </div>
 
       <div ref={contentRef} className="aev-hero__content">
         <p className="aev-hero__kicker">A considered study in surface</p>
@@ -70,9 +63,6 @@ const HeroSection = forwardRef(function HeroSection(_props, ref) {
         <span>SCROLL TO EXPLORE</span>
         <span className="aev-hero__scroll-line"><span /></span>
       </div>
-      <span className="aev-hero__side-note" aria-hidden="true">
-        MATERIALS FOR MODERN LIVING
-      </span>
     </section>
   );
 });

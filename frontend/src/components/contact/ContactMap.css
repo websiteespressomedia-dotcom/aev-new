@@ -1,22 +1,22 @@
-/* Aevitas Contact Map — charcoal & gold
+/* Aevitas Contact Map — light warm-grey canvas with dark locator panel
    All selectors are scoped to .cm-* to avoid global style collisions. */
 
 .cm-section {
-  --cm-charcoal: #222220;
-  --cm-charcoal-deep: #191918;
-  --cm-charcoal-soft: #2c2b28;
-  --cm-gold: #c1a673;
-  --cm-gold-deep: #8d7951;
-  --cm-ivory: #f2f0e9;
-  --cm-muted: rgba(242, 240, 233, 0.62);
+  --cm-charcoal: var(--aev-bg-dark, #5B555A);
+  --cm-charcoal-deep: var(--aev-text-primary, #352934);
+  --cm-charcoal-soft: #625C60;
+  --cm-gold: var(--aev-accent, #A78350);
+  --cm-gold-deep: var(--aev-accent, #A78350);
+  --cm-ivory: var(--aev-text-on-dark, #F6F3F0);
+  --cm-muted: rgba(98, 92, 96, 0.76);
   position: relative;
   overflow: hidden;
   padding: clamp(76px, 9vw, 138px) clamp(20px, 6vw, 92px);
-  color: var(--cm-ivory);
+  color: var(--aev-text-primary, #352934);
   background:
-    radial-gradient(ellipse at 88% 12%, rgba(193, 166, 115, 0.11), transparent 34%),
-    radial-gradient(ellipse at 8% 90%, rgba(193, 166, 115, 0.06), transparent 30%),
-    var(--cm-charcoal);
+    radial-gradient(ellipse at 88% 12%, rgba(167, 131, 80, 0.10), transparent 34%),
+    radial-gradient(ellipse at 8% 90%, rgba(167, 131, 80, 0.055), transparent 30%),
+    var(--aev-bg-soft, #F4F2F0);
 }
 
 .cm-section::before {
@@ -41,7 +41,7 @@
   justify-content: space-between;
   gap: 20px;
   padding-bottom: 18px;
-  border-bottom: 1px solid rgba(193, 166, 115, 0.34);
+  border-bottom: 1px solid rgba(167, 131, 80, 0.34);
 }
 
 .cm-eyebrow,
@@ -91,7 +91,7 @@
 
 .cm-heading {
   margin: 0;
-  color: var(--cm-ivory);
+  color: var(--aev-text-primary, #352934);
   font-family: "Playfair Display", Georgia, serif;
   font-size: clamp(42px, 6.1vw, 88px);
   font-weight: 400;
@@ -107,7 +107,7 @@
 .cm-intro {
   max-width: 340px;
   margin: 0 0 7px;
-  color: var(--cm-muted);
+  color: var(--aev-text-secondary, #625C60);
   font-size: 13px;
   line-height: 1.9;
 }
@@ -116,8 +116,8 @@
   display: grid;
   grid-template-columns: minmax(285px, 0.72fr) minmax(0, 1.5fr);
   min-height: 510px;
-  border: 1px solid rgba(193, 166, 115, 0.43);
-  background: rgba(25, 25, 24, 0.76);
+  border: 1px solid rgba(167, 131, 80, 0.43);
+  background: var(--cm-charcoal);
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.17);
 }
 
@@ -126,7 +126,7 @@
   flex-direction: column;
   min-width: 0;
   padding: clamp(25px, 3vw, 42px);
-  border-right: 1px solid rgba(193, 166, 115, 0.35);
+  border-right: 1px solid rgba(167, 131, 80, 0.35);
 }
 
 .cm-panel-label {
@@ -141,11 +141,11 @@
 }
 
 .cm-panel-label span {
-  color: rgba(193, 166, 115, 0.5);
+  color: rgba(167, 131, 80, 0.5);
 }
 
 .cm-location-list {
-  border-top: 1px solid rgba(242, 240, 233, 0.14);
+  border-top: 1px solid rgba(246, 243, 240, 0.14);
 }
 
 .cm-location-tab {
@@ -157,7 +157,7 @@
   gap: 13px;
   padding: 22px 0;
   border: 0;
-  border-bottom: 1px solid rgba(242, 240, 233, 0.14);
+  border-bottom: 1px solid rgba(246, 243, 240, 0.14);
   color: var(--cm-ivory);
   text-align: left;
   background: transparent;
@@ -216,7 +216,7 @@
 }
 
 .cm-location-label {
-  color: var(--cm-muted);
+  color: rgba(246, 243, 240, 0.68);
   font-size: 9px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -250,7 +250,7 @@
 .cm-address {
   max-width: 300px;
   margin: 13px 0 18px;
-  color: rgba(242, 240, 233, 0.8);
+  color: rgba(246, 243, 240, 0.8);
   font-size: 12px;
   line-height: 1.8;
 }
@@ -279,8 +279,8 @@
   gap: 10px;
   margin-top: 32px;
   padding-top: 17px;
-  border-top: 1px solid rgba(193, 166, 115, 0.22);
-  color: rgba(242, 240, 233, 0.46);
+  border-top: 1px solid rgba(167, 131, 80, 0.22);
+  color: rgba(246, 243, 240, 0.46);
   font-size: 9px;
   letter-spacing: 0.04em;
 }
@@ -290,7 +290,7 @@
   height: 5px;
   border-radius: 50%;
   background: var(--cm-gold);
-  box-shadow: 0 0 12px rgba(193, 166, 115, 0.45);
+  box-shadow: 0 0 12px rgba(167, 131, 80, 0.45);
 }
 
 .cm-map-panel {
@@ -306,7 +306,7 @@
   flex: 1;
   min-height: 430px;
   overflow: hidden;
-  background: #d9d3c6;
+  background: var(--aev-bg-cloud, #D6D3D1);
 }
 
 .cm-map-frame::after {
@@ -314,8 +314,8 @@
   inset: 0;
   content: "";
   pointer-events: none;
-  border: 1px solid rgba(193, 166, 115, 0.24);
-  box-shadow: inset 0 0 0 1px rgba(34, 34, 32, 0.1);
+  border: 1px solid rgba(167, 131, 80, 0.24);
+  box-shadow: inset 0 0 0 1px rgba(53, 41, 52, 0.12);
 }
 
 .cm-map-frame iframe {
@@ -340,9 +340,9 @@
   align-items: center;
   gap: 9px;
   padding: 11px 14px;
-  border: 1px solid rgba(193, 166, 115, 0.65);
+  border: 1px solid rgba(167, 131, 80, 0.65);
   color: var(--cm-ivory);
-  background: rgba(34, 34, 32, 0.92);
+  background: rgba(53, 41, 52, 0.94);
   font-size: 9px;
   letter-spacing: 0.17em;
   backdrop-filter: blur(10px);
@@ -358,9 +358,9 @@
   right: 18px;
   bottom: 18px;
   padding: 9px 11px;
-  border: 1px solid rgba(193, 166, 115, 0.5);
+  border: 1px solid rgba(167, 131, 80, 0.5);
   color: var(--cm-ivory);
-  background: rgba(34, 34, 32, 0.9);
+  background: rgba(53, 41, 52, 0.94);
   font-size: 8px;
   letter-spacing: 0.17em;
 }
@@ -385,7 +385,7 @@
 .cm-caption-line {
   width: clamp(20px, 4vw, 58px);
   height: 1px;
-  background: rgba(193, 166, 115, 0.42);
+  background: rgba(167, 131, 80, 0.42);
 }
 
 @keyframes cm-map-appear {
@@ -446,7 +446,7 @@
 
   .cm-location-panel {
     border-right: 0;
-    border-bottom: 1px solid rgba(193, 166, 115, 0.35);
+    border-bottom: 1px solid rgba(167, 131, 80, 0.35);
     padding: 25px 22px;
   }
 

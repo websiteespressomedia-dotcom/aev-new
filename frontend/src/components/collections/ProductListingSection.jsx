@@ -211,128 +211,79 @@ export default function ProductListingSection({ initialProducts = [] }) {
       <div className="aev-collection__grain" aria-hidden="true" />
 
       <header className="aev-collection__toolbar">
-        <div className="aev-collection__topline">
-          <span className="aev-collection__eyebrow">
-            <i /> Explore
-          </span>
-
-          <span className="aev-collection__edition">
-            Aevitas Ceramics <b>— Collection</b>
-          </span>
-        </div>
-
-        <div className="aev-collection__heading-row">
-          <div className="aev-collection__heading">
-            <h2>The Collection</h2>
+        <div className="aev-collection__head-grid">
+          <div className="aev-collection__intro">
             <p>Explore surfaces shaped by material, texture, and light.</p>
-          </div>
-
-          <div className="aev-collection__count" aria-live="polite">
-            <span className="aev-collection__count-number">
-              {String(filteredProducts.length).padStart(2, "0")}
-            </span>
-            <span className="aev-collection__count-label">
-              surfaces<br />available
-            </span>
           </div>
         </div>
 
         <div className="aev-collection__filters">
-          <label className="aev-collection__search">
-            <span className="aev-collection__sr-only">
-              Search tiles
-            </span>
+          <div className="aev-collection__filters-left">
+            <div className="aev-collection__filter-group aev-collection__finish-group">
+              <span className="aev-collection__filter-label">Finish:</span>
+              <div className="aev-collection__pills" role="group" aria-label="Filter by finish">
+                {FINISH_FILTERS.map((filter) => (
+                  <button
+                    type="button"
+                    key={filter}
+                    className={`aev-filter-pill ${activeFilter === filter ? "is-active" : ""}`}
+                    aria-pressed={activeFilter === filter}
+                    onClick={() => selectFinish(filter)}
+                  >
+                    {filter}
+                  </button>
+                ))}
+              </div>
+            </div>
 
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="10.8" cy="10.8" r="6.8" />
-              <path d="m16 16 4.2 4.2" />
-            </svg>
+            <div className="aev-collection__filter-group aev-collection__size-group">
+              <span className="aev-collection__filter-label">Format:</span>
+              <div className="aev-collection__pills" role="group" aria-label="Filter by tile size">
+                {SIZE_FILTERS.map((size) => (
+                  <button
+                    type="button"
+                    key={size}
+                    className={`aev-filter-pill ${activeSizeFilter === size ? "is-active" : ""}`}
+                    aria-pressed={activeSizeFilter === size}
+                    onClick={() => selectSize(size)}
+                  >
+                    {size === "All" ? "All formats" : size}
+                  </button>
+                ))}
+              </div>
+            </div>
 
-            <input
-              type="search"
-              placeholder="Find a surface by name or finish"
-              value={search}
-              onChange={(event) => {
-                setSearch(event.target.value);
-                setActiveFilter("All");
-                setActiveSizeFilter("All");
-              }}
-            />
-
-            {search && (
-              <button
-                type="button"
-                onClick={() => setSearch("")}
-                aria-label="Clear search"
-              >
-                ×
+            {(search || activeFilter !== "All" || activeSizeFilter !== "All") && (
+              <button type="button" className="aev-collection__clear" onClick={clearFilters}>
+                Clear selection <span>↗</span>
               </button>
             )}
-          </label>
-
-          <div className="aev-collection__filter-group">
-            <span className="aev-collection__filter-label">
-              Finish
-            </span>
-
-            <div
-              className="aev-collection__pills"
-              role="group"
-              aria-label="Filter by finish"
-            >
-              {FINISH_FILTERS.map((filter) => (
-                <button
-                  type="button"
-                  key={filter}
-                  className={`aev-filter-pill ${
-                    activeFilter === filter ? "is-active" : ""
-                  }`}
-                  aria-pressed={activeFilter === filter}
-                  onClick={() => selectFinish(filter)}
-                >
-                  {filter}
-                </button>
-              ))}
-            </div>
           </div>
 
-          <div className="aev-collection__filter-group aev-collection__size-group">
-            <span className="aev-collection__filter-label">
-              Format
-            </span>
-
-            <div
-              className="aev-collection__pills"
-              role="group"
-              aria-label="Filter by tile size"
-            >
-              {SIZE_FILTERS.map((size) => (
-                <button
-                  type="button"
-                  key={size}
-                  className={`aev-filter-pill ${
-                    activeSizeFilter === size ? "is-active" : ""
-                  }`}
-                  aria-pressed={activeSizeFilter === size}
-                  onClick={() => selectSize(size)}
-                >
-                  {size === "All" ? "All formats" : size}
+          <div className="aev-collection__filters-right">
+            <label className="aev-collection__search">
+              <span className="aev-collection__sr-only">Search tiles</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="10.8" cy="10.8" r="6.8" />
+                <path d="m16 16 4.2 4.2" />
+              </svg>
+              <input
+                type="search"
+                placeholder="Search tiles or finish"
+                value={search}
+                onChange={(event) => {
+                  setSearch(event.target.value);
+                  setActiveFilter("All");
+                  setActiveSizeFilter("All");
+                }}
+              />
+              {search && (
+                <button type="button" onClick={() => setSearch("")} aria-label="Clear search">
+                  ×
                 </button>
-              ))}
-            </div>
+              )}
+            </label>
           </div>
-
-          {(search ||
-            activeFilter !== "All" ||
-            activeSizeFilter !== "All") && (
-            <button
-              type="button"
-              className="aev-collection__clear"
-              onClick={clearFilters}
-            >
-              Clear selection <span>↗</span>
-            </button>
-          )}
         </div>
 
         <div className="aev-collection__rule">
@@ -340,11 +291,9 @@ export default function ProductListingSection({ initialProducts = [] }) {
         </div>
       </header>
 
-      <div className="aev-collection__body">
+      <div className="aev-collection__body"> <br />
         <div className="aev-collection__meta-row">
           <p>
-            <span className="aev-collection__live-dot" />
-            Selected surfaces
           </p>
 
           <p>
@@ -482,13 +431,6 @@ export default function ProductListingSection({ initialProducts = [] }) {
         )}
       </div>
 
-      <footer className="aev-collection__footer">
-        <span>AEVITAS CERAMICS</span>
-        <span>Materiality, made meaningful.</span>
-        <span>
-          Collection / 01 <b>↗</b>
-        </span>
-      </footer>
     </section>
   );
 }
