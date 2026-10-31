@@ -8,36 +8,37 @@ import "./ContactFAQ.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
+
 const FAQS = [
   {
     number: "01",
-    question: "How do I choose the right tile for my project?",
+    question: "Do you manufacture porcelain tiles in India?",
     answer:
-      "Start with the space, intended use, finish, size, and overall design direction. Share your project details with our team and we can help you explore suitable collections for your requirements.",
+      "Yes. Aevitas Ceramics is an Indian porcelain tile brand focused on premium porcelain tiles and large-format tile solutions for residential, commercial, and international markets.",
   },
   {
     number: "02",
-    question: "Can I request samples before placing an order?",
+    question: "Do you export porcelain tiles to international markets?",
     answer:
-      "Sample availability depends on the collection and current stock. Contact our team with the tile name or reference and your delivery location so we can guide you on the available options.",
+      "Yes. Aevitas Ceramics focuses on serving global markets with premium porcelain tile solutions for importers, wholesalers, distributors, and project buyers. Contact our team to discuss your destination market and requirements.",
   },
   {
     number: "03",
-    question: "Do you work with architects, designers, and dealers?",
+    question: "What porcelain tile sizes do you offer?",
     answer:
-      "Yes. We welcome enquiries from architects, interior designers, dealers, distributors, and project teams. Tell us a little about your business or project so we can direct your enquiry appropriately.",
+      "We offer a range of tile formats, including 600 × 600 mm, 600 × 1200 mm, 800 × 1600 mm, 800 × 2400 mm, and 1200 × 1800 mm. Availability may vary by collection.",
   },
   {
     number: "04",
-    question: "Can you help with bulk or project requirements?",
+    question: "Do you offer private label or OEM tile solutions?",
     answer:
-      "Share the project location, required tile sizes and finishes, estimated quantity, and expected timeline. Our team can review the details and advise on the next steps.",
+      "For private label or OEM enquiries, please share your branding requirements, preferred tile formats, finishes, and estimated quantities with our team so we can discuss suitable options.",
   },
   {
     number: "05",
-    question: "What information should I include in my enquiry?",
+    question: "What is the minimum order quantity for export?",
     answer:
-      "Include your name and contact details, project type, location, preferred tile size or finish, estimated quantity, and any reference images or deadlines that may help us understand your requirement.",
+      "Minimum order quantities depend on the selected tile format, collection, and destination market. Contact our team with your product preferences, estimated quantity, and delivery destination for further details.",
   },
 ];
 

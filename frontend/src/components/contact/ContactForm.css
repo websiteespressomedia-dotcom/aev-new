@@ -1,16 +1,16 @@
 /* =========================================================
    AEVITAS CERAMICS — CONTACT FORM
-   Scoped CSS; ivory, charcoal and muted gold.
+   Light warm-grey section; tokens inherited from ContactPage.css.
    ========================================================= */
 
 .cf-section {
-  --cf-ivory: #f2f0e9;
-  --cf-paper: #e8e4da;
-  --cf-gold: #c1a673;
-  --cf-gold-deep: #8d7951;
-  --cf-ink: #222220;
-  --cf-muted: rgba(34, 34, 32, 0.66);
-  background: var(--cf-ivory);
+  --cf-ivory: var(--aev-bg-soft, #F4F2F0);
+  --cf-paper: var(--aev-bg-cloud, #D6D3D1);
+  --cf-gold: var(--aev-accent, #A78350);
+  --cf-gold-deep: #866640;
+  --cf-ink: var(--aev-text-primary, #352934);
+  --cf-muted: rgba(53, 41, 52, 0.68);
+  background: var(--aev-bg-light, #EAE8E6);
   color: var(--cf-ink);
   width: 100%;
   position: relative;
@@ -85,9 +85,9 @@
   min-height: 155px;
   box-sizing: border-box;
   overflow: hidden;
-  border: 1px solid rgba(141, 121, 81, 0.25);
+  border: 1px solid rgba(134, 102, 64, 0.25);
   background:
-    radial-gradient(circle at 100% 0%, rgba(193, 166, 115, 0.13), transparent 48%),
+    radial-gradient(circle at 100% 0%, rgba(167, 131, 80, 0.13), transparent 48%),
     rgba(232, 228, 218, 0.42);
 }
 
@@ -98,7 +98,7 @@
   bottom: -68px;
   width: 150px;
   height: 150px;
-  border: 1px solid rgba(141, 121, 81, 0.24);
+  border: 1px solid rgba(134, 102, 64, 0.24);
   border-radius: 50%;
   pointer-events: none;
 }
@@ -139,8 +139,8 @@
 .cf-form-panel {
   min-width: 0;
   padding: clamp(24px, 3.5vw, 44px);
-  background: #e9e6de;
-  border: 1px solid rgba(141, 121, 81, 0.2);
+  background: var(--cf-ivory);
+  border: 1px solid rgba(134, 102, 64, 0.2);
   box-shadow: 0 18px 50px rgba(35, 32, 25, 0.055);
 }
 
@@ -151,7 +151,7 @@
   gap: 18px;
   padding-bottom: 23px;
   margin-bottom: 8px;
-  border-bottom: 1px solid rgba(34, 34, 32, 0.15);
+  border-bottom: 1px solid rgba(53, 41, 52, 0.15);
 }
 
 .cf-form-kicker {
@@ -172,7 +172,7 @@
 
 .cf-required-note {
   flex: 0 0 auto;
-  color: rgba(34, 34, 32, 0.52);
+  color: rgba(53, 41, 52, 0.52);
   font-size: 9px;
 }
 
@@ -201,7 +201,7 @@
 }
 
 .cf-field > span {
-  color: rgba(34, 34, 32, 0.82);
+  color: rgba(53, 41, 52, 0.82);
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -217,7 +217,7 @@
   box-sizing: border-box;
   padding: 12px 0 13px;
   border: 0;
-  border-bottom: 1px solid rgba(34, 34, 32, 0.25);
+  border-bottom: 1px solid rgba(53, 41, 52, 0.25);
   border-radius: 0;
   outline: none;
   background: transparent;
@@ -233,17 +233,17 @@
 
 .cf-field input::placeholder,
 .cf-field textarea::placeholder {
-  color: rgba(34, 34, 32, 0.4);
+  color: rgba(53, 41, 52, 0.4);
   opacity: 1;
 }
 
 .cf-field select {
   cursor: pointer;
-  color: rgba(34, 34, 32, 0.78);
+  color: rgba(53, 41, 52, 0.78);
 }
 
 .cf-field select:invalid {
-  color: rgba(34, 34, 32, 0.4);
+  color: rgba(53, 41, 52, 0.4);
 }
 
 .cf-field select option {
@@ -279,7 +279,7 @@
 .cf-submit-row > p {
   max-width: 250px;
   margin: 0;
-  color: rgba(34, 34, 32, 0.56);
+  color: rgba(53, 41, 52, 0.56);
   font-size: 10px;
   line-height: 1.65;
 }
@@ -333,7 +333,7 @@
   margin: 20px 0 0;
   padding: 12px 14px;
   border-left: 2px solid var(--cf-gold-deep);
-  background: rgba(193, 166, 115, 0.12);
+  background: rgba(167, 131, 80, 0.12);
   color: var(--cf-ink);
   font-size: 12px;
   line-height: 1.6;

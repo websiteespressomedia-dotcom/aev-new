@@ -1,7 +1,27 @@
 /* =========================================================
    AEVITAS CERAMICS  ·  CORE VALUES
-   charcoal + gold, pinned pile of cards
+   warm grey + champagne bronze, pinned pile of cards
    ========================================================= */
+
+:root {
+  --aev-cv-bg-light: #EAE8E6;
+  --aev-cv-bg-soft: #F4F2F0;
+  --aev-cv-bg-cloud: #D6D3D1;
+  --aev-cv-bg-dark: #5B555A;
+  --aev-cv-ink: #352934;
+  --aev-cv-muted: #625C60;
+  --aev-cv-on-dark: #F6F3F0;
+  --aev-cv-on-dark-muted: #E3DEDA;
+  --aev-cv-accent: #A78350;
+  --aev-cv-button-bg: #5D5D5D;
+  --aev-cv-button-text: #FFFFFF;
+  --aev-cv-ink-rgb: 53, 41, 52;
+  --aev-cv-muted-rgb: 98, 92, 96;
+  --aev-cv-dark-rgb: 91, 85, 90;
+  --aev-cv-on-dark-rgb: 246, 243, 240;
+  --aev-cv-accent-rgb: 167, 131, 80;
+  --aev-cv-white-rgb: 255, 255, 255;
+}
 
 .cv {
   position: relative;
@@ -10,8 +30,8 @@
   height: 100svh;
   min-height: 640px;
   overflow: hidden;
-  background: #222220;
-  color: #F2F0E9;
+  background: var(--aev-cv-bg-light);
+  color: var(--aev-cv-ink);
   isolation: isolate;
 }
 
@@ -21,7 +41,7 @@
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background: radial-gradient(55% 45% at 12% 18%, rgba(193, 166, 115, 0.1), rgba(193, 166, 115, 0) 70%);
+  background: radial-gradient(55% 45% at 12% 18%, rgba(var(--aev-cv-accent-rgb), 0.10), rgba(var(--aev-cv-accent-rgb), 0) 70%);
 }
 
 .cv-inner {
@@ -55,14 +75,14 @@
   display: block;
   width: 44px;
   height: 1px;
-  background: #C1A673;
+  background: var(--aev-cv-accent);
 }
 
 .cv-eyebrow span {
   font-size: 0.72rem;
   letter-spacing: 0.42em;
   text-transform: uppercase;
-  color: #C1A673;
+  color: var(--aev-cv-accent);
 }
 
 .cv-title {
@@ -73,7 +93,7 @@
   line-height: 1;
   letter-spacing: -0.02em;
   text-transform: none;
-  color: #F2F0E9;
+  color: var(--aev-cv-ink);
 }
 
 .cv-intro {
@@ -81,7 +101,7 @@
   margin: 0 0 2.6rem;
   font-size: 1rem;
   line-height: 1.75;
-  color: rgba(242, 240, 233, 0.68);
+  color: rgba(var(--aev-cv-muted-rgb), 0.88);
 }
 
 .cv-counter {
@@ -95,7 +115,7 @@
   display: inline-block;
   font-size: clamp(3.4rem, 6vw, 6rem);
   line-height: 1;
-  color: #C1A673;
+  color: var(--aev-cv-accent);
   animation: cv-count 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -107,7 +127,7 @@
 .cv-count-total {
   font-size: 1rem;
   letter-spacing: 0.2em;
-  color: rgba(242, 240, 233, 0.5);
+  color: rgba(var(--aev-cv-muted-rgb), 0.62);
 }
 
 /* the five names double as an index */
@@ -127,7 +147,7 @@
   font-size: 0.72rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(242, 240, 233, 0.38);
+  color: rgba(var(--aev-cv-muted-rgb), 0.68);
   transition: color 0.5s ease;
 }
 
@@ -140,12 +160,12 @@
 }
 
 .cv-tick { cursor: inherit; outline: none; }
-.cv-tick:hover { color: rgba(242, 240, 233, 0.85); }
+.cv-tick:hover { color: rgba(var(--aev-cv-muted-rgb), 0.92); }
 .cv-tick:hover i { width: 30px; }
-.cv-tick:focus-visible { color: #C1A673; }
+.cv-tick:focus-visible { color: var(--aev-cv-accent); }
 
-.cv-tick.is-active { color: #F2F0E9; }
-.cv-tick.is-active i { width: 44px; background: #C1A673; }
+.cv-tick.is-active { color: var(--aev-cv-ink); }
+.cv-tick.is-active i { width: 44px; background: var(--aev-cv-accent); }
 
 
 /* ---------- right: the pile ---------- */
@@ -165,8 +185,8 @@
   bottom: 0;
   overflow: hidden;
   border-radius: 18px;
-  background: linear-gradient(160deg, #4a4338 0%, #1d1c1a 100%);
-  box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.35);
+  background: linear-gradient(160deg, var(--aev-cv-bg-dark) 0%, var(--aev-cv-ink) 100%);
+  /* box-shadow: 0 -12px 40px rgba(var(--aev-cv-ink-rgb), 0.35); */
   will-change: transform;
 }
 
@@ -183,13 +203,13 @@
 .cv-card-shade {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(20, 20, 19, 0.3) 0%, rgba(20, 20, 19, 0) 35%, rgba(20, 20, 19, 0.9) 100%);
+  background: linear-gradient(180deg, rgba(var(--aev-cv-dark-rgb), 0.18) 0%, rgba(var(--aev-cv-dark-rgb), 0.08) 35%, rgba(var(--aev-cv-dark-rgb), 0.88) 100%);
 }
 
 .cv-card-dim {
   position: absolute;
   inset: 0;
-  background: #0f0f0e;
+  background: var(--aev-cv-bg-dark);
   opacity: 0;
   pointer-events: none;
 }
@@ -204,7 +224,7 @@
   font-size: 0.66rem;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: rgba(242, 240, 233, 0.85);
+  color: rgba(var(--aev-cv-on-dark-rgb), 0.85);
 }
 
 .cv-card-body {
@@ -220,7 +240,7 @@
   font-family: "Times New Roman", Times, serif;
   font-size: clamp(2rem, 3vw, 3rem);
   line-height: 1;
-  color: #C1A673;
+  color: var(--aev-cv-accent);
 }
 
 .cv-card-title {
@@ -231,7 +251,7 @@
   line-height: 1.05;
   letter-spacing: -0.01em;
   text-transform: none;
-  color: #F2F0E9;
+  color: var(--aev-cv-on-dark);
 }
 
 .cv-card-desc {
@@ -239,7 +259,7 @@
   margin: 0 0 1.4rem;
   font-size: 1rem;
   line-height: 1.7;
-  color: rgba(242, 240, 233, 0.84);
+  color: rgba(var(--aev-cv-on-dark-rgb), 0.84);
 }
 
 .cv-tags {
@@ -250,12 +270,12 @@
 
 .cv-tags span {
   padding: 0.5rem 1rem;
-  border: 1px solid rgba(193, 166, 115, 0.6);
+  border: 1px solid rgba(var(--aev-cv-accent-rgb), 0.6);
   border-radius: 999px;
   font-size: 0.66rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #F2F0E9;
+  color: var(--aev-cv-on-dark);
 }
 
 

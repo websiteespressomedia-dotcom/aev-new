@@ -1,6 +1,26 @@
+:root {
+  --aev-contact-bg-light: #EAE8E6;
+  --aev-contact-bg-soft: #F4F2F0;
+  --aev-contact-bg-cloud: #D6D3D1;
+  --aev-contact-bg-dark: #5B555A;
+  --aev-contact-ink: #352934;
+  --aev-contact-muted: #625C60;
+  --aev-contact-on-dark: #F6F3F0;
+  --aev-contact-on-dark-muted: #E3DEDA;
+  --aev-contact-accent: #A78350;
+  --aev-contact-button-bg: #5D5D5D;
+  --aev-contact-button-text: #FFFFFF;
+  --aev-contact-ink-rgb: 53, 41, 52;
+  --aev-contact-muted-rgb: 98, 92, 96;
+  --aev-contact-dark-rgb: 91, 85, 90;
+  --aev-contact-on-dark-rgb: 246, 243, 240;
+  --aev-contact-accent-rgb: 167, 131, 80;
+  --aev-contact-white-rgb: 255, 255, 255;
+}
+
 /* =========================================================
    AEVITAS CERAMICS · CONTACT
-   Compact editorial contact section
+   Warm grey editorial contact section
    ========================================================= */
 
 .contact-section {
@@ -8,8 +28,8 @@
   width: 100%;
   min-height: 0;
   overflow: hidden;
-  background: #222220;
-  color: #f2f0e9;
+  background: var(--aev-contact-bg-dark);
+  color: var(--aev-contact-on-dark);
   isolation: isolate;
 }
 
@@ -32,12 +52,12 @@
   background:
     radial-gradient(
       38% 70% at 78% 45%,
-      rgba(193, 166, 115, 0.09),
+      rgba(var(--aev-contact-accent-rgb), 0.09),
       transparent 70%
     ),
     radial-gradient(
       35% 50% at 8% 85%,
-      rgba(193, 166, 115, 0.045),
+      rgba(var(--aev-contact-accent-rgb), 0.045),
       transparent 70%
     );
 }
@@ -50,9 +70,9 @@
   pointer-events: none;
   background: linear-gradient(
     135deg,
-    rgba(255, 255, 255, 0.018),
+    rgba(var(--aev-contact-white-rgb), 0.018),
     transparent 40%,
-    rgba(0, 0, 0, 0.16)
+    rgba(var(--aev-contact-ink-rgb), 0.16)
   );
 }
 
@@ -87,14 +107,14 @@
   letter-spacing: -0.07em;
   white-space: nowrap;
   text-transform: uppercase;
-  color: rgba(242, 240, 233, 0.025);
+  color: rgba(var(--aev-contact-on-dark-rgb), 0.025);
   will-change: transform;
 }
 
 .contact-bg-word-two {
   margin-left: -8vw;
   color: transparent;
-  -webkit-text-stroke: 1px rgba(193, 166, 115, 0.055);
+  -webkit-text-stroke: 1px rgba(var(--aev-contact-accent-rgb), 0.055);
 }
 
 /* ---------- top ---------- */
@@ -110,7 +130,7 @@
   display: flex;
   align-items: center;
   gap: 0.8rem;
-  color: #c1a673;
+  color: var(--aev-contact-accent);
   font-size: 0.62rem;
   letter-spacing: 0.34em;
   line-height: 1;
@@ -120,7 +140,7 @@
 .contact-eyebrow-line {
   width: 38px;
   height: 1px;
-  background: #c1a673;
+  background: var(--aev-contact-accent);
 }
 
 /* ---------- main ---------- */
@@ -144,7 +164,7 @@
   font-weight: 400;
   line-height: 0.82;
   letter-spacing: -0.06em;
-  color: #f2f0e9;
+  color: var(--aev-contact-on-dark);
 }
 
 .contact-title-mask {
@@ -160,7 +180,7 @@
 }
 
 .contact-title-accent {
-  color: #c1a673;
+  color: var(--aev-contact-accent);
   font-style: italic;
 }
 
@@ -170,7 +190,7 @@
   padding-left: 0.15rem;
   font-size: 0.82rem;
   line-height: 1.55;
-  color: rgba(242, 240, 233, 0.58);
+  color: rgba(var(--aev-contact-on-dark-rgb), 0.58);
 }
 
 /* ---------- CTA ---------- */
@@ -182,9 +202,9 @@
   display: grid;
   place-items: center;
   justify-self: end;
-  border: 1px solid rgba(193, 166, 115, 0.42);
+  border: 1px solid rgba(var(--aev-contact-accent-rgb), 0.42);
   border-radius: 50%;
-  color: #f2f0e9;
+  color: var(--aev-contact-on-dark);
   text-decoration: none;
   isolation: isolate;
   transition: border-color 0.45s ease;
@@ -194,7 +214,7 @@
   content: "";
   position: absolute;
   inset: 9px;
-  border: 1px solid rgba(242, 240, 233, 0.09);
+  border: 1px solid rgba(var(--aev-contact-on-dark-rgb), 0.09);
   border-radius: 50%;
   transition:
     inset 0.6s cubic-bezier(0.22, 1, 0.36, 1),
@@ -205,7 +225,7 @@
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  background: #f2f0e9;
+  background: var(--aev-contact-on-dark);
   transform: scale(0);
   transition: transform 0.7s cubic-bezier(0.19, 1, 0.22, 1);
   z-index: -1;
@@ -234,13 +254,13 @@
 }
 
 .contact-cta:hover {
-  border-color: #f2f0e9;
-  color: #222220;
+  border-color: var(--aev-contact-on-dark);
+  color: var(--aev-contact-bg-dark);
 }
 
 .contact-cta:hover::before {
   inset: 16px;
-  border-color: rgba(34, 34, 32, 0.1);
+  border-color: rgba(var(--aev-contact-dark-rgb), 0.1);
 }
 
 .contact-cta:hover .contact-cta-ring {
@@ -256,7 +276,7 @@
 .contact-rule {
   width: 100%;
   height: 1px;
-  background: rgba(242, 240, 233, 0.11);
+  background: rgba(var(--aev-contact-on-dark-rgb), 0.11);
   transform-origin: left center;
 }
 
@@ -271,7 +291,7 @@
 
 .contact-bottom-label {
   padding-top: 0.15rem;
-  color: #c1a673;
+  color: var(--aev-contact-accent);
 }
 
 .contact-offices {
@@ -290,7 +310,7 @@
 }
 
 .contact-office-number {
-  color: #c1a673;
+  color: var(--aev-contact-accent);
   font-family: "Times New Roman", Times, serif;
   font-size: 0.85rem;
 }
@@ -298,14 +318,14 @@
 .contact-office-name {
   font-family: "Times New Roman", Times, serif;
   font-size: 1.15rem;
-  color: #f2f0e9;
+  color: var(--aev-contact-on-dark);
 }
 
 .contact-office-address {
   margin: 0;
   font-size: 0.72rem;
   line-height: 1.55;
-  color: rgba(242, 240, 233, 0.48);
+  color: rgba(var(--aev-contact-on-dark-rgb), 0.48);
 }
 
 .contact-office-map {
@@ -314,8 +334,8 @@
   gap: 0.45rem;
   margin-top: 0.8rem;
   padding-bottom: 0.2rem;
-  border-bottom: 1px solid rgba(193, 166, 115, 0.3);
-  color: rgba(242, 240, 233, 0.65);
+  border-bottom: 1px solid rgba(var(--aev-contact-accent-rgb), 0.3);
+  color: rgba(var(--aev-contact-on-dark-rgb), 0.65);
   font-size: 0.55rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -331,8 +351,8 @@
 }
 
 .contact-office-map:hover {
-  color: #c1a673;
-  border-color: #c1a673;
+  color: var(--aev-contact-accent);
+  border-color: var(--aev-contact-accent);
 }
 
 .contact-office-map:hover span {
@@ -348,11 +368,11 @@
 }
 
 .contact-direct > span {
-  color: rgba(242, 240, 233, 0.3);
+  color: rgba(var(--aev-contact-on-dark-rgb), 0.3);
 }
 
 .contact-direct a {
-  color: #f2f0e9;
+  color: var(--aev-contact-on-dark);
   font-family: "Times New Roman", Times, serif;
   font-size: 1.05rem;
   text-decoration: none;
@@ -361,7 +381,7 @@
 }
 
 .contact-direct a:hover {
-  color: #c1a673;
+  color: var(--aev-contact-accent);
 }
 
 /* ---------- tablet ---------- */
@@ -461,7 +481,7 @@
 
   .contact-office {
     padding-top: 1.3rem;
-    border-top: 1px solid rgba(242, 240, 233, 0.08);
+    border-top: 1px solid rgba(var(--aev-contact-on-dark-rgb), 0.08);
   }
 
   .contact-office:first-of-type {
@@ -478,7 +498,7 @@
     align-items: flex-start;
     margin-top: 0;
     padding-top: 1.3rem;
-    border-top: 1px solid rgba(242, 240, 233, 0.08);
+    border-top: 1px solid rgba(var(--aev-contact-on-dark-rgb), 0.08);
   }
 
   .contact-bg-word {
@@ -515,8 +535,8 @@
   margin: 0;
   box-sizing: border-box;
   overflow: hidden;
-  background: #222220;
-  color: #f2f0e9;
+  background: var(--aev-contact-bg-dark);
+  color: var(--aev-contact-on-dark);
 }
 
 /* Prevent Home.css from changing this layout */
@@ -556,7 +576,7 @@
   font-weight: 400;
   line-height: 0.91;
   letter-spacing: -0.055em;
-  color: #f2f0e9;
+  color: var(--aev-contact-on-dark);
 }
 
 .aev-contact-section .contact-title-mask {
@@ -568,7 +588,7 @@
 }
 
 .aev-contact-section .contact-title-accent {
-  color: #c1a673;
+  color: var(--aev-contact-accent);
   font-style: italic;
 }
 
@@ -579,7 +599,7 @@
   padding: 0;
   font-size: 13px;
   line-height: 1.7;
-  color: rgba(242, 240, 233, 0.64);
+  color: rgba(var(--aev-contact-on-dark-rgb), 0.64);
 }
 
 /* Smaller, more refined circular CTA */
@@ -598,7 +618,7 @@
 /* Reduce the gap before office details */
 .aev-contact-section .contact-rule {
   margin-top: 0;
-  background: rgba(242, 240, 233, 0.15);
+  background: rgba(var(--aev-contact-on-dark-rgb), 0.15);
 }
 
 .aev-contact-section .contact-bottom {
@@ -658,11 +678,11 @@
 /* Keep background typography subtle */
 .aev-contact-section .contact-bg-word {
   font-size: clamp(70px, 9vw, 130px);
-  color: rgba(242, 240, 233, 0.018);
+  color: rgba(var(--aev-contact-on-dark-rgb), 0.018);
 }
 
 .aev-contact-section .contact-bg-word-two {
-  -webkit-text-stroke-color: rgba(193, 166, 115, 0.035);
+  -webkit-text-stroke-color: rgba(var(--aev-contact-accent-rgb), 0.035);
 }
 
 /* Tablet */
@@ -746,12 +766,12 @@
   .aev-contact-section .contact-office,
   .aev-contact-section .contact-direct {
     padding-top: 16px;
-    border-top: 1px solid rgba(242, 240, 233, 0.12);
+    border-top: 1px solid rgba(var(--aev-contact-on-dark-rgb), 0.12);
   }
 
   .aev-contact-section .contact-office:first-of-type {
     padding-top: 16px;
-    border-top: 1px solid rgba(242, 240, 233, 0.12);
+    border-top: 1px solid rgba(var(--aev-contact-on-dark-rgb), 0.12);
   }
 
   .aev-contact-section .contact-bg-word {
@@ -767,4 +787,197 @@
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+
+
+/* =========================================================
+   AEVITAS CONTACT — WARM GREY THEME
+   All colour decisions are controlled by :root variables.
+   ========================================================= */
+
+.contact-section,
+.contact-section.aev-contact-section {
+  background: var(--aev-contact-bg-cloud);
+  color: var(--aev-contact-ink);
+}
+
+.contact-section::before {
+  background:
+    radial-gradient(
+      38% 70% at 78% 45%,
+      rgba(var(--aev-contact-accent-rgb), 0.075),
+      transparent 70%
+    ),
+    radial-gradient(
+      35% 50% at 8% 85%,
+      rgba(var(--aev-contact-accent-rgb), 0.04),
+      transparent 70%
+    );
+}
+
+.contact-section::after {
+  background: linear-gradient(
+    135deg,
+    rgba(var(--aev-contact-white-rgb), 0.22),
+    transparent 48%,
+    rgba(var(--aev-contact-ink-rgb), 0.025)
+  );
+}
+
+.contact-bg-word {
+  color: rgba(var(--aev-contact-ink-rgb), 0.025);
+}
+
+.contact-bg-word-two {
+  -webkit-text-stroke-color: rgba(var(--aev-contact-accent-rgb), 0.10);
+}
+
+.contact-eyebrow,
+.contact-eyebrow-line,
+.contact-bottom-label,
+.contact-office-number {
+  color: var(--aev-contact-accent);
+}
+
+.contact-eyebrow-line {
+  background: var(--aev-contact-accent);
+}
+
+.contact-title,
+.contact-office-name,
+.contact-direct a {
+  color: var(--aev-contact-ink);
+}
+
+.contact-title-accent {
+  color: var(--aev-contact-accent);
+}
+
+.contact-intro {
+  color: var(--aev-contact-muted);
+}
+
+.contact-cta,
+.aev-contact-section .contact-cta {
+  border-color: rgba(var(--aev-contact-accent-rgb), 0.68);
+  color: var(--aev-contact-ink);
+}
+
+/* The component-scoped layout rules above are more specific than the base
+   selectors; repeat the palette on those same scoped selectors intentionally. */
+.aev-contact-section .contact-title,
+.aev-contact-section .contact-title-line:not(.contact-title-accent) {
+  color: var(--aev-contact-ink);
+}
+
+.aev-contact-section .contact-title-accent {
+  color: var(--aev-contact-accent);
+}
+
+.aev-contact-section .contact-intro {
+  color: var(--aev-contact-muted);
+}
+
+.aev-contact-section .contact-bg-word {
+  color: rgba(var(--aev-contact-ink-rgb), 0.025);
+}
+
+.aev-contact-section .contact-bg-word-two {
+  -webkit-text-stroke-color: rgba(var(--aev-contact-accent-rgb), 0.10);
+}
+
+.contact-cta::before {
+  border-color: rgba(var(--aev-contact-ink-rgb), 0.12);
+}
+
+.contact-cta-ring {
+  background: var(--aev-contact-bg-dark);
+}
+
+.contact-cta:hover {
+  border-color: var(--aev-contact-bg-dark);
+  color: var(--aev-contact-on-dark);
+}
+
+.aev-contact-section .contact-cta:hover {
+  border-color: var(--aev-contact-bg-dark);
+  color: var(--aev-contact-on-dark);
+}
+
+.contact-cta:hover::before {
+  border-color: rgba(var(--aev-contact-on-dark-rgb), 0.18);
+}
+
+.contact-rule {
+  background: rgba(var(--aev-contact-ink-rgb), 0.16);
+}
+
+.contact-office-address {
+  color: var(--aev-contact-muted);
+}
+
+.contact-office-map {
+  border-bottom-color: rgba(var(--aev-contact-accent-rgb), 0.45);
+  color: var(--aev-contact-muted);
+}
+
+.contact-office-map:hover,
+.contact-direct a:hover {
+  color: var(--aev-contact-accent);
+}
+
+.contact-office-map:hover {
+  border-color: var(--aev-contact-accent);
+}
+
+.contact-direct > span {
+  color: var(--aev-contact-muted);
+}
+
+@media (max-width: 700px) {
+  .contact-office,
+  .contact-direct {
+    border-top-color: rgba(var(--aev-contact-ink-rgb), 0.12);
+  }
+}
+
+@media (max-width: 600px) {
+  .aev-contact-section .contact-office,
+  .aev-contact-section .contact-direct,
+  .aev-contact-section .contact-office:first-of-type {
+    border-top-color: rgba(var(--aev-contact-ink-rgb), 0.12);
+  }
+}
+
+
+
+/* ---------- alternating page palette: light section ---------- */
+.contact-section {
+  --aev-contact-bg-dark: #EAE8E6;
+  --aev-contact-on-dark: #352934;
+  --aev-contact-on-dark-muted: #625C60;
+  --aev-contact-on-dark-rgb: 53, 41, 52;
+  --aev-contact-dark-rgb: 234, 232, 230;
+  background: var(--aev-contact-bg-dark);
+  color: var(--aev-contact-on-dark);
+}
+
+.contact-section .contact-title,
+.contact-section .contact-cta,
+.contact-section .contact-bottom,
+.contact-section .contact-bottom a,
+.contact-section .contact-bottom p,
+.contact-section .contact-bottom span {
+  color: var(--aev-contact-on-dark);
+}
+
+.contact-section .contact-intro,
+.contact-section .contact-bottom small,
+.contact-section .contact-bottom-label {
+  color: rgba(var(--aev-contact-on-dark-rgb), 0.68);
+}
+
+.contact-section .contact-rule {
+  background: rgba(var(--aev-contact-on-dark-rgb), 0.16);
 }

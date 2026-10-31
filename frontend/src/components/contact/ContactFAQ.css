@@ -1,15 +1,15 @@
 /* =========================================================
    AEVITAS CERAMICS — CONTACT FAQ
-   Warm ivory, charcoal typography and muted gold details.
+   Dark warm-slate section; light typography and champagne accents.
    ========================================================= */
 
 .cfaq-section {
-  --cfaq-ivory: #f2f0e9;
-  --cfaq-paper: #e8e4da;
-  --cfaq-gold: #c1a673;
-  --cfaq-gold-deep: #8d7951;
-  --cfaq-ink: #222220;
-  --cfaq-muted: rgba(34, 34, 32, 0.64);
+  --cfaq-ivory: var(--aev-text-on-dark, #F6F3F0);
+  --cfaq-paper: var(--aev-bg-dark, #5B555A);
+  --cfaq-gold: var(--aev-accent, #A78350);
+  --cfaq-gold-deep: var(--aev-accent, #A78350);
+  --cfaq-ink: var(--aev-text-on-dark, #F6F3F0);
+  --cfaq-muted: rgba(246, 243, 240, 0.72);
 
   position: relative;
   width: 100%;
@@ -79,7 +79,7 @@
 .cfaq-side-note {
   margin-top: clamp(35px, 5vw, 65px);
   padding-top: 20px;
-  border-top: 1px solid rgba(34, 34, 32, 0.18);
+  border-top: 1px solid rgba(246, 243, 240, 0.18);
 }
 
 .cfaq-side-number {
@@ -89,7 +89,7 @@
 }
 
 .cfaq-side-number i {
-  color: rgba(34, 34, 32, 0.42);
+  color: rgba(246, 243, 240, 0.42);
   font-family: inherit;
   font-size: 12px;
   font-style: normal;
@@ -139,11 +139,11 @@
 /* FAQ accordion */
 .cfaq-list {
   min-width: 0;
-  border-top: 1px solid rgba(34, 34, 32, 0.24);
+  border-top: 1px solid rgba(246, 243, 240, 0.24);
 }
 
 .cfaq-item {
-  border-bottom: 1px solid rgba(34, 34, 32, 0.2);
+  border-bottom: 1px solid rgba(246, 243, 240, 0.2);
 }
 
 .cfaq-question {
@@ -185,7 +185,7 @@
   place-items: center;
   width: 30px;
   height: 30px;
-  border: 1px solid rgba(141, 121, 81, 0.4);
+  border: 1px solid rgba(167, 131, 80, 0.4);
   border-radius: 50%;
   transition:
     background 0.35s ease,

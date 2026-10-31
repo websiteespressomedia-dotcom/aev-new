@@ -1,13 +1,33 @@
 /* =========================================================
    AEVITAS CERAMICS  ·  QUALITY CONTROL
-   beige page, dark video tiles, gold labels
+   warm charcoal page, video tiles, champagne labels
    ========================================================= */
+
+:root {
+  --aev-qc-bg-light: #EAE8E6;
+  --aev-qc-bg-soft: #F4F2F0;
+  --aev-qc-bg-cloud: #D6D3D1;
+  --aev-qc-bg-dark: #5B555A;
+  --aev-qc-ink: #352934;
+  --aev-qc-muted: #625C60;
+  --aev-qc-on-dark: #F6F3F0;
+  --aev-qc-on-dark-muted: #E3DEDA;
+  --aev-qc-accent: #A78350;
+  --aev-qc-button-bg: #5D5D5D;
+  --aev-qc-button-text: #FFFFFF;
+  --aev-qc-ink-rgb: 53, 41, 52;
+  --aev-qc-muted-rgb: 98, 92, 96;
+  --aev-qc-dark-rgb: 91, 85, 90;
+  --aev-qc-on-dark-rgb: 246, 243, 240;
+  --aev-qc-accent-rgb: 167, 131, 80;
+  --aev-qc-white-rgb: 255, 255, 255;
+}
 
 .qc {
   position: relative;
   width: 100%;
-  background: #F2F0E9;
-  color: #1a1a2e;
+  background: var(--aev-qc-bg-dark);
+  color: var(--aev-qc-on-dark);
   overflow: hidden;
 }
 
@@ -40,14 +60,14 @@
   display: block;
   width: 44px;
   height: 1px;
-  background: #C1A673;
+  background: var(--aev-qc-accent);
 }
 
 .qc-eyebrow span {
   font-size: 0.72rem;
   letter-spacing: 0.42em;
   text-transform: uppercase;
-  color: #C1A673;
+  color: var(--aev-qc-accent);
 }
 
 .qc-title {
@@ -58,7 +78,7 @@
   line-height: 0.95;
   letter-spacing: -0.03em;
   text-transform: none;
-  color: #1a1a2e;
+  color: var(--aev-qc-on-dark);
 }
 
 /* each word rises out of its own mask */
@@ -70,7 +90,7 @@
 }
 
 .qc-title-row:last-child {
-  color: #C1A673;
+  color: var(--aev-qc-accent);
   font-style: italic;
 }
 
@@ -84,7 +104,7 @@
   margin: 0 0 0.6rem;
   font-size: 1.05rem;
   line-height: 1.8;
-  color: rgba(26, 26, 46, 0.72);
+  color: var(--aev-qc-on-dark-muted);
 }
 
 
@@ -150,7 +170,7 @@
   min-width: 0;
   overflow: hidden;
   border-radius: 14px;
-  background: #222220;
+  background: var(--aev-qc-bg-dark);
   cursor: inherit;
   outline: none;
   isolation: isolate;
@@ -186,8 +206,8 @@
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(20, 20, 19, 0.1) 40%,
-    rgba(20, 20, 19, 0.8) 100%
+    rgba(var(--aev-qc-dark-rgb), 0.12) 40%,
+    rgba(var(--aev-qc-dark-rgb), 0.84) 100%
   );
   transition: opacity 0.6s ease;
 }
@@ -204,7 +224,7 @@
   z-index: 3;
   width: 14px;
   height: 14px;
-  border-color: #C1A673;
+  border-color: var(--aev-qc-accent);
   border-style: solid;
   opacity: 0;
   transition:
@@ -234,7 +254,7 @@
 }
 
 .qc-tile:focus-visible {
-  box-shadow: 0 0 0 2px #C1A673;
+  box-shadow: 0 0 0 2px var(--aev-qc-accent);
 }
 
 
@@ -250,7 +270,7 @@
   width: 56px;
   height: 56px;
   margin: -28px 0 0 -28px;
-  border: 1px solid rgba(242, 240, 233, 0.5);
+  border: 1px solid rgba(var(--aev-qc-on-dark-rgb), 0.55);
   border-radius: 50%;
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
@@ -266,7 +286,7 @@
   margin-left: 3px;
   border-top: 7px solid transparent;
   border-bottom: 7px solid transparent;
-  border-left: 11px solid #F2F0E9;
+  border-left: 11px solid var(--aev-qc-on-dark);
 }
 
 .qc-tile:hover .qc-play,
@@ -293,14 +313,14 @@
   font-size: 0.62rem;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: #C1A673;
+  color: var(--aev-qc-accent);
 }
 
 .qc-name {
   font-family: "Times New Roman", Times, serif;
   font-size: clamp(1rem, 1.5vw, 1.45rem);
   line-height: 1.15;
-  color: #F2F0E9;
+  color: var(--aev-qc-on-dark);
   transform: translateY(0);
   transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }

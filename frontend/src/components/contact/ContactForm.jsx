@@ -99,17 +99,15 @@ export default function ContactForm() {
         <div className="cf-intro">
           <div className="cf-eyebrow">
             <span className="cf-eyebrow-rule" />
-            Contact
+            Let’s Find the Right Tiles for Your Next Project.
           </div>
 
           <h2 className="cf-title" id="cf-title">
-            Let’s create
-            <span> something timeless.</span>
+            Contact Us
           </h2>
 
           <p className="cf-lead">
-            Tell us about your space, your vision, or the surface you’re
-            looking for. We’ll help you find the right material for your project.
+            Explore our porcelain tiles and large format tile collections. Get in touch with Aevitas Ceramics to discuss your product requirements and business enquiries.
           </p>
 
           <div className="cf-side-card">

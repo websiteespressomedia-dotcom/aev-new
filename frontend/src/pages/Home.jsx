@@ -86,25 +86,25 @@ const CATEGORY_SLIDES = [
     id: 'porcelain',
     num: '01 / PORCELAIN',
     title: ['Porcelain', 'Tiles'],
-    desc: 'Discover our premium range of porcelain tiles, offering lasting durability and timeless appeal for distinctive interiors. Explore refined surfaces designed to bring character to every space.',
+    desc: 'Refined aesthetics with lasting performance. versatile design possibilities, they are an excellent choice for creating sophisticated interiors that balance style and practicality.',
     tags: ['GVT', 'PGVT'],
     linkText: 'Explore Collection',
     href: '/collections',
     img: '/floor_preview.jpg',
     alt: 'Porcelain tile surface',
-    bg: '#222220',
+    bg: '#EAE8E6',
   },
   {
     id: 'formats',
     num: '02 / FORMATS',
-    title: ['Large', 'Format'],
-    desc: 'Create seamless, expansive spaces with large-format porcelain slabs. Their generous dimensions reduce grout lines and bring a calm, continuous finish to modern architecture.',
+    title: ['Large Format', 'Tiles'],
+    desc: 'Make a bold design statement with our large format tile collection. Their expansive surface area creates a clean, seamless look that complements contemporary architecture and modern interiors.',
     tags: ['Color Body', 'Full Body'],
     linkText: 'Explore Formats',
     href: '/collections',
-    img: '/terrace_preview.jpg',
+    img: '/lobi_preview.png',
     alt: 'Large format porcelain slabs',
-    bg: '#222220',
+    bg: '#EAE8E6',
   },
 ];
 
@@ -446,6 +446,158 @@ const HeroImageSlider = () => {
   );
 };
 
+
+/* Full-bleed category image slider — mirrors the hero's sliced transition */
+const CATEGORY_PREVIEW_SLIDES = [
+  { id: 'bathroom', image: '/bathroom_preview.jpg', alt: 'Luxury marble bathroom' },
+  { id: 'living', image: '/residential_preview.png', alt: 'Contemporary living space with porcelain flooring' },
+  { id: 'floor', image: '/floor_preview.jpg', alt: 'Premium porcelain floor tiles' },
+  { id: 'terrace', image: '/terrace_preview.jpg', alt: 'Outdoor terrace with large-format tiles' },
+  { id: 'kitchen', image: '/kitchen_preview.png', alt: 'Modern kitchen with premium tile surfaces' },
+];
+
+const CATEGORY_PREVIEW_SLICES = 7;
+
+const CategoryPreviewSlider = ({ sectionRef }) => {
+  const [activeSlide, setActiveSlide] = useState(0);
+  const rootRef = useRef(null);
+  const busyRef = useRef(false);
+  const timerRef = useRef(null);
+  const timelineRef = useRef(null);
+  const changeRef = useRef(null);
+  const nextIndex = (activeSlide + 1) % CATEGORY_PREVIEW_SLIDES.length;
+
+  const changeSlide = async (direction) => {
+    if (busyRef.current || !rootRef.current) return;
+    const target = (activeSlide + direction + CATEGORY_PREVIEW_SLIDES.length) % CATEGORY_PREVIEW_SLIDES.length;
+    const root = rootRef.current;
+    const slices = gsap.utils.toArray('.category-preview-slice', root);
+    const images = gsap.utils.toArray('.category-preview-transition-image', root);
+    if (!slices.length) {
+      setActiveSlide(target);
+      return;
+    }
+
+busyRef.current = true;
+clearTimeout(timerRef.current);
+
+const targetImage = CATEGORY_PREVIEW_SLIDES[target].image;
+
+// Load and decode the next image before starting the transition.
+const preload = new Image();
+preload.src = targetImage;
+
+try {
+  if (preload.decode) {
+    await preload.decode();
+  } else {
+    await new Promise((resolve) => {
+      if (preload.complete && preload.naturalWidth > 0) {
+        resolve();
+      } else {
+        preload.onload = resolve;
+        preload.onerror = resolve;
+      }
+    });
+  }
+} catch {
+  // Continue even if decoding fails.
+}
+
+images.forEach((img) => {
+  img.src = targetImage;
+});
+    const reverse = direction < 0;
+    const orderedSlices = reverse ? [...slices].reverse() : slices;
+
+    gsap.set(slices, {
+      clipPath: reverse ? 'inset(0 0 0 100%)' : 'inset(0 100% 0 0)',
+      opacity: 1,
+    });
+
+    timelineRef.current = gsap.timeline({
+      onComplete: () => {
+        // Hide the transition layer before changing its image source for the next slide.
+        // This prevents the next image from flashing across the completed slide.
+        gsap.set(slices, {
+          clipPath: reverse ? 'inset(0 0 0 100%)' : 'inset(0 100% 0 0)',
+          clearProps: 'opacity',
+        });
+        setActiveSlide(target);
+      },
+    }).to(orderedSlices, {
+      clipPath: 'inset(0 0% 0 0%)',
+      duration: 1.15,
+      stagger: 0.12,
+      ease: 'power3.inOut',
+    });
+  };
+
+  changeRef.current = changeSlide;
+
+  useEffect(() => {
+    busyRef.current = false;
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      timerRef.current = setTimeout(() => changeRef.current?.(1), 5000);
+    }
+    return () => clearTimeout(timerRef.current);
+  }, [activeSlide]);
+
+  useEffect(() => {
+    CATEGORY_PREVIEW_SLIDES.forEach((slide) => {
+      const img = new Image();
+      img.src = slide.image;
+    });
+    return () => {
+      clearTimeout(timerRef.current);
+      timelineRef.current?.kill();
+    };
+  }, []);
+
+  const currentSlide = CATEGORY_PREVIEW_SLIDES[activeSlide];
+  const handleKey = (direction) => (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      changeSlide(direction);
+    }
+  };
+
+  return (
+    <section className="category-hero-section category-preview-slider" ref={sectionRef}>
+      <div className="category-preview-media" ref={rootRef}>
+        <img className="category-preview-current" src={currentSlide.image} alt={currentSlide.alt} />
+        <div className="category-preview-transition" aria-hidden="true">
+          {Array.from({ length: CATEGORY_PREVIEW_SLICES }).map((_, index) => (
+            <div
+              key={index}
+              className="category-preview-slice"
+              style={{ left: `${(index / CATEGORY_PREVIEW_SLICES) * 100}%`, width: `${100 / CATEGORY_PREVIEW_SLICES}%`, "--slice-offset": `${-(index * 100 / CATEGORY_PREVIEW_SLICES)}vw` }}
+            >
+              <img className="category-preview-transition-image" src={CATEGORY_PREVIEW_SLIDES[nextIndex].image} alt="" />
+            </div>
+          ))}
+        </div>
+        <div className="category-preview-shade" />
+      </div>
+
+      <div className="category-preview-controls">
+        <span className="category-preview-count">
+          {String(activeSlide + 1).padStart(2, '0')}
+          <span className="category-preview-count-line">
+            <span style={{ width: `${((activeSlide + 1) / CATEGORY_PREVIEW_SLIDES.length) * 100}%` }} />
+          </span>
+          {String(CATEGORY_PREVIEW_SLIDES.length).padStart(2, '0')}
+        </span>
+        <div className="category-preview-arrows">
+          <button type="button" aria-label="Previous category image" onClick={() => changeSlide(-1)}>←</button>
+          <button type="button" aria-label="Next category image" onClick={() => changeSlide(1)}>→</button>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+
 /* ---------- About / Heritage: pinned scroll story (5 steps) ----------
    1  "Designed to become part of the architecture." + scroll hint
    2  text splits apart, a thin band of marble opens between the lines
@@ -455,14 +607,14 @@ const HeroImageSlider = () => {
    Edit the words and the two image paths below. */
 const ABOUT_TEXT = {
   eyebrow: 'Our Heritage',
-  line1: 'Designed to become',
-  line2: 'part of the architecture.',
+  line1: 'Surfaces for the spaces that matter',
+  // line2: 'part of the architecture.',
   matNumber: '01',
   matTitle: ['Material', 'Intelligence'],
-  matText: 'Italian craftsmanship meets modern technology to create timeless surfaces.',
-  finalTitle: 'Aevitas Ceramics is where material, technology and architecture meet.',
+  matText: 'A premium tile and surface brand bringing together design, practicality and a customer-first approach for residential, commercial and architectural spaces',
+  finalTitle: 'Porcelain Floor Tile Manufacturer & Exporter.',
   finalText:
-    'For decades, we have combined Italian craftsmanship with cutting-edge technology to create surfaces that redefine luxury spaces.',
+    'Aevitas Ceramics is an Indian manufacturer and exporter of premium, large-format porcelain tiles that provides high-quality, contemporary surface solutions for global architectural and interior design markets through long-term international partnerships.',
   cta: 'Discover Our Story'
 };
 
@@ -646,7 +798,7 @@ const AboutHeritage = () => {
       {/* step 4: text over the full image */}
       <div className="ah-mat">
         <div className="ah-mat-num">
-          <span>{ABOUT_TEXT.matNumber}</span>
+          {/* <span>{ABOUT_TEXT.matNumber}</span> */}
           <i />
         </div>
         <div className="ah-mat-title">
@@ -661,7 +813,7 @@ const AboutHeritage = () => {
       <div className="ah-final-wrap">
         <div className="ah-final">
           <div className="ah-final-eyebrow">
-            <span className="ah-final-num">{ABOUT_TEXT.matNumber}</span>
+            {/* <span className="ah-final-num">{ABOUT_TEXT.matNumber}</span> */}
             <i />
             <span className="ah-final-label">{ABOUT_TEXT.eyebrow}</span>
           </div>
@@ -669,8 +821,8 @@ const AboutHeritage = () => {
           <p className="ah-final-p">{ABOUT_TEXT.finalText}</p>
           <div>
             <button className="pill-btn ah-cta">
-               <a href="/about">
                 <span className="ah-cta-circle" aria-hidden="true">→</span>
+               <a href="/about">
                 <span className="ah-cta-label">{ABOUT_TEXT.cta}</span>
               </a>
             </button>
@@ -1189,8 +1341,8 @@ const Home = () => {
       <AboutHeritage />
 
       {/* Elegant Separator Line */}
-      <div style={{ width: '100%', backgroundColor: '#F2F0E9' }}>
-        <div style={{ width: '90%', height: '1px', background: 'rgba(26, 26, 46, 0.1)', margin: '0 auto' }}></div>
+      <div className="home-section-divider home-section-divider--inset">
+        <div className="home-section-divider-line" />
       </div>
 
       {/* Editorial Category Stage (pinned, scroll-driven) */}
@@ -1237,48 +1389,24 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Category Brief About - Redesigned as Full Screen Hero */}
-      <section className="category-hero-section" ref={categoryHeroRef}>
-        <div className="hero-bg" style={{ backgroundImage: 'url(/bathroom_preview.jpg)' }}></div>
-        <div className="hero-overlay"></div>
-
-        <div className="hero-content">
-          <div className="hero-glass-box">
-            <h2 className="hero-large-text">
-              <SplitText text="EXPLORING OUR" /><br /><SplitText text="CATEGORIES" />
-            </h2>
-            <p className="hero-desc animate-fade-up">
-              We curate the world’s finest materials, organizing them into distinct categories to help architects and designers find the exact expression of luxury they envision. From timeless natural stone to cutting-edge technical ceramics.
-            </p>
-            <br />
-            <a href="#" className="hero-link animate-fade-up" style={{ color: 'white', borderBottomColor: 'rgba(255,255,255,0.5)' }}>EXPLORE MORE ↗</a>
-          </div>
-        </div>
-      </section>
+      {/* Full-screen category previews — text block removed; image transition matches hero */}
+      <CategoryPreviewSlider sectionRef={categoryHeroRef} />
 
       {/* Elegant Separator Line Above */}
-      <div style={{ width: '100%', backgroundColor: '#F2F0E9' }}>
-        <div style={{ width: '100%', height: '1px', background: 'rgba(26, 26, 46, 0.1)' }}></div>
+      <div className="home-section-divider">
+        <div className="home-section-divider-line" />
       </div>
 
       {/* Collections / Editorial Process Layout */}
       <CollectionsSection />
 
       {/* Elegant Separator Line Below */}
-      <div style={{ width: '100%', backgroundColor: '#F2F0E9' }}>
-        <div style={{ width: '100%', height: '1px', background: 'rgba(26, 26, 46, 0.1)' }}></div>
+      <div className="home-section-divider">
+        <div className="home-section-divider-line" />
       </div>
 
       {/* Sizes / Formats — Expanding Panels */}
-      <section
-        className="sizes-carousel-section"
-        style={{
-          padding: '4rem 4%',
-          background: '#1c1c1a',
-          width: '100%',
-          boxSizing: 'border-box',
-        }}
-      >
+      <section className="sizes-carousel-section">
         {/* Header */}
         <div className="sizes-header">
           <div className="sizes-header-left">
@@ -1435,7 +1563,7 @@ const Home = () => {
 
 
       {/* Stats Section (Grid Layout) */}
-      <section style={{ padding: '8rem 4%', background: '#F2F0E9', width: '100%', boxSizing: 'border-box' }}>
+      <section className="home-stats-section">
         <div className="animate-fade-up" style={{ marginBottom: '3rem' }}>
           <h2 className="section-title" style={{ marginBottom: 0, fontSize: '3.5rem' }}>
             <SplitText text="The Strength Behind Every Surface" />
@@ -1443,22 +1571,22 @@ const Home = () => {
           <p style={{ maxWidth: '600px', marginTop: '1rem', opacity: 0.8, lineHeight: 1.6 }}>
             From advanced manufacturing to global exports, every number reflects our commitment to quality, innovation, and customer satisfaction.
           </p>
-          <div style={{ width: '100%', height: '1px', backgroundColor: '#d8d3c5', marginTop: '3rem' }}></div>
+          <div className="home-section-divider-line home-stats-divider" />
         </div>
         <div className="stats-grid-wrapper">
           {[
-            { num: "57,600+", label: "Sq. Meters Daily Production", text: "Manufactured with cutting-edge Italian technology ensuring precision and durability." },
-            { num: "3,500", label: "Sq. Ft Display Area", text: "Explore our vast collections in our immersive state-of-the-art showrooms." },
-            { num: "282", label: "Meter Long Kiln", text: "Advanced firing processes guarantee the structural integrity of every slab." },
+            // { num: "57,600+", label: "Sq. Meters Daily Production", text: "Manufactured with cutting-edge Italian technology ensuring precision and durability." },
             { num: "100%", label: "Export Quality", text: "Rigorous quality checks ensure perfection for every international shipment." },
-            { num: "78+", label: "Export Countries", text: "Trusted by architects and developers across the globe." },
-            { num: "10+", label: "Tile Sizes", text: "From standard formats to massive seamless slabs for any project." },
-            { num: "48k+", label: "Tile Designs", text: "A massive library of textures, colors, and premium finishes." },
-            { num: "20+", label: "Tile Surfaces", text: "Matte, polished, rustic, and specialized textures for all environments." },
+            { num: "10+", label: "Available Tile Sizes", text: "From standard formats to massive seamless slabs for any project." },
+            { num: "20k+", label: "Tile Designs", text: "A massive library of textures, colors, and premium finishes." },
+            { num: "10+", label: "Tile Surfaces", text: "Matte, polished, rustic, and specialized textures for all environments." },
+            // { num: "3,500", label: "Sq. Ft Display Area", text: "Explore our vast collections in our immersive state-of-the-art showrooms." },
+            // { num: "282", label: "Meter Long Kiln", text: "Advanced firing processes guarantee the structural integrity of every slab." },
+            // { num: "78+", label: "Export Countries", text: "Trusted by architects and developers across the globe." },
           ].map((stat, i) => (
             <div key={i} className="stat-info-card">
               <span className="stat-large-num">{stat.num}</span>
-              <h3 style={{ fontSize: '1.2rem', margin: '1.5rem 0 1rem 0', color: '#1a1a1a', fontWeight: '400' }}>{stat.label}</h3>
+              <h3 style={{ fontSize: '1.2rem', margin: '1.5rem 0 1rem 0', color: 'var(--home-text-primary)', fontWeight: '400' }}>{stat.label}</h3>
               <p style={{ fontSize: '0.95rem', opacity: 0.7 }}>{stat.text}</p>
             </div>
           ))}
@@ -1470,93 +1598,61 @@ const Home = () => {
 
       {/* Elegant Separator Line */}
       <div style={{ width: '100%', padding: '4rem 0' }}>
-        <div style={{ width: '90%', height: '1px', background: 'rgba(26, 26, 46, 0.1)', margin: '0 auto' }}></div>
+        {/* <div style={{ width: '90%', height: '1px', background: 'rgba(26, 26, 46, 0.1)', margin: '0 auto' }}></div> */}
       </div>
-      {/* Materials Grid */}
-      <section className="section">
-        <p style={{ opacity: 0.6, textTransform: 'uppercase' }} className="animate-fade-up">( Material )</p>
-        <h2 className="section-title">
-          <SplitText text="Noble Materials for Unique Creations" />
-        </h2>
-        <div className="materials-grid">
-          <div className="material-item animate-fade-up"><div className="material-thumb" style={{ backgroundImage: 'url(/tile_calacatta.jpg)', backgroundSize: 'cover' }}></div><h3>Stone</h3></div>
-          <div className="material-item animate-fade-up"><div className="material-thumb" style={{ backgroundImage: 'url(/tile_nero.jpg)', backgroundSize: 'cover' }}></div><h3>Granite</h3></div>
-          <div className="material-item animate-fade-up"><div className="material-thumb" style={{ backgroundImage: 'url(/tile_emerald.jpg)', backgroundSize: 'cover' }}></div><h3>Marble</h3></div>
-          <div className="material-item animate-fade-up"><div className="material-thumb" style={{ backgroundImage: 'url(/tile_travertine.jpg)', backgroundSize: 'cover' }}></div><h3>Quartzite</h3></div>
-          <div className="material-item animate-fade-up"><div className="material-thumb" style={{ backgroundImage: 'url(/tile_calacatta.jpg)', backgroundSize: 'cover' }}></div><h3>Ceramic</h3></div>
-        </div>
-      </section>
 
       {/* Aevitas Reel Journal */}
       <ReelInspiration />
 
-      {/* Contact Section */}
-      <section className="home-contact-section">
-        <div className="home-contact-inner">
-          <div className="home-contact-intro">
-            <span className="home-contact-eyebrow">Contact</span>
-            <h2 className="home-contact-title">
-              <span>Let&apos;s create</span>
-              <em>something timeless.</em>
-            </h2>
-            <p className="contact-description">
-              Tell us about your space, your vision, or the surface you are looking for.
-              Our team will help you find the right material for your project.
-            </p>
-            <div className="contact-note">
-              <span className="contact-note-line" />
-              <span>We&apos;d love to hear from you.</span>
-            </div>
-          </div>
 
-          <div className="contact-form-wrap">
-            <form id="contactForm" className="contact-form" onSubmit={handleSubmit}>
-              <div className="contact-form-grid">
-                <div className="form-group animate-fade-up">
-                  <label htmlFor="firstName">First name <span>*</span></label>
-                  <input id="firstName" name="firstName" type="text" className="form-input" autoComplete="given-name" required />
-                </div>
+{/* Global Markets / Export Section */}
+<section className="global-markets-section" aria-labelledby="global-markets-title">
+  <div className="global-markets-container">
+    <header className="global-markets-header">
+      <div className="global-markets-eyebrow">
+        <span className="global-markets-eyebrow-line" aria-hidden="true" />
+        <span>INDIA / GLOBAL REACH</span>
+      </div>
+      <h2 className="global-markets-title" id="global-markets-title">
+        <span className="global-title-main">Bringing Premium Porcelain Tile</span>
+        <span className="global-title-accent">Solutions to Global Markets</span>
+      </h2>
+    </header>
 
-                <div className="form-group animate-fade-up">
-                  <label htmlFor="lastName">Last name <span>*</span></label>
-                  <input id="lastName" name="lastName" type="text" className="form-input" autoComplete="family-name" required />
-                </div>
-              </div>
+    <div className="global-markets-story">
+      <figure className="global-markets-image-wrap">
+        <img
+          src="/images/global-export-ship1.png"
+          alt="Container ship representing Aevitas Ceramics' international export network"
+          className="global-markets-image"
+          loading="lazy"
+        />
+      </figure>
 
-              <div className="form-group animate-fade-up">
-                <label htmlFor="email">E-mail <span>*</span></label>
-                <input id="email" name="email" type="email" className="form-input" autoComplete="email" required />
-              </div>
+      <div className="global-markets-description">
+        <p>
+          Aevitas Ceramics is an Indian porcelain tile brand focused on delivering premium porcelain tiles and large format tile solutions for international markets. With a commitment to contemporary design, manufacturing quality, and reliable product standards, we aim to serve importers, distributors, wholesalers, architects, and project suppliers seeking dependable surface solutions.
+        </p>
+        <p>
+          Our approach combines design-driven porcelain collections with a focus on product consistency, careful packaging, and export-oriented supply requirements. From residential interiors and commercial developments to hospitality spaces and large-scale architectural projects, Aevitas Ceramics offers tile solutions tailored to diverse design and application needs.
+        </p>
+      </div>
 
-              <div className="form-group form-message-group animate-fade-up">
-                <label htmlFor="message">Tell us about your project <span>*</span></label>
-                <textarea id="message" name="message" className="form-input form-textarea" rows="5" required />
-              </div>
-
-              <div className="contact-form-footer animate-fade-up">
-                <label className="privacy-field" htmlFor="privacy">
-                  <input type="checkbox" id="privacy" name="privacy" required />
-                  <span className="privacy-box" aria-hidden="true" />
-                  <span>I have read and understood the privacy policy <strong>*</strong></span>
-                </label>
-
-                <button type="submit" className="submit-btn">
-                  <span>Send enquiry</span>
-                  <span className="submit-btn-arrow" aria-hidden="true">↗</span>
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </section>
+      <a className="global-markets-link" href="/contact">
+        Discuss an export enquiry
+        <span aria-hidden="true">↗</span>
+      </a>
+    </div>
+  </div>
+</section>
 
       {/* Video Modal Overlay */}
-      <div className={`video-modal ${isModalOpen ? 'active' : ''}`}>
+      {/* <div className={`video-modal ${isModalOpen ? 'active' : ''}`}>
         <button className="close-modal" onClick={closeModal}>&times;</button>
         <video controls ref={modalVideoRef}>
           <source src="/video/reel1.mp4" type="video/mp4" />
         </video>
-      </div>
+      </div> */}
 
     </div>
   );

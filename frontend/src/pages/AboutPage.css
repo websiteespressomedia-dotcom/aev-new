@@ -1,0 +1,286 @@
+/*
+  AEVITAS ABOUT PAGE — WARM GREY DESIGN SYSTEM
+  Scoped to .about-page so these tokens do not affect other pages.
+*/
+.about-page {
+  --aev-bg-light: #EAE8E6;
+  --aev-bg-soft: #F4F2F0;
+  --aev-bg-cloud: #D6D3D1;
+  --aev-bg-dark: #5B555A;
+
+  --aev-text-primary: #352934;
+  --aev-text-secondary: #625C60;
+  --aev-text-on-dark: #F6F3F0;
+  --aev-text-on-dark-muted: #E3DEDA;
+
+  --aev-accent: #A78350;
+  --aev-button-bg: #5D5D5D;
+  --aev-button-text: #FFFFFF;
+
+  width: 100%;
+  background: var(--aev-bg-light);
+  color: var(--aev-text-primary);
+}
+
+/* 2 — GLOBAL MARKETS: soft warm-grey editorial section */
+.about-page .about-global-markets-section {
+  --gm-bg: var(--aev-bg-soft);
+  --gm-secondary: var(--aev-bg-cloud);
+  --gm-ink: var(--aev-text-primary);
+  --gm-muted: var(--aev-text-secondary);
+  --gm-gold: var(--aev-accent);
+  --gm-line: rgba(53, 41, 52, 0.18);
+  background: var(--gm-bg);
+  color: var(--gm-ink);
+}
+.about-page .gm-image-frame {
+  background: var(--aev-bg-cloud);
+}
+.about-page .gm-image-label {
+  color: var(--aev-text-on-dark);
+}
+.about-page .gm-image-label span:first-child {
+  color: var(--aev-accent);
+}
+.about-page .gm-visual::after {
+  border-color: rgba(167, 131, 80, 0.58);
+}
+
+/* 3 — MISSION & VISION: deep warm slate for visual contrast */
+.about-page .mission-vision-section {
+  --mv-bg: var(--aev-bg-dark);
+  --mv-ink: var(--aev-text-on-dark);
+  --mv-gold: var(--aev-accent);
+  --mv-muted: rgba(246, 243, 240, 0.76);
+  --mv-line: rgba(246, 243, 240, 0.2);
+  background: var(--mv-bg);
+  color: var(--mv-ink);
+}
+.about-page .mv-eyebrow-number,
+.about-page .mv-image-meta,
+.about-page .mv-image-index,
+.about-page .mv-vertical-label {
+  color: rgba(246, 243, 240, 0.58);
+}
+.about-page .mv-heading,
+.about-page .mv-item-label {
+  color: var(--aev-text-on-dark);
+}
+.about-page .mv-description,
+.about-page .mv-item p {
+  color: var(--aev-text-on-dark-muted);
+}
+.about-page .mv-main-image {
+  background: var(--aev-bg-cloud);
+}
+.about-page .mv-secondary-image {
+  background: var(--aev-bg-soft);
+  border-color: var(--aev-bg-dark);
+}
+.about-page .mv-image-overlay {
+  background: linear-gradient(
+    135deg,
+    rgba(246, 243, 240, 0.08),
+    transparent 45%,
+    rgba(53, 41, 52, 0.22)
+  );
+}
+.about-page .mv-secondary-overlay {
+  background: linear-gradient(180deg, transparent 55%, rgba(53, 41, 52, 0.18));
+}
+.about-page .mv-frame {
+  border-color: rgba(167, 131, 80, 0.78);
+}
+.about-page .mv-index-line,
+.about-page .mv-progress-track {
+  background: rgba(246, 243, 240, 0.24);
+}
+
+/* 4 — CORE VALUES: warm light canvas; photographic cards remain dark/readable */
+.about-page .cv {
+  background: var(--aev-bg-light);
+  color: var(--aev-text-primary);
+}
+.about-page .cv::before {
+  background: radial-gradient(
+    55% 45% at 12% 18%,
+    rgba(167, 131, 80, 0.12),
+    rgba(167, 131, 80, 0) 70%
+  );
+}
+.about-page .cv-eyebrow i {
+  background: var(--aev-accent);
+}
+.about-page .cv-eyebrow span,
+.about-page .cv-count-num,
+.about-page .cv-tick:focus-visible,
+.about-page .cv-card-num {
+  color: var(--aev-accent);
+}
+.about-page .cv-title,
+.about-page .cv-tick.is-active {
+  color: var(--aev-text-primary);
+}
+.about-page .cv-intro {
+  color: var(--aev-text-secondary);
+}
+.about-page .cv-count-total,
+.about-page .cv-tick {
+  color: rgba(98, 92, 96, 0.78);
+}
+.about-page .cv-tick:hover {
+  color: var(--aev-text-primary);
+}
+.about-page .cv-tick.is-active i,
+.about-page .cv-card-top,
+.about-page .cv-card-title,
+.about-page .cv-card-desc,
+.about-page .cv-tags span {
+  color: var(--aev-text-on-dark);
+}
+.about-page .cv-tick.is-active i {
+  background: var(--aev-accent);
+}
+.about-page .cv-card {
+  background: linear-gradient(160deg, #625C60 0%, #352934 100%);
+}
+.about-page .cv-card-num {
+  color: var(--aev-accent);
+}
+.about-page .cv-tags span {
+  border-color: rgba(167, 131, 80, 0.72);
+}
+
+/* 5 — QUALITY CONTROL: deep warm slate, with readable light typography */
+.about-page .qc {
+  background: var(--aev-bg-dark);
+  color: var(--aev-text-on-dark);
+}
+.about-page .qc-eyebrow i {
+  background: var(--aev-accent);
+}
+.about-page .qc-eyebrow span,
+.about-page .qc-title-row:last-child,
+.about-page .qc-code {
+  color: var(--aev-accent);
+}
+.about-page .qc-title {
+  color: var(--aev-text-on-dark);
+}
+.about-page .qc-text {
+  color: var(--aev-text-on-dark-muted);
+}
+.about-page .qc-tile {
+  background: var(--aev-text-primary);
+}
+.about-page .qc-corner {
+  border-color: var(--aev-accent);
+}
+.about-page .qc-tile:focus-visible {
+  box-shadow: 0 0 0 2px var(--aev-accent);
+}
+.about-page .qc-play {
+  border-color: rgba(246, 243, 240, 0.62);
+}
+.about-page .qc-play span {
+  border-left-color: var(--aev-text-on-dark);
+}
+.about-page .qc-name {
+  color: var(--aev-text-on-dark);
+}
+
+/* 6 — CONTACT: final dark section with champagne accents */
+.about-page .contact-section,
+.about-page .contact-section.aev-contact-section {
+  background: var(--aev-bg-dark) !important;
+  color: var(--aev-text-on-dark) !important;
+}
+.about-page .contact-section::before {
+  background:
+    radial-gradient(38% 70% at 78% 45%, rgba(167, 131, 80, 0.13), transparent 70%),
+    radial-gradient(35% 50% at 8% 85%, rgba(167, 131, 80, 0.07), transparent 70%);
+}
+.about-page .contact-section::after {
+  background: linear-gradient(
+    135deg,
+    rgba(246, 243, 240, 0.035),
+    transparent 48%,
+    rgba(53, 41, 52, 0.2)
+  );
+}
+.about-page .contact-bg-word {
+  color: rgba(246, 243, 240, 0.035) !important;
+}
+.about-page .contact-bg-word-two {
+  -webkit-text-stroke-color: rgba(167, 131, 80, 0.11) !important;
+}
+.about-page .contact-eyebrow,
+.about-page .contact-bottom-label,
+.about-page .contact-office-number,
+.about-page .contact-title-accent,
+.about-page .contact-office-map:hover,
+.about-page .contact-direct a:hover {
+  color: var(--aev-accent) !important;
+}
+.about-page .contact-eyebrow-line {
+  background: var(--aev-accent) !important;
+}
+.about-page .contact-title,
+.about-page .contact-title-line:not(.contact-title-accent),
+.about-page .contact-office-name,
+.about-page .contact-direct a {
+  color: var(--aev-text-on-dark) !important;
+}
+.about-page .contact-intro,
+.about-page .contact-office-address,
+.about-page .contact-office-map {
+  color: var(--aev-text-on-dark-muted) !important;
+}
+.about-page .contact-cta {
+  color: var(--aev-text-on-dark) !important;
+  border-color: rgba(167, 131, 80, 0.76) !important;
+}
+.about-page .contact-cta-ring {
+  background: var(--aev-text-on-dark) !important;
+}
+.about-page .contact-cta:hover {
+  color: var(--aev-text-primary) !important;
+  border-color: var(--aev-text-on-dark) !important;
+}
+.about-page .contact-cta::before {
+  border-color: rgba(246, 243, 240, 0.18);
+}
+.about-page .contact-cta:hover::before {
+  border-color: rgba(53, 41, 52, 0.14);
+}
+.about-page .contact-rule {
+  background: rgba(246, 243, 240, 0.2) !important;
+}
+.about-page .contact-office-map {
+  border-bottom-color: rgba(167, 131, 80, 0.5);
+}
+.about-page .contact-office-map:hover {
+  border-color: var(--aev-accent);
+}
+.about-page .contact-direct > span {
+  color: rgba(246, 243, 240, 0.58);
+}
+@media (max-width: 700px) {
+  .about-page .contact-office,
+  .about-page .contact-direct,
+  .about-page .contact-office:first-of-type {
+    border-top-color: rgba(246, 243, 240, 0.16);
+  }
+}
+@media (max-width: 600px) {
+  .about-page .contact-office,
+  .about-page .contact-direct,
+  .about-page .contact-office:first-of-type {
+    border-top-color: rgba(246, 243, 240, 0.16);
+  }
+}
+
+/* Keep keyboard focus visible across the entire page */
+.about-page :focus-visible {
+  outline-color: var(--aev-accent);
+}

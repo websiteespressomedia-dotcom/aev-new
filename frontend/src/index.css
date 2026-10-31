@@ -21,9 +21,19 @@
   box-sizing: border-box;
 }
 
+/* Shared page canvas: match the light footer instead of exposing
+   the old dark starter-template body background below page content. */
+html,
+body,
+#root {
+  min-height: 100vh;
+  background: linear-gradient(145deg, #E9EBEE 0%, #DDE1E5 100%);
+}
+
 body {
+  min-height: 100vh;
   font-family: var(--font-sans);
-  background-color: var(--color-bg);
+  background: linear-gradient(145deg, #E9EBEE 0%, #DDE1E5 100%);
   color: var(--color-text);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;

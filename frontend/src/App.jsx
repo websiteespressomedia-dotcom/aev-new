@@ -10,6 +10,7 @@ import CustomCursor from './components/CustomCursor';
 import GlobalBackground from './components/GlobalBackground';
 import FullscreenMenu from './components/FullscreenMenu';
 import WhatsAppButton from './components/WhatsAppButton';
+import Export from './components/export/Export';
 import Footer from './components/Footer';
 
 
@@ -89,6 +90,11 @@ function App() {
         title: "Porcelain Floor & Wall Tile Collections | Aevitas Ceramics",
         description:
           "Explore porcelain floor tiles, wall tiles, large-format surfaces and distinctive finishes for modern homes and commercial interiors."
+      },
+      "/export": {
+        title: "Porcelain Tile Exporter from India | Aevitas Ceramics",
+        description:
+          "Aevitas Ceramics supplies premium porcelain floor tiles and large format tiles to importers, distributors, wholesalers and project buyers worldwide."
       },
       "/catalogue": {
         title: "Tile Catalogue & Designs | Aevitas Ceramics",
@@ -188,6 +194,7 @@ function App() {
             <Route path="/about" element={<PageWrapper><About /></PageWrapper>} />
             <Route path="/collections" element={<PageWrapper><Collections /></PageWrapper>} />
             <Route path="/catalogue" element={<PageWrapper><Catalogue /></PageWrapper>} />
+            <Route path="/export" element={<PageWrapper><Export /></PageWrapper>} />
             <Route path="/contact" element={<PageWrapper><ContactPage /></PageWrapper>} />
             <Route path="/porcelain-floor-tiles/:slug" element={<ProductDetailPage />} />
             <Route path="/large-format-porcelain-tiles/:slug" element={<ProductDetailPage />} />

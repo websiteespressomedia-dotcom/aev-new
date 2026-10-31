@@ -17,10 +17,10 @@ const INTRO_TEXT =
   "At Aevitas Ceramics, we connect global markets with India's finest ceramic capabilities through curated collections, consistent quality, and a supply network you can rely on.";
 
 const MISSION_DESC =
-  "To deliver exceptional ceramic solutions that support architects, developers, showrooms, and businesses with consistent quality, reliable supply, and a seamless global experience.";
+  "To provide thoughtfully designed porcelain tiles and large format tile solutions that combine visual appeal, practical functionality, and dependable product standards. We aim to serve evolving customer needs through continuous improvement, responsible business practices, and a commitment to long-term partnerships.";
 
 const VISION_DESC =
-  "To be a globally trusted partner in ceramic surfaces, empowering distinctive spaces with innovative collections, enduring quality, and a commitment to long-term value.";
+  "To establish Aevitas Ceramics as a recognized name in the porcelain tile industry by offering contemporary surface solutions, maintaining a strong focus on quality, and building lasting relationships with customers and business partners across markets.";
 
 const HEADING = [
   [
@@ -191,13 +191,13 @@ const MissionVision = () => {
 
       if (numbers[1]) {
         gsap.set(numbers[1], {
-          color: "rgba(24, 35, 51, 0.4)",
+          color: "rgba(246, 243, 240, 0.58)",
         });
       }
 
       if (indexes[1]) {
         gsap.set(indexes[1], {
-          color: "rgba(24, 35, 51, 0.4)",
+          color: "rgba(246, 243, 240, 0.58)",
         });
       }
 
@@ -499,7 +499,7 @@ const MissionVision = () => {
             story.to(
               numbers[0],
               {
-                color: "rgba(24, 35, 51, 0.4)",
+                color: "rgba(246, 243, 240, 0.58)",
                 duration: 0.5,
               },
               hold + 0.3
@@ -510,7 +510,7 @@ const MissionVision = () => {
             story.to(
               numbers[1],
               {
-                color: "#C1A673",
+                color: "#A78350",
                 duration: 0.5,
               },
               hold + 0.5
@@ -522,7 +522,7 @@ const MissionVision = () => {
             story.to(
               indexes[0],
               {
-                color: "rgba(24, 35, 51, 0.4)",
+                color: "rgba(246, 243, 240, 0.58)",
                 duration: 0.5,
               },
               hold + 0.3
@@ -533,7 +533,7 @@ const MissionVision = () => {
             story.to(
               indexes[1],
               {
-                color: "#C1A673",
+                color: "#A78350",
                 duration: 0.5,
               },
               hold + 0.5

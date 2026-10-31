@@ -1,14 +1,34 @@
 /* =========================================================
    AEVITAS CERAMICS  ·  MISSION & VISION
-   beige / gold / navy, Times serif (same as Home)
+   warm grey / champagne bronze, Times serif
    ========================================================= */
  
+:root {
+  --aev-mv-bg-light: #EAE8E6;
+  --aev-mv-bg-soft: #F4F2F0;
+  --aev-mv-bg-cloud: #D6D3D1;
+  --aev-mv-bg-dark: #5B555A;
+  --aev-mv-ink: #352934;
+  --aev-mv-muted: #625C60;
+  --aev-mv-on-dark: #F6F3F0;
+  --aev-mv-on-dark-muted: #E3DEDA;
+  --aev-mv-accent: #A78350;
+  --aev-mv-button-bg: #5D5D5D;
+  --aev-mv-button-text: #FFFFFF;
+  --aev-mv-ink-rgb: 53, 41, 52;
+  --aev-mv-muted-rgb: 98, 92, 96;
+  --aev-mv-dark-rgb: 91, 85, 90;
+  --aev-mv-on-dark-rgb: 246, 243, 240;
+  --aev-mv-accent-rgb: 167, 131, 80;
+  --aev-mv-white-rgb: 255, 255, 255;
+}
+
 .mission-vision-section {
-  --mv-bg: #F2F0E9;
-  --mv-ink: #1a1a2e;
-  --mv-gold: #C1A673;
-  --mv-muted: rgba(26, 26, 46, 0.7);
-  --mv-line: rgba(26, 26, 46, 0.16);
+  --mv-bg: var(--aev-mv-bg-light);
+  --mv-ink: var(--aev-mv-ink);
+  --mv-gold: var(--aev-mv-accent);
+  --mv-muted: var(--aev-mv-muted);
+  --mv-line: rgba(var(--aev-mv-ink-rgb), 0.16);
  
   position: relative;
   width: 100%;
@@ -84,7 +104,7 @@
   display: flex;
   gap: 6px;
   margin-left: auto;
-  color: rgba(26, 26, 46, 0.4);
+  color: rgba(var(--aev-mv-ink-rgb), 0.42);
   font-size: 11px;
   letter-spacing: 0.18em;
 }
@@ -228,7 +248,7 @@
   display: flex;
   align-items: center;
   gap: 15px;
-  color: rgba(26, 26, 46, 0.5);
+  color: rgba(var(--aev-mv-ink-rgb), 0.55);
   font-size: 10px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -255,7 +275,7 @@
   height: 70%;
   z-index: 1;
   border: 0 solid var(--mv-bg);
-  background: #d7d2c7;
+  background: var(--aev-mv-bg-soft);
 }
  
 .mv-secondary-image {
@@ -265,8 +285,8 @@
   height: 39%;
   z-index: 15;
   border: 5px solid var(--mv-bg);
-  background: #d9d4c9;
-  box-shadow: 0 25px 55px rgba(26, 26, 46, 0.12);
+  background: var(--aev-mv-bg-cloud);
+  box-shadow: 0 25px 55px rgba(var(--aev-mv-ink-rgb), 0.12);
 }
  
 .mv-main-image img,
@@ -283,14 +303,14 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 45%, rgba(26, 26, 46, 0.12));
+  background: linear-gradient(135deg, rgba(var(--aev-mv-white-rgb), 0.08), transparent 45%, rgba(var(--aev-mv-ink-rgb), 0.12));
 }
  
 .mv-secondary-overlay {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(180deg, transparent 55%, rgba(26, 26, 46, 0.08));
+  background: linear-gradient(180deg, transparent 55%, rgba(var(--aev-mv-ink-rgb), 0.08));
 }
  
  
@@ -303,7 +323,7 @@
   z-index: 4;
   width: 49%;
   height: 30%;
-  border: 1px solid rgba(193, 166, 115, 0.7);
+  border: 1px solid rgba(var(--aev-mv-accent-rgb), 0.7);
   pointer-events: none;
   will-change: transform, clip-path;
 }
@@ -345,7 +365,7 @@
   display: flex;
   align-items: center;
   gap: 7px;
-  color: rgba(26, 26, 46, 0.4);
+  color: rgba(var(--aev-mv-ink-rgb), 0.42);
   font-size: 10px;
   letter-spacing: 0.18em;
 }
@@ -353,7 +373,7 @@
 .mv-index-line {
   width: 27px;
   height: 1px;
-  background: rgba(26, 26, 46, 0.25);
+  background: rgba(var(--aev-mv-ink-rgb), 0.25);
 }
  
  
@@ -371,7 +391,7 @@
 .mv-progress-track {
   position: absolute;
   inset: 0;
-  background: rgba(26, 26, 46, 0.1);
+  background: rgba(var(--aev-mv-ink-rgb), 0.10);
 }
  
 .mv-progress-fill {
@@ -392,7 +412,7 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
-  color: rgba(26, 26, 46, 0.4);
+  color: rgba(var(--aev-mv-ink-rgb), 0.42);
   font-size: 8px;
   letter-spacing: 0.25em;
   line-height: 1.5;
@@ -497,3 +517,12 @@
   .mv-secondary-image { left: 38%; top: 62%; width: 62%; height: 33%; }
 }
  
+
+/* ---------- alternating page palette: dark section ---------- */
+.mission-vision-section {
+  --mv-bg: var(--aev-mv-bg-dark);
+  --mv-ink: var(--aev-mv-on-dark);
+  --mv-muted: var(--aev-mv-on-dark-muted);
+  --mv-line: rgba(var(--aev-mv-on-dark-rgb), 0.2);
+  --aev-mv-ink-rgb: 246, 243, 240;
+}

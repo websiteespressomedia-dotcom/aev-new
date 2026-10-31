@@ -83,7 +83,7 @@ export default function CollectionsClient({ products }) {
   return (
     <main
       ref={triggerRef}
-      className="relative bg-black min-h-[300vh]"
+      className="relative bg-black min-h-[200vh]"
     >
       {/* Background video */}
       {/* <div className="bg-container fixed inset-0 z-0 opacity-80 will-change-transform">
@@ -102,11 +102,11 @@ export default function CollectionsClient({ products }) {
       {/* Page sections */}
       <HeroSection ref={heroRef} />
 
-      <TileSection />
+      {/* <TileSection /> */}
 
-      <div className="relative z-20 mt-0 md:-mt-[100vh]">
+      {/* <div className="relative z-20 mt-0 md:-mt-[100vh]">
         <CategorySection />
-      </div>
+      </div> */}
 
       <div className="relative z-30">
         <ProductListingSection initialProducts={products} />
