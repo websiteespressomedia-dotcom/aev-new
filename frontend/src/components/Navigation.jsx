@@ -28,7 +28,7 @@ export default function Navigation({ products = [] }) {
   const mInputRef = useRef(null);
   const [phoneSearch, setPhoneSearch] = useState(false); // phone-only search sheet
   const navigate = useNavigate();
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -39,6 +39,41 @@ export default function Navigation({ products = [] }) {
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Reset scroll after every page navigation from either the navbar or footer.
+  // Preserve deliberate hash links (for example /collections#product-listing).
+  useEffect(() => {
+    const frameId = window.requestAnimationFrame(() => {
+      if (hash) {
+        let targetId = hash.slice(1);
+
+        try {
+          targetId = decodeURIComponent(targetId);
+        } catch {
+          // Keep the original hash id if it contains malformed encoding.
+        }
+
+        const target = document.getElementById(targetId);
+
+        if (target) {
+          target.scrollIntoView({ behavior: "auto", block: "start" });
+        } else {
+          window.scrollTo(0, 0);
+          document.documentElement.scrollTop = 0;
+          document.body.scrollTop = 0;
+        }
+      } else {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+      }
+
+      const threshold = Math.max(160, window.innerHeight * 0.65);
+      setScrolled(window.scrollY > threshold);
+    });
+
+    return () => window.cancelAnimationFrame(frameId);
+  }, [pathname, hash]);
 
   useEffect(() => {
     document.body.style.overflow = menuOpen || phoneSearch ? "hidden" : "";

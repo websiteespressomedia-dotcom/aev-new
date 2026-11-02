@@ -19,7 +19,8 @@ const IMG = {
   floor: "/floor_preview.jpg",                      // 7 · RANGE card 1  (Porcelain Tiles)
   large: "/lobi_preview.png",                    // 7 · RANGE card 2  (Large Format Tiles)
   specs: "/images/surface-finish.png",                     // 8 · SPECIFICATIONS photo above the list
-  footer: "/images/footer-container-yard.png"
+  footer: "/images/footer-container-yard.png",
+  capabilities: "/luxury_tile_craftsmanship.jpg"
 };
 
 /* =========================================================
@@ -465,7 +466,7 @@ const Export = () => {
       <section
         className="ex-hs ex-dark"
         aria-labelledby="ex-cap-title"
-        style={{ "--ex-cap-image": `url("${IMG.intro}")` }}
+        style={{ "--ex-cap-image": `url("${IMG.capabilities}")` }}
       >
         <div className="ex-hs-top">
           <div>

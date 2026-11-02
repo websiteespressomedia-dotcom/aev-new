@@ -33,6 +33,9 @@
   --aev-export-dark-rgb: 91, 85, 90;
   --aev-export-light-rgb: 246, 243, 240;
   --aev-export-accent-rgb: 167, 131, 80;
+  --aev-export-cap-image-tint: rgba(0, 0, 0, 0.562);
+  --aev-export-cap-card-border-idle: rgba(var(--aev-export-accent-rgb), 0.78);
+  --aev-export-cap-card-bg-hover: rgba(244, 242, 240, 0.97);
 
   --aev-export-border-light: rgba(var(--aev-export-ink-rgb), 0.18);
   --aev-export-border-light-strong: rgba(var(--aev-export-ink-rgb), 0.26);
@@ -928,26 +931,25 @@
 
 /* =========================================================
    SECTION 3 — CAPABILITIES BACKGROUND IMAGE
-   Uses the existing IMG.intro asset passed through --ex-cap-image.
-   The charcoal overlay preserves contrast for the heading and note;
-   the horizontal capability cards remain unchanged and readable.
+   One restrained black tint is layered over the photo itself.
+   The section content/cards are not given opacity, so typography
+   and card surfaces stay crisp while the image feels cinematic.
    ========================================================= */
 
 .ex .ex-hs {
   position: relative;
   isolation: isolate;
-  background-color: var(--aev-export-bg-dark);
+  background-color: #000000;
   background-image:
     linear-gradient(
-      180deg,
-      rgba(var(--aev-export-dark-rgb), 0.78) 0%,
-      rgba(var(--aev-export-dark-rgb), 0.84) 55%,
-      rgba(var(--aev-export-dark-rgb), 0.88) 100%
+      var(--aev-export-cap-image-tint),
+      var(--aev-export-cap-image-tint)
     ),
     var(--ex-cap-image);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  background-blend-mode: normal;
 }
 
 .ex .ex-hs::before {
@@ -955,7 +957,7 @@
   background:
     radial-gradient(
       55% 45% at 12% 18%,
-      rgba(var(--aev-export-accent-rgb), 0.14),
+      rgba(var(--aev-export-accent-rgb), 0.08),
       transparent 70%
     );
 }
@@ -1177,5 +1179,111 @@
 @media (prefers-reduced-motion: reduce) {
   .ex .ex-why .ex-mq-row {
     will-change: auto;
+  }
+}
+
+
+
+/* =========================================================
+   SECTION 3 — OUTLINE-FIRST CAPABILITY CARDS
+   Default: transparent cards with a fine gold outline.
+   Hover: full warm-ivory surface with dark, readable copy.
+   Scoped only to the five .ex-hs-card elements.
+   ========================================================= */
+
+.ex .ex-dark .ex-hs-card {
+  /* Soft liquid-glass finish: still transparent, but no longer visually flat. */
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.17) 0%,
+    rgba(255, 255, 255, 0.10) 48%,
+    rgba(255, 255, 255, 0.055) 100%
+  );
+  -webkit-backdrop-filter: blur(6px) saturate(118%);
+  backdrop-filter: blur(6px) saturate(118%);
+  border: 1px solid rgba(var(--aev-export-accent-rgb), 0.88);
+  color: var(--aev-export-text-on-dark);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.30),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.055),
+    0 12px 30px rgba(0, 0, 0, 0.13);
+  transition:
+    background 0.42s ease,
+    border-color 0.32s ease,
+    color 0.32s ease,
+    box-shadow 0.42s ease,
+    transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ex .ex-dark .ex-hs-card .ex-hs-big {
+  color: var(--aev-export-accent);
+  transition: color 0.32s ease;
+}
+
+.ex .ex-dark .ex-hs-card h3 {
+  color: var(--aev-export-text-on-dark);
+  transition: color 0.32s ease;
+}
+
+.ex .ex-dark .ex-hs-card p {
+  color: var(--aev-export-text-on-dark-muted);
+  opacity: 1;
+  transition: color 0.32s ease;
+}
+
+/* Only devices with a true hover pointer get the full-card reveal. */
+@media (hover: hover) and (pointer: fine) {
+  .ex .ex-dark .ex-hs-card:hover {
+    background: var(--aev-export-cap-card-bg-hover);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    border-color: var(--aev-export-accent);
+    color: var(--aev-export-text-primary);
+    box-shadow:
+      0 20px 46px rgba(0, 0, 0, 0.24),
+      0 5px 14px rgba(0, 0, 0, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.96);
+    transform: translateY(-8px);
+  }
+
+  .ex .ex-dark .ex-hs-card:hover .ex-hs-big {
+    color: var(--aev-export-accent);
+  }
+
+  .ex .ex-dark .ex-hs-card:hover h3 {
+    color: var(--aev-export-text-primary);
+  }
+
+  .ex .ex-dark .ex-hs-card:hover p {
+    color: var(--aev-export-text-secondary);
+  }
+}
+
+/* On touch screens, retain the clean outline treatment and avoid sticky hover states. */
+@media (hover: none), (pointer: coarse) {
+  .ex .ex-dark .ex-hs-card {
+    background: linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.17) 0%,
+      rgba(255, 255, 255, 0.10) 48%,
+      rgba(255, 255, 255, 0.055) 100%
+    );
+    -webkit-backdrop-filter: blur(6px) saturate(118%);
+    backdrop-filter: blur(6px) saturate(118%);
+    transform: none;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.30),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.055),
+      0 10px 24px rgba(0, 0, 0, 0.11);
+  }
+}
+
+/* Respect reduced-motion preferences without removing the visual state change. */
+@media (prefers-reduced-motion: reduce) {
+  .ex .ex-dark .ex-hs-card,
+  .ex .ex-dark .ex-hs-card .ex-hs-big,
+  .ex .ex-dark .ex-hs-card h3,
+  .ex .ex-dark .ex-hs-card p {
+    transition-duration: 0.01ms;
   }
 }

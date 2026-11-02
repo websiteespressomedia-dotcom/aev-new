@@ -5028,3 +5028,75 @@
     box-shadow: 0 8px 22px rgba(0, 0, 0, 0.06);
   }
 }
+
+
+/* =========================================================
+   TILE SIZES — READABLE LABELS ON ANY PHOTO
+   Light AND dark photos: a dark fade sits only behind the text
+   area (bottom of each panel), and all labels are warm white.
+   The photo stays clear and bright in the upper part.
+========================================================= */
+
+/* the fade (was switched off before) */
+.home-page .size-panel .size-panel-overlay {
+  opacity: 1 !important;
+  background: linear-gradient(
+    to top,
+    rgba(17, 15, 14, 0.9) 0%,
+    rgba(17, 15, 14, 0.68) 28%,
+    rgba(17, 15, 14, 0.3) 50%,
+    rgba(17, 15, 14, 0) 72%
+  ) !important;
+}
+
+/* open panel: taller fade because it carries a paragraph + link */
+.home-page .size-panel.is-active .size-panel-overlay {
+  opacity: 1 !important;
+  background: linear-gradient(
+    to top,
+    rgba(17, 15, 14, 0.92) 0%,
+    rgba(17, 15, 14, 0.78) 30%,
+    rgba(17, 15, 14, 0.38) 58%,
+    rgba(17, 15, 14, 0) 84%
+  ) !important;
+}
+
+/* closed panel: vertical size + thickness */
+.home-page .size-panel .size-panel-vertical-size {
+  color: #f5f2ea !important;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.55);
+}
+.home-page .size-panel .size-panel-vertical-meta {
+  color: rgba(245, 242, 234, 0.82) !important;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.55);
+}
+
+/* open panel: heading, details, paragraph, link */
+.home-page .size-panel .size-panel-content,
+.home-page .size-panel .size-panel-content h3,
+.home-page .size-panel .size-panel-content small,
+.home-page .size-panel .size-panel-index,
+.home-page .size-panel .size-panel-meta,
+.home-page .size-panel .size-panel-meta span,
+.home-page .size-panel .size-panel-link,
+.home-page .size-panel .size-panel-link span {
+  color: #f5f2ea !important;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.45);
+}
+.home-page .size-panel .size-panel-content p {
+  color: rgba(245, 242, 234, 0.9) !important;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.45);
+}
+.home-page .size-panel .size-panel-index,
+.home-page .size-panel .size-panel-meta { opacity: 0.85; }
+
+.home-page .size-panel .size-panel-link {
+  border-bottom-color: rgba(245, 242, 234, 0.7) !important;
+}
+.home-page .size-panel .size-panel-link:hover,
+.home-page .size-panel .size-panel-link:hover span,
+.home-page .size-panel .size-panel-link:focus-visible,
+.home-page .size-panel .size-panel-link:focus-visible span {
+  color: #C1A673 !important;
+}
+.home-page .size-panel .size-panel-link:hover { border-bottom-color: #C1A673 !important; }

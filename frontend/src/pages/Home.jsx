@@ -54,9 +54,6 @@ const SizePanel = ({ item, isActive, onActivate, onDeactivate, onToggle }) => {
       </div>
 
       <div className="size-panel-content">
-        <span className="size-panel-index">
-          FORMAT / {String(item.id).padStart(2, '0')}
-        </span>
 
         <h3>{item.size} <small>MM</small></h3>
 
@@ -90,7 +87,7 @@ const CATEGORY_SLIDES = [
     tags: ['GVT', 'PGVT'],
     linkText: 'Explore Collection',
     href: '/collections',
-    img: '/floor_preview.jpg',
+    img: '/floor_preview2.jpg',
     alt: 'Porcelain tile surface',
     bg: '#EAE8E6',
   },
@@ -453,8 +450,8 @@ const CATEGORY_PREVIEW_SLIDES = [
   { id: 'living', image: '/residential_preview.png', alt: 'Contemporary living space with porcelain flooring' },
   { id: 'floor', image: '/floor_preview.jpg', alt: 'Premium porcelain floor tiles' },
   { id: 'terrace', image: '/terrace_preview.jpg', alt: 'Outdoor terrace with large-format tiles' },
-  { id: 'kitchen', image: '/kitchen_preview.png', alt: 'Modern kitchen with premium tile surfaces' },
   { id: 'garden', image: '/images/global-markets-porcelain.png', alt: 'Modern garden with premium tile surfaces' },
+  { id: 'kitchen', image: '/kitchen_preview.png', alt: 'Modern kitchen with premium tile surfaces' },
 ];
 
 const CATEGORY_PREVIEW_SLICES = 7;
