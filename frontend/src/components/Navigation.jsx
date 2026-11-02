@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Navigation.css";
 
 const POPULAR_SIZES = [
@@ -23,7 +23,12 @@ export default function Navigation({ products = [] }) {
   const [query, setQuery] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
   const searchRef = useRef(null);
+  const inputRef = useRef(null);
+  const skipOpenRef = useRef(false);
+  const mInputRef = useRef(null);
+  const [phoneSearch, setPhoneSearch] = useState(false); // phone-only search sheet
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,12 +41,13 @@ export default function Navigation({ products = [] }) {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? "hidden" : "";
+    document.body.style.overflow = menuOpen || phoneSearch ? "hidden" : "";
 
     const handleKeyDown = (event) => {
       if (event.key === "Escape") {
         setMenuOpen(false);
         setSearchOpen(false);
+        setPhoneSearch(false);
       }
     };
 
@@ -51,7 +57,25 @@ export default function Navigation({ products = [] }) {
       document.body.style.overflow = "";
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [menuOpen]);
+  }, [menuOpen, phoneSearch]);
+
+  // Phone: focus the field when the search sheet opens.
+  useEffect(() => {
+    if (phoneSearch && mInputRef.current) mInputRef.current.focus();
+  }, [phoneSearch]);
+
+  // Phone UI only exists up to 560px: close it if the window grows past that.
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 560px)");
+    const onChange = (event) => {
+      if (!event.matches) {
+        setPhoneSearch(false);
+        setMenuOpen(false);
+      }
+    };
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
 
   // Close the search suggestions when the user clicks/taps anywhere outside search.
   useEffect(() => {
@@ -110,6 +134,7 @@ export default function Navigation({ products = [] }) {
 
     setQuery("");
     setSearchOpen(false);
+    setPhoneSearch(false);
     setMenuOpen(false);
 
     // Accept 600x1200, 600X1200, 600 x 1200, and 600 × 1200.
@@ -138,9 +163,39 @@ export default function Navigation({ products = [] }) {
     navigate(`/collections?${params.toString()}#product-listing`);
   };
 
+  // Picking a suggestion only fills the field. The text stays there and the
+  // field stays focused until Enter / the arrow button goes to the results.
   const chooseSuggestion = (value) => {
     setQuery(value);
     setSearchOpen(false);
+
+    requestAnimationFrame(() => {
+      if (!inputRef.current) return;
+      skipOpenRef.current = true; // focusing must not re-open the suggestion list
+      inputRef.current.focus();
+      skipOpenRef.current = false;
+    });
+  };
+
+  // ----- phone navbar helpers -----
+  const choosePhoneSuggestion = (value) => {
+    setQuery(value);
+    requestAnimationFrame(() => mInputRef.current && mInputRef.current.focus());
+  };
+
+  const togglePhoneSearch = () => {
+    setMenuOpen(false);
+    setPhoneSearch((open) => !open);
+  };
+
+  const togglePhoneMenu = () => {
+    setPhoneSearch(false);
+    setMenuOpen((open) => !open);
+  };
+
+  const closePhoneUi = () => {
+    setPhoneSearch(false);
+    setMenuOpen(false);
   };
 
   const closeMobileMenu = () => setMenuOpen(false);
@@ -150,7 +205,24 @@ export default function Navigation({ products = [] }) {
     suggestions.designs.length > 0 ||
     suggestions.finishes.length > 0;
 
+  const PHONE_LINKS = [
+    ["/", "Home"],
+    ["/about", "About"],
+    ["/collections", "Collections"],
+    ["/export", "Export"],
+    ["/catalogue", "Catalogue"],
+    ["/tile-calculator", "Tile Calculator"],
+    ["/contact", "Contact"],
+  ];
+
+  const phoneGroups = [
+    { label: "Tile size", items: suggestions.sizes, size: true },
+    { label: "Design name", items: suggestions.designs },
+    { label: "Finish", items: suggestions.finishes },
+  ].filter((group) => group.items.length > 0);
+
   return (
+    <>
     <nav
       className={`navigation ${scrolled ? "scrolled" : ""} ${
         menuOpen ? "menu-open" : ""
@@ -195,12 +267,17 @@ export default function Navigation({ products = [] }) {
               </svg>
 
               <input
+                ref={inputRef}
                 type="search"
+                enterKeyHint="search"
                 value={query}
                 placeholder="Search tiles or size"
                 aria-label="Search tile designs, sizes, or finishes"
                 aria-expanded={searchOpen}
-                onFocus={() => setSearchOpen(true)}
+                onFocus={() => {
+                  if (skipOpenRef.current) return;
+                  setSearchOpen(true);
+                }}
                 onChange={(event) => {
                   setQuery(event.target.value);
                   setSearchOpen(true);
@@ -331,45 +408,192 @@ export default function Navigation({ products = [] }) {
             <span />
           </button>
         </div>
-
-        <div
-          className={`mobile-menu ${menuOpen ? "active" : ""}`}
-          aria-hidden={!menuOpen}
-        >
-          <div className="mobile-menu-inner">
-            <span className="mobile-menu-label">Explore Aevitas</span>
-
-            <div className="mobile-nav-links">
-              <Link to="/" className="mobile-nav-link" onClick={closeMobileMenu}>
-                <span>01</span><strong>Home</strong>
-              </Link>
-              <Link to="/about" className="mobile-nav-link" onClick={closeMobileMenu}>
-                <span>02</span><strong>About</strong>
-              </Link>
-              <Link to="/collections" className="mobile-nav-link" onClick={closeMobileMenu}>
-                <span>03</span><strong>Collections</strong>
-              </Link>
-              <Link to="/export" className="mobile-nav-link" onClick={closeMobileMenu}>
-                <span>04</span><strong>Export</strong>
-              </Link>
-              <Link to="/catalogue" className="mobile-nav-link" onClick={closeMobileMenu}>
-                <span>05</span><strong>Catalogue</strong>
-              </Link>
-              <Link to="/tile-calculator" className="mobile-nav-link" onClick={closeMobileMenu}>
-                <span>06</span><strong>Tile Calculator</strong>
-              </Link>
-              <Link to="/contact" className="mobile-nav-link" onClick={closeMobileMenu}>
-                <span>07</span><strong>Contact</strong>
-              </Link>
-            </div>
-
-            <div className="mobile-menu-footer">
-              <span>AEVITAS CERAMICS</span>
-              <span>Surfaces for modern architecture</span>
-            </div>
-          </div>
-        </div>
       </div>
     </nav>
+
+  <div
+    className={`mobile-menu ${menuOpen ? "active" : ""}`}
+    aria-hidden={!menuOpen}
+  >
+    <button
+      type="button"
+      className="mobile-menu-backdrop"
+      aria-label="Close navigation menu"
+      tabIndex={-1}
+      onClick={closeMobileMenu}
+    />
+    <div className="mobile-menu-inner" onClick={(event) => event.stopPropagation()}>
+          <span className="mobile-menu-label">Explore Aevitas</span>
+
+          <div className="mobile-nav-links">
+            <Link to="/" className="mobile-nav-link" onClick={closeMobileMenu}>
+              <span>01</span><strong>Home</strong>
+            </Link>
+            <Link to="/about" className="mobile-nav-link" onClick={closeMobileMenu}>
+              <span>02</span><strong>About</strong>
+            </Link>
+            <Link to="/collections" className="mobile-nav-link" onClick={closeMobileMenu}>
+              <span>03</span><strong>Collections</strong>
+            </Link>
+            <Link to="/export" className="mobile-nav-link" onClick={closeMobileMenu}>
+              <span>04</span><strong>Export</strong>
+            </Link>
+            <Link to="/catalogue" className="mobile-nav-link" onClick={closeMobileMenu}>
+              <span>05</span><strong>Catalogue</strong>
+            </Link>
+            <Link to="/tile-calculator" className="mobile-nav-link" onClick={closeMobileMenu}>
+              <span>06</span><strong>Tile Calculator</strong>
+            </Link>
+            <Link to="/contact" className="mobile-nav-link" onClick={closeMobileMenu}>
+              <span>07</span><strong>Contact</strong>
+            </Link>
+          </div>
+
+          <div className="mobile-menu-footer">
+            <span>AEVITAS CERAMICS</span>
+            <span>Surfaces for modern architecture</span>
+          </div>
+        </div>
+  </div>
+
+    {/* ===================== PHONE NAVBAR (max 560px) ===================== */}
+    <header className="mnav">
+      <div className="mnav-bar">
+        <Link to="/" className="mnav-logo" aria-label="Aevitas Ceramics home" onClick={closePhoneUi}>
+          <img src="/images/logo/Aevitas_Logo_B.png" alt="Aevitas Ceramics" />
+        </Link>
+
+        <div className="mnav-actions">
+          <button
+            type="button"
+            className={`mnav-btn ${phoneSearch ? "is-active" : ""}`}
+            onClick={togglePhoneSearch}
+            aria-label={phoneSearch ? "Close search" : "Open search"}
+            aria-expanded={phoneSearch}
+          >
+            {phoneSearch ? (
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
+            ) : (
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="10.8" cy="10.8" r="6.2" />
+                <path d="m15.6 15.6 4.4 4.4" />
+              </svg>
+            )}
+          </button>
+
+          <button
+            type="button"
+            className={`mnav-btn mnav-burger ${menuOpen ? "is-open" : ""}`}
+            onClick={togglePhoneMenu}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+          >
+            <span />
+            <span />
+          </button>
+        </div>
+      </div>
+
+      {/* search sheet */}
+      {phoneSearch && (
+        <>
+          <button type="button" className="mnav-scrim" aria-label="Close search" onClick={() => setPhoneSearch(false)} />
+
+          <div className="mnav-search" role="search">
+            <form
+              className="mnav-form"
+              onSubmit={(event) => {
+                event.preventDefault();
+                submitSearch();
+              }}
+            >
+              <svg className="mnav-mag" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="10.8" cy="10.8" r="6.2" />
+                <path d="m15.6 15.6 4.4 4.4" />
+              </svg>
+
+              <input
+                ref={mInputRef}
+                type="search"
+                enterKeyHint="search"
+                value={query}
+                placeholder="Search tiles or size"
+                aria-label="Search tile designs, sizes, or finishes"
+                onChange={(event) => setQuery(event.target.value)}
+              />
+
+              {query && (
+                <button
+                  type="button"
+                  className="mnav-clear"
+                  aria-label="Clear search"
+                  onClick={() => {
+                    setQuery("");
+                    if (mInputRef.current) mInputRef.current.focus();
+                  }}
+                >
+                  ×
+                </button>
+              )}
+
+              <button type="submit" className="mnav-go" aria-label="Search">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 5l7 7-7 7" /></svg>
+              </button>
+            </form>
+
+            {phoneGroups.map((group) => (
+              <div className="mnav-group" key={group.label}>
+                <span className="mnav-label">{group.label}</span>
+                <div className="mnav-chips">
+                  {group.items.map((item) => (
+                    <button
+                      type="button"
+                      key={item}
+                      className={`mnav-chip ${
+                        query.trim().toLowerCase() === item.toLowerCase() ? "is-on" : ""
+                      }`}
+                      onClick={() => choosePhoneSuggestion(item)}
+                    >
+                      {group.size ? item.replace("x", " × ") : item}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ))}
+
+            <p className="mnav-hint">
+              {query.trim() && !hasSuggestions
+                ? `No quick matches — tap the arrow to search for “${query.trim()}”.`
+                : "Pick one or type, then press Enter to see results."}
+            </p>
+          </div>
+        </>
+      )}
+
+      {/* menu */}
+      <div className={`mnav-menu ${menuOpen ? "is-open" : ""}`} aria-hidden={!menuOpen}>
+        <nav className="mnav-links" aria-label="Main">
+          {PHONE_LINKS.map(([to, label], i) => (
+            <Link
+              key={to}
+              to={to}
+              className={`mnav-link ${pathname === to ? "is-current" : ""}`}
+              style={{ "--i": i }}
+              onClick={closePhoneUi}
+              tabIndex={menuOpen ? 0 : -1}
+            >
+              <small>{String(i + 1).padStart(2, "0")}</small>
+              <strong>{label}</strong>
+            </Link>
+          ))}
+        </nav>
+
+        <div className="mnav-foot">
+          <span>AEVITAS CERAMICS</span>
+          <span>Surfaces for modern architecture</span>
+        </div>
+      </div>
+    </header>
+    </>
   );
 }

@@ -958,3 +958,876 @@
   }
 }
 
+
+/* =========================================================
+   MOBILE NAVBAR — LOGO + SEARCH ICON + MENU
+   Matches the compact capsule layout in the supplied reference.
+   Desktop navigation remains unchanged.
+   ========================================================= */
+@media (max-width: 980px) {
+  .navigation,
+  .navigation.scrolled {
+    top: 12px;
+    left: 50%;
+    width: calc(100% - 28px);
+    max-width: 620px;
+    min-height: 62px;
+    padding: 8px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.92);
+    border-radius: 999px;
+    background: rgba(250, 249, 247, 0.94);
+    color: #25232A;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.98),
+      0 8px 26px rgba(30, 27, 25, 0.12);
+    backdrop-filter: blur(24px) saturate(165%);
+    -webkit-backdrop-filter: blur(24px) saturate(165%);
+    transform: translateX(-50%);
+  }
+
+  .navigation::before,
+  .navigation.scrolled::before {
+    border-radius: inherit;
+    background: linear-gradient(
+      115deg,
+      rgba(255, 255, 255, 0.56),
+      rgba(255, 255, 255, 0.12) 48%,
+      rgba(255, 255, 255, 0.34)
+    );
+  }
+
+  .navigation.menu-open,
+  .navigation.scrolled.menu-open {
+    border-radius: 30px;
+    background: rgba(250, 249, 247, 0.97);
+  }
+
+  .nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    min-height: 44px;
+  }
+
+  .nav-logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 1 auto;
+    min-width: 0;
+    height: 42px;
+    padding: 5px 13px;
+    /* border-radius: 999px;
+    background: #202020; */
+    overflow: hidden;
+  }
+
+  .nav-logo-image,
+  .navigation.scrolled .nav-logo-image {
+    display: block;
+    width: clamp(96px, 25vw, 118px);
+    max-width: 100%;
+    max-height: 28px;
+    object-fit: contain;
+    object-position: center;
+  }
+
+  .nav-links {
+    display: none !important;
+  }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 0 0 auto;
+    gap: 8px;
+    margin-left: auto;
+  }
+
+  /* Search begins as a circular icon. Focusing the field expands it. */
+  .nav-search,
+  .navigation.scrolled .nav-search {
+    position: relative;
+    z-index: 10005;
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+    transition: width 0.28s ease, flex-basis 0.28s ease;
+  }
+
+  .nav-search-form,
+  .navigation.scrolled .nav-search-form {
+    position: relative;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border: 1px solid rgba(52, 47, 43, 0.20);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.78);
+    box-shadow: none;
+    overflow: hidden;
+    transition:
+      width 0.28s ease,
+      border-radius 0.28s ease,
+      background 0.25s ease,
+      border-color 0.25s ease;
+  }
+
+  .nav-search.is-open,
+  .nav-search:focus-within,
+  .navigation.scrolled .nav-search.is-open,
+  .navigation.scrolled .nav-search:focus-within {
+    width: min(220px, 48vw);
+    flex-basis: min(220px, 48vw);
+  }
+
+  .nav-search-form:focus-within,
+  .nav-search.is-open .nav-search-form {
+    width: 100%;
+    border-color: rgba(167, 131, 80, 0.55);
+    border-radius: 999px;
+    background: #FFFFFF;
+  }
+
+  .nav-search-form .search-icon {
+    position: absolute;
+    top: 50%;
+    left: 13px;
+    z-index: 1;
+    width: 16px;
+    height: 16px;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  .nav-search-form input {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    padding: 0 38px 0 38px;
+    border: 0;
+    border-radius: inherit;
+    color: #29252A;
+    font-size: 11px;
+    opacity: 0;
+    cursor: text;
+  }
+
+  .nav-search-form input::placeholder {
+    color: #77716D;
+  }
+
+  .nav-search-form:focus-within input,
+  .nav-search.is-open .nav-search-form input {
+    opacity: 1;
+  }
+
+  .search-submit {
+    display: none;
+  }
+
+  .nav-search.is-open .search-submit,
+  .nav-search:focus-within .search-submit {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    z-index: 3;
+    display: flex;
+    width: 29px;
+    height: 29px;
+    border-radius: 50%;
+  }
+
+  .search-clear {
+    position: absolute;
+    top: 50%;
+    right: 40px;
+    z-index: 4;
+    transform: translateY(-50%);
+  }
+
+  .mobile-menu-toggle {
+    display: flex;
+    position: relative;
+    z-index: 10002;
+    flex: 0 0 42px;
+    width: 42px;
+    height: 42px;
+    gap: 4px;
+    border: 1px solid rgba(52, 47, 43, 0.20);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.78);
+    color: #29252A;
+  }
+
+  .mobile-menu-toggle span {
+    width: 14px;
+    height: 1.5px;
+  }
+
+  .mobile-menu {
+    z-index: 10001;
+  }
+
+  .mobile-menu-inner {
+    padding-top: 112px;
+  }
+}
+
+@media (max-width: 560px) {
+  .navigation,
+  .navigation.scrolled {
+    top: 10px;
+    width: calc(100% - 28px);
+    min-height: 58px;
+    padding: 7px 9px;
+  }
+
+  .nav-container {
+    min-height: 42px;
+    gap: 7px;
+  }
+
+  .nav-logo {
+    height: 40px;
+    padding: 5px 10px;
+  }
+
+  .nav-logo-image,
+  .navigation.scrolled .nav-logo-image {
+    width: clamp(88px, 27vw, 112px);
+    max-height: 26px;
+  }
+
+  .nav-right {
+    gap: 6px;
+  }
+
+  .nav-search,
+  .navigation.scrolled .nav-search,
+  .nav-search-form,
+  .navigation.scrolled .nav-search-form {
+    width: 40px;
+    height: 40px;
+    flex-basis: 40px;
+  }
+
+  .nav-search.is-open,
+  .nav-search:focus-within,
+  .navigation.scrolled .nav-search.is-open,
+  .navigation.scrolled .nav-search:focus-within {
+    width: min(190px, 46vw);
+    flex-basis: min(190px, 46vw);
+  }
+
+  .mobile-menu-toggle {
+    width: 40px;
+    height: 40px;
+    flex-basis: 40px;
+  }
+
+  .search-dropdown,
+  .navigation.scrolled .search-dropdown {
+    position: fixed;
+    top: 68px;
+    right: 10px;
+    left: 10px;
+    width: auto;
+    max-height: calc(100dvh - 82px);
+  }
+}
+
+@media (max-width: 360px) {
+  .navigation,
+  .navigation.scrolled {
+    width: calc(100% - 20px);
+    padding-right: 7px;
+    padding-left: 7px;
+  }
+
+  .nav-container {
+    gap: 5px;
+  }
+
+  .nav-logo {
+    padding-right: 8px;
+    padding-left: 8px;
+  }
+
+  .nav-logo-image,
+  .navigation.scrolled .nav-logo-image {
+    width: 84px;
+  }
+
+  .nav-right {
+    gap: 5px;
+  }
+}
+
+
+/* =========================================================
+   PHONE NAVBAR  (max 560px)
+   A separate, self-contained header (.mnav) so it never fights the
+   tablet / desktop rules above. Tablet and desktop are untouched.
+   ========================================================= */
+
+.mnav { display: none; }
+
+@media (max-width: 560px) {
+  .navigation { display: none !important; }
+
+  .mnav {
+    --m-ink: #25232A;
+    --m-gold: #A78350;
+    --m-gold-deep: #8d7951;
+    --m-line: rgba(37, 41, 56, 0.16);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    display: block;
+    pointer-events: none;            /* only the bar / sheet / menu catch taps */
+  }
+  .mnav *, .mnav *::before, .mnav *::after { box-sizing: border-box; }
+  .mnav button { font: inherit; -webkit-tap-highlight-color: transparent; }
+  .mnav-bar, .mnav-search, .mnav-menu, .mnav-scrim { pointer-events: auto; }
+
+  /* ---------- the white capsule: logo · search · menu ---------- */
+  .mnav-bar {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 58px;
+    margin: 10px 12px 0;
+    padding: 0 8px 0 18px;
+    border-radius: 999px;
+    background: #ffffff;
+    box-shadow: 0 8px 28px rgba(30, 27, 25, 0.14);
+  }
+
+  .mnav-logo { display: flex; align-items: center; min-width: 0; text-decoration: none; }
+  .mnav-logo img { display: block; width: clamp(104px, 34vw, 132px); height: auto; max-height: 30px; object-fit: contain; }
+
+  .mnav-actions { display: flex; align-items: center; gap: 8px; }
+
+  .mnav-btn {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border: 1px solid var(--m-line);
+    border-radius: 50%;
+    background: #ffffff;
+    color: var(--m-ink);
+    cursor: pointer;
+    transition: border-color 0.3s ease, color 0.3s ease;
+  }
+  .mnav-btn:active, .mnav-btn.is-active { border-color: var(--m-gold); color: var(--m-gold); }
+  .mnav-btn:focus-visible { outline: 2px solid var(--m-gold); outline-offset: 2px; }
+  .mnav-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; }
+
+  /* two-line menu icon (top line longer) that turns into an X */
+  .mnav-burger { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 5px; padding-left: 12px; }
+  .mnav-burger span { display: block; height: 1.5px; background: currentColor; transform-origin: center; transition: transform 0.35s ease, width 0.35s ease; }
+  .mnav-burger span:nth-child(1) { width: 18px; }
+  .mnav-burger span:nth-child(2) { width: 11px; }
+  .mnav-burger.is-open span:nth-child(1) { transform: translateY(3.25px) rotate(45deg); }
+  .mnav-burger.is-open span:nth-child(2) { width: 18px; transform: translateY(-3.25px) rotate(-45deg); }
+
+  /* ---------- search sheet ---------- */
+  .mnav-scrim { position: fixed; inset: 0; z-index: 1; width: 100%; height: 100%; padding: 0; border: 0; background: rgba(24, 20, 24, 0.4); cursor: default; }
+
+  .mnav-search {
+    position: relative;
+    z-index: 3;
+    max-height: calc(100dvh - 92px);
+    margin: 8px 12px 0;
+    padding: 12px 12px 16px;
+    overflow-y: auto;
+    border-radius: 26px;
+    background: #ffffff;
+    box-shadow: 0 20px 50px rgba(30, 27, 25, 0.22);
+    animation: mnav-drop 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  @keyframes mnav-drop { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+
+  .mnav-form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 50px;
+    padding: 0 6px 0 16px;
+    border: 1px solid var(--m-line);
+    border-radius: 999px;
+    background: #faf9f7;
+    transition: border-color 0.25s ease, background 0.25s ease;
+  }
+  .mnav-form:focus-within { border-color: var(--m-gold); background: #ffffff; }
+  .mnav-mag { flex: 0 0 18px; width: 18px; height: 18px; fill: none; stroke: var(--m-gold); stroke-width: 1.6; stroke-linecap: round; }
+
+  .mnav-form input {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: var(--m-ink);
+    font-size: 16px;                 /* 16px stops iOS zooming into the field */
+    letter-spacing: 0.01em;
+  }
+  .mnav-form input::placeholder { color: rgba(37, 41, 56, 0.45); }
+  .mnav-form input::-webkit-search-cancel-button { display: none; }
+
+  .mnav-clear { flex: 0 0 28px; width: 28px; height: 28px; padding: 0; border: 0; border-radius: 50%; background: rgba(37, 41, 56, 0.08); color: var(--m-ink); font-size: 18px; line-height: 1; cursor: pointer; }
+  .mnav-go { flex: 0 0 38px; display: grid; place-items: center; width: 38px; height: 38px; padding: 0; border: 0; border-radius: 50%; background: var(--m-gold); color: #ffffff; cursor: pointer; }
+  .mnav-go svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+  .mnav-group { margin-top: 18px; }
+  .mnav-label { display: block; margin-bottom: 9px; color: var(--m-gold-deep); font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; }
+  .mnav-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .mnav-chip {
+    min-height: 38px;
+    padding: 0 15px;
+    border: 1px solid var(--m-line);
+    border-radius: 999px;
+    background: #ffffff;
+    color: var(--m-ink);
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+  }
+  .mnav-chip:active { background: rgba(167, 131, 80, 0.12); }
+  .mnav-chip.is-on { border-color: var(--m-gold); background: var(--m-gold); color: #ffffff; }
+  .mnav-hint { margin: 18px 2px 0; color: rgba(37, 41, 56, 0.55); font-size: 12px; line-height: 1.6; }
+
+  /* ---------- full-screen menu ---------- */
+  .mnav-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 96px 26px 28px;
+    overflow-y: auto;
+    visibility: hidden;
+    opacity: 0;
+    background: #f2f0e9;
+    transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+  }
+  .mnav-menu.is-open { visibility: visible; opacity: 1; transition: opacity 0.3s ease; }
+
+  .mnav-link {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--m-line);
+    color: var(--m-ink);
+    text-decoration: none;
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), color 0.25s ease;
+  }
+  .mnav-menu.is-open .mnav-link { opacity: 1; transform: none; transition-delay: calc(var(--i) * 45ms + 120ms), calc(var(--i) * 45ms + 120ms), 0s; }
+  .mnav-link small { flex: 0 0 24px; color: var(--m-gold); font-size: 11px; letter-spacing: 0.14em; }
+  .mnav-link strong { font-family: "Times New Roman", Times, serif; font-size: 28px; font-weight: 400; letter-spacing: -0.02em; }
+  .mnav-link.is-current strong, .mnav-link:active strong { color: var(--m-gold); }
+
+  .mnav-foot { display: flex; flex-direction: column; gap: 6px; margin-top: 28px; color: rgba(37, 41, 56, 0.55); font-size: 10px; letter-spacing: 0.14em; }
+  .mnav-foot span:first-child { color: var(--m-ink); letter-spacing: 0.2em; }
+}
+
+@media (max-width: 560px) and (prefers-reduced-motion: reduce) {
+  .mnav-search { animation: none; }
+  .mnav-link, .mnav-menu, .mnav-burger span, .mnav-btn, .mnav-chip, .mnav-form { transition: none; }
+  .mnav-menu.is-open .mnav-link { opacity: 1; transform: none; }
+}
+
+
+
+/* =========================================================
+   TABLET MENU — RELIABLE OUTSIDE-CLICK DISMISS
+   The menu is rendered outside <nav> in JSX so the navbar's
+   backdrop-filter/transform cannot constrain position: fixed.
+   ========================================================= */
+
+@media (min-width: 561px) and (max-width: 980px) {
+  .mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 10010;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    background: transparent;
+    pointer-events: none;
+  }
+
+  .mobile-menu.active {
+    pointer-events: auto;
+  }
+
+  .mobile-menu-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: rgba(38, 34, 38, 0.22);
+    opacity: 0;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+  }
+
+  .mobile-menu.active .mobile-menu-backdrop {
+    opacity: 1;
+  }
+
+  .mobile-menu-inner {
+    position: relative;
+    z-index: 1;
+    width: min(calc(100% - 48px), 620px);
+    min-height: 100%;
+    margin: 0 auto;
+    padding: 100px 0 35px;
+    overflow-y: auto;
+    background: rgba(245, 246, 247, 0.97);
+    box-shadow: 0 16px 55px rgba(30, 27, 25, 0.16);
+    overscroll-behavior: contain;
+  }
+
+  .mobile-menu-inner > * {
+    position: relative;
+  }
+}
+
+@media (max-width: 560px) {
+  /* Tablet backdrop belongs only to the .mobile-menu; phone uses .mnav-menu. */
+  .mobile-menu,
+  .mobile-menu-backdrop {
+    display: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-menu-backdrop {
+    transition: none;
+  }
+}
+
+
+
+/* =========================================================
+   TABLET NAVIGATION OVERLAY — MATCH THE REFERENCE MENU
+   Applies only from 561px to 980px. Phone menu (.mnav-menu)
+   and desktop navbar remain independent.
+   ========================================================= */
+
+@media (min-width: 561px) and (max-width: 980px) {
+  .mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 10010;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    padding: 16px;
+    overflow: hidden;
+    background: transparent;
+    visibility: hidden;
+    opacity: 0;
+    clip-path: none;
+    pointer-events: none;
+    transition: opacity 0.28s ease, visibility 0s linear 0.28s;
+  }
+
+  .mobile-menu.active {
+    visibility: visible;
+    opacity: 1;
+    clip-path: none;
+    pointer-events: auto;
+    transition: opacity 0.28s ease, visibility 0s;
+  }
+
+  .mobile-menu-backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: rgba(38, 34, 38, 0.34);
+    -webkit-backdrop-filter: blur(7px);
+    backdrop-filter: blur(7px);
+    opacity: 0;
+    cursor: pointer;
+    transition: opacity 0.28s ease;
+  }
+
+  .mobile-menu.active .mobile-menu-backdrop {
+    opacity: 1;
+  }
+
+  .mobile-menu-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    width: min(100%, 570px);
+    height: min(740px, calc(100dvh - 32px));
+    min-height: 0;
+    max-height: calc(100dvh - 32px);
+    margin: 0;
+    padding: 18px clamp(20px, 4vw, 34px) 24px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    border: 1px solid rgba(255, 255, 255, 0.88);
+    border-radius: 25px;
+    background: rgba(243, 241, 235, 0.97);
+    color: #352934;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.96),
+      0 24px 70px rgba(22, 20, 22, 0.23);
+    -webkit-backdrop-filter: blur(24px) saturate(145%);
+    backdrop-filter: blur(24px) saturate(145%);
+    overscroll-behavior: contain;
+  }
+
+  .tablet-menu-header {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 58px;
+    margin-bottom: 28px;
+    padding: 7px 9px 7px 17px;
+    border: 1px solid rgba(255, 255, 255, 0.96);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow:
+      0 7px 20px rgba(53, 41, 52, 0.09),
+      inset 0 1px 0 #FFFFFF;
+  }
+
+  .tablet-menu-brand {
+    display: inline-flex;
+    align-items: center;
+    min-width: 0;
+    text-decoration: none;
+  }
+
+  .tablet-menu-brand img {
+    display: block;
+    width: clamp(108px, 20vw, 138px);
+    max-height: 34px;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .tablet-menu-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 0 0 auto;
+  }
+
+  .tablet-menu-search,
+  .tablet-menu-close {
+    display: grid;
+    place-items: center;
+    flex: 0 0 40px;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 1px solid rgba(53, 41, 52, 0.16);
+    border-radius: 50%;
+    background: #FFFFFF;
+    color: #352934;
+    cursor: pointer;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.96);
+    transition:
+      color 0.2s ease,
+      border-color 0.2s ease,
+      background 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .tablet-menu-search svg,
+  .tablet-menu-close svg {
+    width: 17px;
+    height: 17px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.65;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .tablet-menu-search:hover,
+  .tablet-menu-close:hover {
+    border-color: #A78350;
+    background: #F8F4ED;
+    color: #A78350;
+    transform: translateY(-1px);
+  }
+
+  .tablet-menu-close:focus-visible,
+  .tablet-menu-search:focus-visible {
+    outline: 2px solid #A78350;
+    outline-offset: 3px;
+  }
+
+  .mobile-menu-label {
+    display: block;
+    margin: 0 12px 13px;
+    color: #A78350;
+    font-family: "Inter", sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  .mobile-nav-links {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border-top: 1px solid rgba(53, 41, 52, 0.16);
+  }
+
+  .mobile-nav-link {
+    display: grid;
+    grid-template-columns: 38px minmax(0, 1fr);
+    align-items: center;
+    gap: 8px;
+    min-height: clamp(54px, 7.7vh, 66px);
+    padding: 7px 10px;
+    border-bottom: 1px solid rgba(53, 41, 52, 0.15);
+    border-radius: 0;
+    background: transparent;
+    color: #352934;
+    text-decoration: none;
+    transition:
+      color 0.22s ease,
+      padding-left 0.22s ease,
+      background 0.22s ease;
+  }
+
+  .mobile-nav-link span {
+    color: #A78350;
+    font-family: "Inter", sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+  }
+
+  .mobile-nav-link strong {
+    color: inherit;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(23px, 3vw, 29px);
+    font-weight: 400;
+    letter-spacing: -0.025em;
+    line-height: 1.12;
+  }
+
+  .mobile-nav-link:hover,
+  .mobile-nav-link.is-current {
+    padding-left: 15px;
+    background: rgba(167, 131, 80, 0.075);
+    color: #A78350;
+  }
+
+  .mobile-nav-link:focus-visible {
+    outline: 2px solid #A78350;
+    outline-offset: -3px;
+  }
+
+  .mobile-menu-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: auto;
+    padding: 30px 12px 2px;
+    color: rgba(53, 41, 52, 0.52);
+    font-family: "Inter", sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    line-height: 1.5;
+  }
+
+  .mobile-menu-footer span:first-child {
+    color: #352934;
+    font-size: 9px;
+    letter-spacing: 0.19em;
+  }
+}
+
+@media (min-width: 561px) and (max-width: 700px) {
+  .mobile-menu {
+    padding: 10px;
+  }
+
+  .mobile-menu-inner {
+    height: calc(100dvh - 20px);
+    max-height: calc(100dvh - 20px);
+    padding: 12px 18px 18px;
+    border-radius: 20px;
+  }
+
+  .tablet-menu-header {
+    margin-bottom: 22px;
+  }
+
+  .mobile-nav-link {
+    min-height: 56px;
+  }
+
+  .mobile-nav-link strong {
+    font-size: clamp(22px, 4.5vw, 27px);
+  }
+}
+
+@media (max-width: 560px) {
+  /* Phone uses its separate .mnav-menu component. */
+  .mobile-menu,
+  .mobile-menu-backdrop {
+    display: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-menu,
+  .mobile-menu-backdrop,
+  .tablet-menu-search,
+  .tablet-menu-close,
+  .mobile-nav-link {
+    transition: none !important;
+  }
+}

@@ -970,3 +970,212 @@
     background-position: center;
   }
 }
+
+
+/* =========================================================
+   LAST SECTION ON PHONES (max 700px)
+   Shorter and easier to use: smaller type, "Read more" for the
+   long text, and the enquiry becomes one card with a full-width button.
+   Tablet and desktop are unchanged.
+   ========================================================= */
+.ex-more-btn { display: none; }
+
+@media (max-width: 700px) {
+  .ex .ex-final { min-height: 0; padding: 3.6rem 0 3rem; background-position: 62% center; }
+  .ex .ex-final .ex-wrap { padding: 0 1.4rem; }
+
+  .ex .ex-final .ex-h2.ex-big { font-size: clamp(2.3rem, 11vw, 3.2rem); line-height: 1; }
+
+  /* intro text: first paragraph only, rest behind "Read more" */
+  .ex .ex-final-cols { display: block; margin-top: 1.4rem; }
+  .ex .ex-final-cols .ex-body { margin: 0; font-size: 0.92rem; line-height: 1.75; }
+  .ex .ex-final-cols .ex-body + .ex-body { margin-top: 1rem; }
+  .ex .ex-final-cols:not(.is-open) .ex-body:nth-child(n + 2) { display: none; }
+
+  .ex .ex-more-btn {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    margin-top: 1.1rem; padding: 0 0 0.35rem;
+    border: 0; border-bottom: 1px solid var(--aev-export-accent); background: none;
+    color: var(--aev-export-accent); font: inherit; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer;
+  }
+  .ex .ex-more-btn span { display: inline-block; transition: transform 0.35s ease; }
+  .ex .ex-more-btn[aria-expanded="true"] span { transform: rotate(180deg); }
+
+  .ex .ex-final .ex-rule { margin: 2rem 0; }
+
+  /* enquiry = one card */
+  .ex .ex-cta {
+    display: block;
+    padding: 1.5rem 1.3rem 1.4rem;
+    border: 1px solid var(--aev-export-accent-border);
+    border-radius: 20px;
+    background: rgba(var(--aev-export-dark-rgb), 0.55);
+  }
+  .ex .ex-cta-title { font-size: clamp(1.8rem, 8vw, 2.4rem); line-height: 1.04; }
+  .ex .ex-cta .ex-body { margin-top: 1rem; font-size: 0.9rem; line-height: 1.7; }
+  .ex .ex-cta .ex-body + .ex-body { margin-top: 0.8rem; }
+
+  /* the round button becomes a full-width pill */
+  .ex .ex-cta-btn {
+    display: flex; align-items: center; justify-content: center;
+    width: 100%; height: 58px; margin-top: 1.4rem;
+    border-radius: 999px; border-color: var(--aev-export-accent);
+    background: var(--aev-export-accent); color: var(--aev-export-text-primary);
+  }
+  .ex .ex-cta-btn::before { display: none; }
+  .ex .ex-cta-fill { border-radius: 999px; }
+  .ex .ex-cta-inner { flex-direction: row; gap: 0.8rem; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.2em; }
+  .ex .ex-cta-inner b { font-size: 1.3rem; }
+
+  .ex .ex-tagline { margin-top: 2rem; font-size: 1rem; line-height: 1.5; }
+}
+
+
+
+/* =========================================================
+   WHY INDIA — TABLET + MOBILE LAYOUT
+   Keeps the marquee, but gives the heading and benefit cards
+   a clearer reading order on smaller screens.
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .ex .ex-why {
+    padding-top: 4.5rem;
+    padding-bottom: 5rem;
+  }
+
+  .ex .ex-why .ex-mq {
+    margin-bottom: 3rem;
+  }
+
+  .ex .ex-why .ex-mq-row {
+    gap: 1.8rem;
+    padding-inline: 1.5rem;
+    font-size: clamp(3.2rem, 8vw, 5.8rem);
+  }
+
+  .ex .ex-why .ex-wrap {
+    padding-inline: clamp(1.5rem, 5vw, 3rem);
+  }
+
+  .ex .ex-why-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .ex .ex-why-head .ex-eyebrow {
+    margin-bottom: 0;
+  }
+
+  .ex .ex-why-head .ex-body {
+    max-width: 680px;
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+
+  .ex .ex-why-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .ex .ex-why-card {
+    min-width: 0;
+    padding: 1.5rem 1.25rem 1.6rem;
+    border: 1px solid var(--aev-export-border-light);
+    border-top: 2px solid var(--aev-export-accent);
+    background: rgba(244, 242, 240, 0.58);
+    border-radius: 10px;
+  }
+
+  .ex .ex-why-card h3 {
+    font-size: clamp(1.3rem, 2.6vw, 1.6rem);
+    line-height: 1.15;
+    margin-bottom: 0.7rem;
+  }
+
+  .ex .ex-why-card p {
+    font-size: 0.9rem;
+    line-height: 1.65;
+  }
+
+  .ex .ex-why-card:hover {
+    transform: none;
+    background: rgba(244, 242, 240, 0.82);
+  }
+}
+
+@media (max-width: 600px) {
+  .ex .ex-why {
+    padding-top: 3.5rem;
+    padding-bottom: 3.8rem;
+  }
+
+  .ex .ex-why .ex-mq {
+    margin-bottom: 2.5rem;
+  }
+
+  .ex .ex-why .ex-mq-row {
+    gap: 1.25rem;
+    padding-inline: 1rem;
+    font-size: clamp(2.7rem, 12vw, 4.2rem);
+    line-height: 1;
+  }
+
+  .ex .ex-why .ex-wrap {
+    padding-inline: 1.25rem;
+  }
+
+  .ex .ex-why-head {
+    gap: 1rem;
+    margin-bottom: 1.8rem;
+  }
+
+  .ex .ex-why-head .ex-eyebrow span {
+    font-size: 0.58rem;
+    letter-spacing: 0.17em;
+  }
+
+  .ex .ex-why-head .ex-body {
+    font-size: 0.94rem;
+    line-height: 1.7;
+  }
+
+  .ex .ex-why-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.8rem;
+  }
+
+  .ex .ex-why-card {
+    display: block;
+    padding: 1.25rem 1.15rem 1.35rem;
+    border-radius: 9px;
+  }
+
+  .ex .ex-why-card h3 {
+    font-size: 1.35rem;
+    margin-bottom: 0.55rem;
+  }
+
+  .ex .ex-why-card p {
+    font-size: 0.88rem;
+    line-height: 1.65;
+  }
+
+  .ex .ex-why-bar {
+    width: 42px;
+    transform: scaleX(1);
+  }
+
+  .ex .ex-why-card:hover {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ex .ex-why .ex-mq-row {
+    will-change: auto;
+  }
+}

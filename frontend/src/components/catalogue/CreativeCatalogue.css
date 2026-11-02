@@ -128,11 +128,59 @@
 .cc-catalogue-row:last-child { border-bottom: 0; }
 .cc-catalogue-row:hover { padding-inline: 23px 13px; border-color: var(--aev-cat-hover-border); background: var(--aev-cat-bg-cloud); }
 .cc-item-main { display: flex; align-items: center; gap: 18px; min-width: 0; }
-.cc-cover { position: relative; flex: 0 0 72px; width: 72px; height: 92px; overflow: hidden; border: 1px solid var(--aev-cat-border-light-strong); background: var(--aev-cat-bg-cloud); box-shadow: 6px 6px 0 var(--aev-cat-cover-shadow); transition: transform 400ms ease,box-shadow 400ms ease; }
-.cc-catalogue-row:hover .cc-cover { transform: translateY(-3px) rotate(-1deg); box-shadow: 8px 9px 0 var(--aev-cat-cover-shadow-hover); }
-.cc-cover-image { object-fit: cover; filter: grayscale(.18); transition: filter 450ms ease,transform 700ms cubic-bezier(.2,.7,.2,1); }
-.cc-catalogue-row:hover .cc-cover-image { filter: grayscale(0); transform: scale(1.06); }
-.cc-cover-number { position: absolute; right: 4px; bottom: 4px; padding: 3px 4px; color: var(--aev-cat-text-primary); background: var(--aev-cat-card-overlay); font-size: 7px; letter-spacing: .08em; }
+.cc-cover {
+  position: relative;
+  flex: 0 0 70px;
+  width: 70px;
+  height: 105px; /* 2:3 poster ratio — avoids cropping the supplied artwork. */
+  overflow: hidden;
+  border: 1px solid var(--aev-cat-border-light-strong);
+  border-radius: 2px;
+  background: var(--aev-cat-bg-cloud);
+  box-shadow:
+    5px 5px 0 rgba(53, 41, 52, 0.07),
+    8px 8px 0 rgba(53, 41, 52, 0.035);
+  transition: transform 400ms ease, box-shadow 400ms ease;
+}
+
+.cc-catalogue-row:hover .cc-cover {
+  transform: translateY(-3px) rotate(-1deg);
+  box-shadow:
+    6px 7px 0 rgba(53, 41, 52, 0.09),
+    10px 11px 0 rgba(53, 41, 52, 0.045);
+}
+
+.cc-cover-image {
+  object-fit: contain;
+  object-position: center;
+  filter: none;
+  transition: transform 700ms cubic-bezier(.2,.7,.2,1);
+}
+
+.cc-catalogue-row:hover .cc-cover-image {
+  transform: scale(1.025);
+}
+
+/* One full-width archive strip hides the poster's printed sample number
+   and gives every catalogue a unique sequence number (01–54). */
+.cc-cover-number {
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 15px;
+  padding: 3px 4px;
+  color: #F6F3F0;
+  background: rgba(91, 85, 90, 0.97);
+  font-size: 7px;
+  font-weight: 600;
+  letter-spacing: .16em;
+  line-height: 1;
+}
 .cc-item-title { min-width: 0; }
 .cc-item-eyebrow { display: block; margin-bottom: 8px; color: var(--aev-cat-accent); font-size: 7px; }
 .cc-item-title h3 { margin: 0; overflow-wrap: anywhere; color: var(--aev-cat-text-primary); font-family: "Playfair Display",Georgia,serif; font-size: clamp(17px,1.8vw,24px); font-weight: 400; letter-spacing: -.035em; line-height: 1.15; transition: color 250ms ease; }
@@ -218,7 +266,7 @@
   .cc-catalogue-row { gap: 10px; padding: 15px 4px; }
   .cc-catalogue-row:hover { padding-inline: 8px 0; }
   .cc-item-main { gap: 13px; }
-  .cc-cover { flex-basis: 65px; width: 65px; height: 84px; }
+  .cc-cover { flex-basis: 58px; width: 58px; height: 87px; }
   .cc-item-eyebrow { margin-bottom: 6px; font-size: 6px; }
   .cc-item-title h3 { font-size: 16px; line-height: 1.15; }
   .cc-action { min-width: 72px; min-height: 32px; padding-inline: 8px; font-size: 7px; letter-spacing: .08em; }

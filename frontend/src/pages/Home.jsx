@@ -454,6 +454,7 @@ const CATEGORY_PREVIEW_SLIDES = [
   { id: 'floor', image: '/floor_preview.jpg', alt: 'Premium porcelain floor tiles' },
   { id: 'terrace', image: '/terrace_preview.jpg', alt: 'Outdoor terrace with large-format tiles' },
   { id: 'kitchen', image: '/kitchen_preview.png', alt: 'Modern kitchen with premium tile surfaces' },
+  { id: 'garden', image: '/images/global-markets-porcelain.png', alt: 'Modern garden with premium tile surfaces' },
 ];
 
 const CATEGORY_PREVIEW_SLICES = 7;
@@ -611,10 +612,10 @@ const ABOUT_TEXT = {
   // line2: 'part of the architecture.',
   matNumber: '01',
   matTitle: ['Material', 'Intelligence'],
-  matText: 'A premium tile and surface brand bringing together design, practicality and a customer-first approach for residential, commercial and architectural spaces',
+  matText: 'A premium tile and surface brand bringing together design, practicality and a customer-first approach for residential, commercial and architectural spaces.',
   finalTitle: 'Porcelain Floor Tile Manufacturer & Exporter.',
   finalText:
-    'Aevitas Ceramics is an Indian manufacturer and exporter of premium, large-format porcelain tiles that provides high-quality, contemporary surface solutions for global architectural and interior design markets through long-term international partnerships.',
+    'Aevitas Ceramics is an Indian manufacturer and exporter of premium porcelain and large-format tiles, combining contemporary design, refined aesthetics, and lasting quality. With advanced manufacturing capabilities and export-focused standards, we deliver reliable tile solutions to global partners across residential, commercial, and architectural markets.',
   cta: 'Discover Our Story'
 };
 
@@ -843,7 +844,7 @@ const COLLECTION_ITEMS = [
     number: '01',
     title: 'Floor Tiles',
     description: 'Crafted for strength, designed for spaces that inspire.',
-    image: '/floor_preview.jpg',
+    image: '/floor_preview2.jpg',
   },
   {
     id: 'wall',
@@ -1562,13 +1563,13 @@ const Home = () => {
       </section>
 
 
-      {/* Stats Section (Grid Layout) */}
+      {/* Stats Section (Responsive Grid Layout) */}
       <section className="home-stats-section">
-        <div className="animate-fade-up" style={{ marginBottom: '3rem' }}>
-          <h2 className="section-title" style={{ marginBottom: 0, fontSize: '3.5rem' }}>
+        <div className="home-stats-intro animate-fade-up">
+          <h2 className="section-title home-stats-heading">
             <SplitText text="The Strength Behind Every Surface" />
           </h2>
-          <p style={{ maxWidth: '600px', marginTop: '1rem', opacity: 0.8, lineHeight: 1.6 }}>
+          <p className="home-stats-description">
             From advanced manufacturing to global exports, every number reflects our commitment to quality, innovation, and customer satisfaction.
           </p>
           <div className="home-section-divider-line home-stats-divider" />
@@ -1586,8 +1587,8 @@ const Home = () => {
           ].map((stat, i) => (
             <div key={i} className="stat-info-card">
               <span className="stat-large-num">{stat.num}</span>
-              <h3 style={{ fontSize: '1.2rem', margin: '1.5rem 0 1rem 0', color: 'var(--home-text-primary)', fontWeight: '400' }}>{stat.label}</h3>
-              <p style={{ fontSize: '0.95rem', opacity: 0.7 }}>{stat.text}</p>
+              <h3>{stat.label}</h3>
+              <p>{stat.text}</p>
             </div>
           ))}
         </div>
@@ -1605,31 +1606,22 @@ const Home = () => {
       <ReelInspiration />
 
 
-{/* Global Markets / Export Section */}
-<section className="global-markets-section" aria-labelledby="global-markets-title">
-  <div className="global-markets-container">
-    <header className="global-markets-header">
-      <div className="global-markets-eyebrow">
-        <span className="global-markets-eyebrow-line" aria-hidden="true" />
+{/* Global Markets / Export Section — ship sits on a waterline */}
+<section className="gx-section" aria-labelledby="global-markets-title">
+  <div className="gx-wrap">
+    <header className="gx-head">
+      <div className="gx-eyebrow">
+        <span className="gx-eyebrow-line" aria-hidden="true" />
         <span>INDIA / GLOBAL REACH</span>
       </div>
-      <h2 className="global-markets-title" id="global-markets-title">
-        <span className="global-title-main">Bringing Premium Porcelain Tile</span>
-        <span className="global-title-accent">Solutions to Global Markets</span>
+      <h2 className="gx-title" id="global-markets-title">
+        <span className="gx-title-main">Bringing Premium Porcelain Tile</span>
+        <span className="gx-title-accent">Solutions to Global Markets</span>
       </h2>
     </header>
 
-    <div className="global-markets-story">
-      <figure className="global-markets-image-wrap">
-        <img
-          src="/images/global-export-ship1.png"
-          alt="Container ship representing Aevitas Ceramics' international export network"
-          className="global-markets-image"
-          loading="lazy"
-        />
-      </figure>
-
-      <div className="global-markets-description">
+    <div className="gx-scene">
+      <div className="gx-copy">
         <p>
           Aevitas Ceramics is an Indian porcelain tile brand focused on delivering premium porcelain tiles and large format tile solutions for international markets. With a commitment to contemporary design, manufacturing quality, and reliable product standards, we aim to serve importers, distributors, wholesalers, architects, and project suppliers seeking dependable surface solutions.
         </p>
@@ -1638,9 +1630,22 @@ const Home = () => {
         </p>
       </div>
 
-      <a className="global-markets-link" href="/contact">
-        Discuss an export enquiry
-        <span aria-hidden="true">↗</span>
+      <figure className="gx-ship">
+        <img
+          src="/images/global-export-ship.png"
+          alt="Container ship representing Aevitas Ceramics' international export network"
+          loading="lazy"
+        />
+      </figure>
+    </div>
+  </div>
+
+  {/* waterline: hairline + draught-mark ticks, like the scale painted on a hull */}
+  <div className="gx-sea">
+    <div className="gx-sea-inner">
+      <a className="gx-link" href="/contact">
+        <span>Discuss an export enquiry</span>
+        <b aria-hidden="true">↗</b>
       </a>
     </div>
   </div>

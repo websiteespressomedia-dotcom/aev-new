@@ -8,7 +8,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import {
   COLLECTIONS,
-  getCoverImage,
   getDriveViewUrl,
   getDriveDownloadUrl,
 } from "@/lib/catalogueData";
@@ -18,6 +17,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const ALL_FILTER = "All collections";
 const PAGE_SIZE_OPTIONS = [15, 25];
+const CATALOGUE_POSTER = "/images/catalogue-poster.png";
 
 export default function CreativeCatalogue() {
   const sectionRef = useMemo(() => ({ current: null }), []);
@@ -39,7 +39,7 @@ export default function CreativeCatalogue() {
           collectionTitle: collection.title,
           collectionSubtitle: collection.subtitle,
           collectionSlug: collection.slug,
-          coverImage: getCoverImage(currentIndex),
+          coverImage: CATALOGUE_POSTER,
           viewUrl: getDriveViewUrl(item.driveId),
           downloadUrl: getDriveDownloadUrl(item.driveId),
           originalIndex: currentIndex,
@@ -287,7 +287,7 @@ export default function CreativeCatalogue() {
                     src={item.coverImage}
                     alt={`${item.displayName} catalogue cover`}
                     fill
-                    sizes="(max-width: 680px) 65px, 94px"
+                    sizes="(max-width: 520px) 58px, 70px"
                     className="cc-cover-image"
                   />
                   <span className="cc-cover-number">{String(startIndex + index + 1).padStart(2, "0")}</span>

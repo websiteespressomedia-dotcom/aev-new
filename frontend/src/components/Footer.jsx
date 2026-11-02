@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Footer.css";
 
@@ -64,7 +65,34 @@ const SOCIAL_LINKS = [
   // Add Facebook / YouTube / Pinterest here when available.
 ];
 
+/* A footer column. On tablet / desktop it is a normal column; on phones the
+   heading becomes a tap-to-open row (see Footer.css), which keeps the footer short. */
+const FooterCol = ({ id, title, openId, onToggle, Tag = "section", children }) => {
+  const isOpen = openId === id;
+  return (
+    <Tag className={`sf-col sf-acc${isOpen ? " is-open" : ""}`} aria-label={title}>
+      <h3 className="sf-heading">
+        <button
+          type="button"
+          className="sf-acc-btn"
+          aria-expanded={isOpen}
+          aria-controls={`sf-panel-${id}`}
+          onClick={() => onToggle(id)}
+        >
+          <span>{title}</span>
+          <i className="sf-acc-icon" aria-hidden="true" />
+        </button>
+      </h3>
+      <div className="sf-panel" id={`sf-panel-${id}`}>
+        <div className="sf-panel-in">{children}</div>
+      </div>
+    </Tag>
+  );
+};
+
 const Footer = () => {
+  const [openId, setOpenId] = useState("");
+  const toggle = (id) => setOpenId((current) => (current === id ? "" : id));
   const scrollTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   return (
@@ -99,7 +127,7 @@ const Footer = () => {
                 </li>
               ))}
               {PHONE_NUMBER && (
-                <li className="sf-info-row">
+                <li className="sf-info-row sf-info-row--phone">
                   <span className="sf-info-icon"><PhoneIcon /></span>
                   <a className="sf-info-text sf-info-link" href={`tel:${PHONE_NUMBER.replace(/\s/g, "")}`}>
                     {PHONE_NUMBER}
@@ -118,38 +146,43 @@ const Footer = () => {
           </section>
 
           {/* Column 2: Company */}
-          <nav className="sf-col" aria-label="Company">
-            <h3 className="sf-heading">Company</h3>
+          <FooterCol id="company" title="Company" Tag="nav" openId={openId} onToggle={toggle}>
             <ul className="sf-list">
               <li><Link to="/" className="sf-link">Home</Link></li>
               <li><Link to="/about" className="sf-link">About us</Link></li>
               <li><Link to="/collections" className="sf-link">Collections</Link></li>
+              <li><Link to="/export" className="sf-link">Export</Link></li>
               <li><Link to="/catalogue" className="sf-link">Catalogue</Link></li>
+              <li><Link to="/tile-calculator" className="sf-link">Tile Calculator</Link></li>
               <li><Link to="/contact" className="sf-link">Contact</Link></li>
             </ul>
-          </nav>
+          </FooterCol>
 
           {/* Column 3: Collections */}
-          <nav className="sf-col" aria-label="Collections">
-            <h3 className="sf-heading">Collections</h3>
+          <FooterCol id="collections" title="Collections" Tag="nav" openId={openId} onToggle={toggle}>
             <ul className="sf-list">
-              <li><Link to="/collections" className="sf-link">All collections</Link></li>
-              <li><Link to="/catalogue" className="sf-link">Catalogue</Link></li>
-              <li><Link to="/tile-calculator" className="sf-link">Tile calculator</Link></li>
+              <li><Link to="/collections#product-listing" className="sf-link">All Collections</Link></li>
+              <li><Link to="/collections?size=600x1200#product-listing" className="sf-link">600 X 1200</Link></li>
+              <li><Link to="/collections?size=800x1600#product-listing" className="sf-link">800 X 1600</Link></li>
+              <li><Link to="/collections?size=800x2400#product-listing" className="sf-link">800 X 2400</Link></li>
+              <li><Link to="/collections?size=1200x1800#product-listing" className="sf-link">1200 X 1800</Link></li>
+              <li><Link to="/catalogue" className="sf-link">All Catalogue</Link></li>
             </ul>
-          </nav>
+          </FooterCol>
 
-          {/* Column 4: Finishes & formats */}
-          <section className="sf-col" aria-label="Finishes and formats">
-            <h3 className="sf-heading">Finishes</h3>
-            <ul className="sf-chips">
-              {FINISHES.map((f) => <li key={f}>{f}</li>)}
-            </ul>
-            <h3 className="sf-heading sf-heading-sub">Formats (mm)</h3>
-            <ul className="sf-chips">
-              {FORMATS.map((f) => <li key={f}>{f}</li>)}
-            </ul>
-          </section>
+          {/* Column 4: Finishes & formats (two stacked blocks) */}
+          <div className="sf-stack">
+            <FooterCol id="finishes" title="Finishes" openId={openId} onToggle={toggle}>
+              <ul className="sf-chips">
+                {FINISHES.map((f) => <li key={f}>{f}</li>)}
+              </ul>
+            </FooterCol>
+            <FooterCol id="formats" title="Formats (mm)" openId={openId} onToggle={toggle}>
+              <ul className="sf-chips">
+                {FORMATS.map((f) => <li key={f}>{f}</li>)}
+              </ul>
+            </FooterCol>
+          </div>
 
           {/* Column 5: Social */}
           <section className="sf-col sf-social-column" aria-label="Follow Aevitas">
@@ -175,7 +208,7 @@ const Footer = () => {
 
         <div className="sf-bottom">
           {/* <p className="sf-copy">© {new Date().getFullYear()} Aevitas Ceramics. All rights reserved.</p> */}
-          <p className="sf-copy">Designed & Developed by <a href="https://espressomedia.in/" target="_blank">The Espresso Media</a></p>
+          <p className="sf-copy">Designed & Developed by <a href="https://espressomedia.in/" target="_blank" rel="noopener noreferrer">The Espresso Media</a></p>
           <nav className="sf-legal" aria-label="Legal">
             <Link to="/privacy-policy">Privacy Policy</Link>
             <Link to="/terms-and-conditions">Terms &amp; Conditions</Link>

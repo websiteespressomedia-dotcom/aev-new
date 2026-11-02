@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef } from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -15,7 +15,7 @@ const IMG = {
   hero: "/images/container-yard.png",                  // 1 · HERO background (full screen, dark overlay)
   intro: "/images/global-markets-porcelain.png",    // 2 · INTRO wide banner under the big paragraph
   supply: "/images/shipping.png",                // 4 · BULK SUPPLY photo above the numbered list
-  process: "/images/tile-export.png",               // 5 · EXPORT PROCESS wide banner under the steps
+  process: "/images/tile-export.jpg",               // 5 · EXPORT PROCESS wide banner under the steps
   floor: "/floor_preview.jpg",                      // 7 · RANGE card 1  (Porcelain Tiles)
   large: "/lobi_preview.png",                    // 7 · RANGE card 2  (Large Format Tiles)
   specs: "/images/surface-finish.png",                     // 8 · SPECIFICATIONS photo above the list
@@ -163,6 +163,7 @@ const Photo = ({ src, alt, caption, tall = false }) => (
 
 const Export = () => {
   const rootRef = useRef(null);
+  const [moreOpen, setMoreOpen] = useState(false); // phone: "Read more" in the last section
 
   useLayoutEffect(() => {
     const root = rootRef.current;
@@ -507,7 +508,7 @@ const Export = () => {
           </div>
           <div className="ex-supply-list">
             {/* IMAGE AREA: above the list → IMG.supply */}
-            <Photo src={IMG.supply} alt="Porcelain tiles prepared for bulk supply" caption="Bulk supply" />
+            <Photo src={IMG.supply} alt="Porcelain tiles prepared for bulk supply" caption="Our business enquiries can cover:" />
             {SUPPLY.map((s, i) => (
               <div className="ex-supply-row" key={s}>
                 <span className="ex-supply-n">{pad(i)}</span>
@@ -528,7 +529,7 @@ const Export = () => {
               <h2 id="ex-pr-title" className="ex-h2 ex-head">
                 <Mask>Your sourcing</Mask>
                 <Mask cls="ex-gold">partner for</Mask>
-                <Mask>international markets</Mask>
+                <Mask>International Markets</Mask>
               </h2> <br />
               <Paras items={PROCESS_TEXT} />
             </div>
@@ -619,7 +620,7 @@ const Export = () => {
 
       <h2 id="ex-spec-title" className="ex-h2 ex-head">
         <Mask>Making informed</Mask>
-        <Mask cls="ex-gold">sourcing decisions</Mask>
+        <Mask cls="ex-gold">Sourcing Decisions</Mask>
       </h2>
 
       <p className="ex-body" data-rv>
@@ -673,12 +674,21 @@ const Export = () => {
           {/* <div className="ex-eyebrow ex-left"><i /><span>Building international business partnerships</span></div> */}
           <h2 id="ex-final-title" className="ex-h2 ex-big ex-head">
             <Mask>A long-term approach</Mask>
-            <Mask cls="ex-gold">to tile sourcing.</Mask>
+            <Mask cls="ex-gold">to Tile Sourcing.</Mask>
           </h2>
 
-          <div className="ex-final-cols">
+          {/* on phones only the first paragraph shows until "Read more" is tapped */}
+          <div className={`ex-final-cols${moreOpen ? " is-open" : ""}`}>
             <Paras items={FINAL_TEXT} />
           </div>
+          <button
+            type="button"
+            className="ex-more-btn"
+            aria-expanded={moreOpen}
+            onClick={() => setMoreOpen((open) => !open)}
+          >
+            {moreOpen ? "Show less" : "Read more"} <span aria-hidden="true">↓</span>
+          </button>
 
           <div className="ex-rule" data-line />
 
@@ -686,7 +696,7 @@ const Export = () => {
             <div>
               <h3 className="ex-cta-title ex-head">
                 <Mask>Let&apos;s discuss your</Mask>
-                <Mask cls="ex-gold">tile sourcing requirements</Mask>
+                <Mask cls="ex-gold">Tile Sourcing Requirements</Mask>
               </h3>
               <Paras items={CTA_TEXT} />
             </div>
@@ -697,8 +707,9 @@ const Export = () => {
                 <b>↗</b>
               </span>
             </a>
-          <p className="ex-tagline" data-rv>{TAGLINE}</p>
           </div>
+
+          <p className="ex-tagline" data-rv>{TAGLINE}</p>
 
         </div>
       </section>

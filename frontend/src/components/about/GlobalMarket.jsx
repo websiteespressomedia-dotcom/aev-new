@@ -6,9 +6,9 @@ import "./GlobalMarket.css";
 gsap.registerPlugin(ScrollTrigger);
 
 const PARAGRAPHS = [
-  "Aevitas Ceramics is an Indian porcelain tile brand focused on delivering premium porcelain tiles and large format tile solutions for international markets. With a commitment to contemporary design, manufacturing quality, and reliable product standards, we aim to serve importers, distributors, wholesalers, architects, and project suppliers seeking dependable surface solutions.",
-  "Our approach combines design-driven porcelain collections with a focus on product consistency, careful packaging, and export-oriented supply requirements. From residential interiors and commercial developments to hospitality spaces and large-scale architectural projects, Aevitas Ceramics offers tile solutions tailored to diverse design and application needs.",
-  "We believe successful international partnerships are built on quality, consistency, and trust. As we expand our global reach, our goal is to establish lasting relationships with buyers and distribution partners by delivering thoughtfully designed porcelain surfaces backed by a commitment to dependable service.",
+  "Aevitas Ceramics is an Indian porcelain tile brand dedicated to bringing together contemporary design, refined aesthetics, and quality-focused surface solutions. Specializing in porcelain tiles and large format tiles, we aim to meet the evolving needs of modern architecture, interior design, and construction.",
+  "We believe tiles do more than complete a space — they help define its character. From elegant residential interiors to sophisticated commercial environments, our focus is on offering porcelain surfaces that complement diverse design visions while meeting practical application requirements.",
+  "With an emphasis on design versatility, product consistency, and customer-focused service, Aevitas Ceramics is building its identity as a trusted name in the Indian porcelain tile industry.",
 ];
 
 const [LEAD, ...REST] = PARAGRAPHS;

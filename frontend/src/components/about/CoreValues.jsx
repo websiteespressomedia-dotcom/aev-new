@@ -52,7 +52,7 @@ const VALUES = [
     description:
       "We value transparency, reliability, and long-term collaboration, building meaningful relationships with distributors, wholesalers, importers, and project buyers through shared goals and mutual trust.",
     tags: ["Support", "Trust", "Long term"],
-    image: "/marble_texture.jpg",
+    image: "/images/hero/hero.avif",
   },
 ];
  
@@ -199,10 +199,10 @@ const CoreValues = () => {
           <p className="cv-intro cv-aside-in">{INTRO}</p>
  
           <div className="cv-counter cv-aside-in" aria-hidden="true">
-            <span className="cv-count-num" key={active}>
+            {/* <span className="cv-count-num" key={active}>
               {pad(active + 1)}
             </span>
-            <span className="cv-count-total">/ {pad(VALUES.length)}</span>
+            <span className="cv-count-total">/ {pad(VALUES.length)}</span> */}
           </div>
  
           <ul className="cv-ticks cv-aside-in">
@@ -242,7 +242,7 @@ const CoreValues = () => {
               </div>
  
               <div className="cv-card-body">
-                <span className="cv-card-num">{v.id}</span>
+                {/* <span className="cv-card-num">{v.id}</span> */}
                 <h3 className="cv-card-title">{v.title}</h3>
                 <p className="cv-card-desc">{v.description}</p>
                 {/* <div className="cv-tags">

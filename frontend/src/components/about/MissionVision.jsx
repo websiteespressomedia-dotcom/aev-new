@@ -380,6 +380,7 @@ const MissionVision = () => {
         {
           desktopPin:
             "(min-width: 851px) and (min-height: 780px)",
+          mobileScroll: "(max-width: 850px)",
         },
         (context) => {
           const shouldPin = context.conditions.desktopPin;
@@ -401,10 +402,14 @@ const MissionVision = () => {
                   refreshPriority: 1,
                 }
               : {
-                  trigger: visual,
-                  start: "top 78%",
-                  end: "bottom 35%",
+                  // Tablet and mobile: keep the section in normal document flow.
+                  // Scrub the Mission → Vision transition across the whole section
+                  // so the text and image changes remain reachable on touch devices.
+                  trigger: section,
+                  start: "top 72%",
+                  end: "bottom 38%",
                   scrub: 1,
+                  invalidateOnRefresh: true,
                 },
           });
 
@@ -655,11 +660,18 @@ const MissionVision = () => {
          REFRESH
       ===================================================== */
 
+      const refreshOnResize = () => ScrollTrigger.refresh();
+
+      window.addEventListener("orientationchange", refreshOnResize);
+      window.addEventListener("resize", refreshOnResize);
+
       requestAnimationFrame(() => {
         ScrollTrigger.refresh();
       });
 
       return () => {
+        window.removeEventListener("orientationchange", refreshOnResize);
+        window.removeEventListener("resize", refreshOnResize);
         mm.revert();
       };
     }, section);

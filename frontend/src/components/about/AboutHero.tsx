@@ -28,8 +28,8 @@ const GOLD_WORDS = [
 
 const STATS = [
   { value: 250, suffix: "+", label: "Projects Completed" },
-  { value: 15, suffix: "+", label: "Years of Experience" },
-  { value: 98, suffix: "%", label: "Client Satisfaction" },
+  { value: 4, suffix: "+", label: "Years of Experience" },
+  { value: 100, suffix: "%", label: "Client Satisfaction" },
 ];
 
 /* Light text for the dark story panel */
