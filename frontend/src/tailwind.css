@@ -1,10 +1,9 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #EAE8E6;
+  --foreground: #352934;
 }
-
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -12,18 +11,6 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
 /* Avoid starting with a number */
 .container-3d {
   perspective: 1000px;
@@ -43,3 +30,11 @@ body {
 .rotate-y-90 { transform: rotateY(90deg); }
 .translate-z-\\[-38px\\] { transform: translateZ(-38px); }
 .translate-z-\\[-44px\\] { transform: translateZ(-44px); }
+
+
+/* Fallback canvas: visually blend any space after the footer */
+html,
+body,
+#root {
+  background: linear-gradient(145deg, #D6D3D1 0%, #EAE8E6 54%, #D6D3D1 100%);
+}

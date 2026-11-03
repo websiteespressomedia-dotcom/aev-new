@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import Lenis from 'lenis';
@@ -25,32 +25,62 @@ import TileCalculatorPage from "./pages/TileCalculatorPage";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Sub-component to handle smooth scrolling reset on route change
+/* =========================================================
+   SCROLL RESET
+   Why pages sometimes opened half-way down:
+   - Lenis (smooth scroll) keeps its own "target" position. A plain
+     window.scrollTo(0, 0) does not change it, so on some PCs Lenis
+     slid the new page back to where the old one was.
+   - The reset also ran while the old page was still fading out, before
+     the new page existed.
+   Now: Lenis is reset together with the window, and it happens when the
+   old page has left and again when the new page starts to enter.
+   ========================================================= */
+
+const scrollApi = { lenis: null, pathname: "/", hash: "" };
+
+// Pages that place the scroll themselves keep their position.
+const keepScrollFor = (pathname, hash) => {
+  const isProductDetailRoute =
+    /^\/(porcelain-floor-tiles|large-format-porcelain-tiles|porcelain-slab-tiles)\//.test(
+      pathname
+    );
+
+  const isReturningToListing =
+    pathname === "/collections" && hash === "#product-listing";
+
+  return isProductDetailRoute || isReturningToListing;
+};
+
+const resetScroll = () => {
+  if (keepScrollFor(scrollApi.pathname, scrollApi.hash)) return;
+
+  // 1) tell Lenis, otherwise it keeps animating towards the old position
+  if (scrollApi.lenis) {
+    scrollApi.lenis.scrollTo(0, { immediate: true, force: true });
+  }
+
+  // 2) the real window
+  window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+
+  // 3) stop ScrollTrigger from restoring the old position on its next refresh
+  if (typeof ScrollTrigger.clearScrollMemory === 'function') {
+    ScrollTrigger.clearScrollMemory();
+  }
+};
+
+// Same page, only the #hash / ?search changed (a page change is handled by
+// AnimatePresence below, when the old page has left).
 const ScrollManager = () => {
   const { pathname, hash } = useLocation();
+  const previousPath = useRef(pathname);
 
   useEffect(() => {
-    const isProductDetailRoute =
-      /^\/(porcelain-floor-tiles|large-format-porcelain-tiles|porcelain-slab-tiles)\//.test(
-        pathname
-      );
+    const pathChanged = previousPath.current !== pathname;
+    previousPath.current = pathname;
 
-    const isReturningToListing =
-      pathname === "/collections" &&
-      hash === "#product-listing";
-
-    // Let the destination page handle its own scroll position.
-    // This prevents the old collection page from jumping to its heading
-    // while AnimatePresence is running its exit animation.
-    if (isProductDetailRoute || isReturningToListing) {
-      return;
-    }
-
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "auto",
-    });
+    if (pathChanged) return;
+    resetScroll();
   }, [pathname, hash]);
 
   return null;
@@ -64,7 +94,16 @@ const pageVariants = {
 };
 
 const PageWrapper = ({ children }) => (
-  <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit" style={{ width: '100%' }}>
+  <motion.div
+    variants={pageVariants}
+    initial="initial"
+    animate="animate"
+    exit="exit"
+    style={{ width: '100%' }}
+    onAnimationStart={(definition) => {
+      if (definition === 'animate') resetScroll();
+    }}
+  >
     {children}
   </motion.div>
 );
@@ -72,6 +111,17 @@ const PageWrapper = ({ children }) => (
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+
+  // always know the current route inside resetScroll()
+  scrollApi.pathname = location.pathname;
+  scrollApi.hash = location.hash;
+
+  // The browser must not restore an old scroll position by itself.
+  useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+  }, []);
 
   
   useEffect(() => {
@@ -161,6 +211,7 @@ function App() {
       infinite: false,
     });
 
+    scrollApi.lenis = lenis;
     lenis.on('scroll', ScrollTrigger.update);
 
     function update(time) {
@@ -171,6 +222,7 @@ function App() {
     gsap.ticker.lagSmoothing(0);
 
     return () => {
+      scrollApi.lenis = null;
       lenis.destroy();
       gsap.ticker.remove(update);
     };
@@ -188,7 +240,7 @@ function App() {
 
         <WhatsAppButton />
 
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="wait" onExitComplete={resetScroll}>
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
             <Route path="/about" element={<PageWrapper><About /></PageWrapper>} />

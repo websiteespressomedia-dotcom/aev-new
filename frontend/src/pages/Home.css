@@ -5100,3 +5100,63 @@
   color: #C1A673 !important;
 }
 .home-page .size-panel .size-panel-link:hover { border-bottom-color: #C1A673 !important; }
+
+
+/* =========================================================
+   TILE SIZES — TYPE + THICKNESS OPTIONS (several per size)
+========================================================= */
+.home-page .size-panel-specs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.7rem 1rem;
+  margin-top: 1rem;
+}
+
+/* SLAB / TILE badge */
+.home-page .size-panel .size-panel-type {
+  padding: 0.3rem 0.8rem;
+  border: 1px solid #C1A673;
+  border-radius: 999px;
+  color: #C1A673 !important;
+  font-family: var(--size-font);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-shadow: none;
+  text-transform: uppercase;
+}
+
+/* "Thickness  [9 mm] [15 mm]" */
+.home-page .size-panel-thk {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.65rem;
+}
+.home-page .size-panel-thk-label {
+  font-family: var(--size-font);
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+.home-page .size-panel-thk ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.home-page .size-panel-thk li {
+  padding: 0.3rem 0.75rem;
+  border: 1px solid rgba(245, 242, 234, 0.55);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  font-family: var(--size-font);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}

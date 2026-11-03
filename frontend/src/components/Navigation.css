@@ -238,7 +238,7 @@
   padding: 9px 0;
   color: var(--nav-ink);
   font-family: "Inter", sans-serif;
-  font-size: clamp(8px, 0.62vw, 10px);
+  font-size: clamp(11px, 0.62vw, 10px);
   font-weight: 600;
   letter-spacing: 0.075em;
   text-decoration: none;
@@ -735,7 +735,7 @@
   }
 
   .nav-link {
-    font-size: 8px;
+    font-size: 10px;
     letter-spacing: 0.04em;
   }
 

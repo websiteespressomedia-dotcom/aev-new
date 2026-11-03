@@ -351,11 +351,14 @@ export default function ProductListingSection({ initialProducts = [] }) {
 
                     {hasPreview && (
                       <div className="aev-product-card__image aev-product-card__image--preview">
+                        {/* eager + low priority: the interior photo is downloaded and decoded
+                            in the background, so it is ready the moment the card is hovered */}
                         <img
                           src={product.previewImage}
                           alt={`${product.name || "Tile"} in an interior`}
                           className="aev-product-card__img"
-                          loading="lazy"
+                          loading="eager"
+                          fetchPriority="low"
                           decoding="async"
                           draggable={false}
                         />

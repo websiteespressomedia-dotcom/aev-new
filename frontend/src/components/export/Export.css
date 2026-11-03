@@ -250,7 +250,7 @@
 /* =========================================================
    9 · PARTNERSHIP + ENQUIRY
    ========================================================= */
-.ex-final { background-color: var(--deep); background-image: linear-gradient(90deg, rgba(var(--aev-export-dark-rgb), 0.94) 0%, rgba(var(--aev-export-dark-rgb), 0.86) 48%, rgba(var(--aev-export-dark-rgb), 0.78) 100%), var(--ex-final-image); background-size: cover; background-position: center; background-repeat: no-repeat; overflow: hidden; }
+.ex-final { background-color: var(--deep); background-image: linear-gradient(90deg, rgba(var(--aev-export-dark-rgb), 0.94) 0%, rgba(var(--aev-export-dark-rgb), 0.86) 48%, rgba(var(--aev-export-dark-rgb), 0.78) 100%), var(--ex-final-image, none); background-size: cover; background-position: center; background-repeat: no-repeat; overflow: hidden; }
 .ex-final::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(38% 55% at 82% 70%, rgba(var(--aev-export-accent-rgb), 0.13), transparent 70%); }
 .ex-final .ex-wrap { position: relative; }
 .ex-final-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1.5rem, 4vw, 4rem); margin-top: 3rem; }
@@ -849,7 +849,7 @@
       var(--aev-export-overlay-final-mid) 48%,
       var(--aev-export-overlay-final-soft) 100%
     ),
-    var(--ex-final-image);
+    var(--ex-final-image, none);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -1286,4 +1286,48 @@
   .ex .ex-dark .ex-hs-card p {
     transition-duration: 0.01ms;
   }
+}
+
+
+/* =========================================================
+   LAST SECTION — BLACK SHADE BETWEEN THE PHOTO AND THE TEXT
+   One dark layer on top of the photo (and under all text), so the
+   container-yard picture stays visible but the copy is easy to read.
+   Change --ex-shade to make it lighter (0.4) or darker (0.8).
+========================================================= */
+.ex .ex-final {
+  --ex-shade: 0.62;
+  background-image:
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, calc(var(--ex-shade) + 0.12)) 0%,
+      rgba(0, 0, 0, var(--ex-shade)) 55%,
+      rgba(0, 0, 0, calc(var(--ex-shade) - 0.1)) 100%
+    ),
+    var(--ex-final-image, none);
+}
+
+/* text stays pure white / bright on top of the shade */
+.ex .ex-final p,
+.ex .ex-final .ex-body,
+.ex .ex-final-cols .ex-body,
+.ex .ex-final .ex-tagline {
+  color: rgba(245, 242, 234, 0.94);
+}
+
+@media (max-width: 700px) {
+  .ex .ex-final { --ex-shade: 0.7; }   /* phones: a little darker, text sits over more of the photo */
+}
+
+
+/* =========================================================
+   HERO PHOTO — soft fade-in instead of popping in
+   Dark placeholder while the photo downloads, then a smooth fade.
+========================================================= */
+.ex .ex-hero-video { background: linear-gradient(180deg, #3b373c 0%, #1d1b1e 100%); }
+.ex .ex-hero-video img { opacity: 0; transition: opacity 0.9s ease; }
+.ex .ex-hero-video img.is-ready { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ex .ex-hero-video img { transition: none; }
 }

@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from "react";
+import React, { useLayoutEffect, useRef, useState, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -165,6 +165,9 @@ const Photo = ({ src, alt, caption, tall = false }) => (
 const Export = () => {
   const rootRef = useRef(null);
   const [moreOpen, setMoreOpen] = useState(false); // phone: "Read more" in the last section
+  const [heroReady, setHeroReady] = useState(false);  // hero photo has finished loading
+  const [finalBg, setFinalBg] = useState(false);      // last-section photo is only fetched when near
+  const heroImgRef = useRef(null);
 
   useLayoutEffect(() => {
     const root = rootRef.current;
@@ -410,13 +413,51 @@ const Export = () => {
     };
   }, []);
 
+  /* Hero photo: if it was already cached it never fires onLoad, so check once. */
+  useEffect(() => {
+    const img = heroImgRef.current;
+    if (img && img.complete && img.naturalWidth > 0) setHeroReady(true);
+  }, []);
+
+  /* The big photo behind the last section used to download at the same time as
+     the hero photo and slowed it down. Now it only starts when you get near it. */
+  useEffect(() => {
+    const section = rootRef.current && rootRef.current.querySelector(".ex-final");
+    if (!section) return undefined;
+    if (!("IntersectionObserver" in window)) {
+      setFinalBg(true);
+      return undefined;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setFinalBg(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "1500px 0px" }
+    );
+    io.observe(section);
+    return () => io.disconnect();
+  }, []);
+
   return (
     <div ref={rootRef} className="ex">
       {/* ================= 1 · HERO ================= */}
       <section className="ex-hero" aria-label="Porcelain tile exporter from India">
         {/* IMAGE AREA: hero background → IMG.hero */}
         <div className="ex-hero-video">
-          <img src={IMG.hero} alt="" />
+          <img
+            ref={heroImgRef}
+            className={heroReady ? "is-ready" : ""}
+            src={IMG.hero}
+            alt=""
+            loading="eager"
+            decoding="async"
+            fetchPriority="high"
+            onLoad={() => setHeroReady(true)}
+            onError={() => setHeroReady(true)}
+          />
         </div>
 
         <div className="ex-hero-in">
@@ -670,7 +711,7 @@ const Export = () => {
 
 
       {/* ================= 9 · PARTNERSHIP + ENQUIRY ================= */}
-      <section className="ex-sec ex-dark ex-final" aria-labelledby="ex-final-title" style={{ "--ex-final-image": `url("${IMG.footer}")` }}>
+      <section className="ex-sec ex-dark ex-final" aria-labelledby="ex-final-title" style={finalBg ? { "--ex-final-image": `url("${IMG.footer}")` } : undefined}>
         <div className="ex-wrap">
           {/* <div className="ex-eyebrow ex-left"><i /><span>Building international business partnerships</span></div> */}
           <h2 id="ex-final-title" className="ex-h2 ex-big ex-head">
