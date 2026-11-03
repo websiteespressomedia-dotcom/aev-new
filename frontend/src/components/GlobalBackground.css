@@ -5,7 +5,7 @@
   width: 100vw;
   height: 100vh;
   z-index: -10;
-  background-color: #050505; /* Deep luxury black */
+  background: radial-gradient(ellipse at 82% 10%, rgba(255, 255, 255, 0.45), transparent 38%), linear-gradient(145deg, #D6D3D1 0%, #EAE8E6 54%, #D6D3D1 100%); /* Exact existing footer background */
   overflow: hidden;
   pointer-events: none;
 }
@@ -20,43 +20,43 @@
   opacity: 0.6;
 }
 
-.aurora-blob {
+/* .aurora-blob {
   position: absolute;
   border-radius: 50%;
   animation: float 20s infinite alternate ease-in-out;
-}
+} */
 
 /* Accent Gold Blob */
-.blob-1 {
+/* .blob-1 {
   width: 50vw;
   height: 50vw;
-  background: radial-gradient(circle, rgba(212,175,55,0.4) 0%, rgba(0,0,0,0) 70%);
+  background: radial-gradient(circle, rgba(212,175,55,0.4) 0%, #e7e6defa 70%);
   top: -10%;
   left: -10%;
   animation-delay: 0s;
-}
+} */
 
 /* Deep Charcoal Blob */
-.blob-2 {
+/* .blob-2 {
   width: 60vw;
   height: 60vw;
   background: radial-gradient(circle, rgba(50,50,50,0.8) 0%, rgba(0,0,0,0) 70%);
   bottom: 0%;
   right: -20%;
   animation-delay: -5s;
-}
+} */
 
 /* Muted Beige/Stone Blob */
-.blob-3 {
+/* .blob-3 {
   width: 40vw;
   height: 40vw;
   background: radial-gradient(circle, rgba(230,223,213,0.2) 0%, rgba(0,0,0,0) 70%);
   top: 40%;
   left: 30%;
   animation-delay: -10s;
-}
+} */
 
-@keyframes float {
+/* @keyframes float {
   0% {
     transform: translate(0, 0) scale(1);
   }
@@ -69,10 +69,10 @@
   100% {
     transform: translate(0, 0) scale(1);
   }
-}
+} */
 
 /* Subtle Architectural Grid Overlay */
-.bg-grid-overlay {
+/* .bg-grid-overlay {
   position: absolute;
   inset: 0;
   background-image: 
@@ -80,4 +80,4 @@
     linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
   background-size: 5vw 5vw;
   opacity: 0.5;
-}
+} */
