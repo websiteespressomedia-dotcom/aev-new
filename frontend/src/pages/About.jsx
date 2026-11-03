@@ -14,7 +14,7 @@ export default function AboutPage() {
       <GlobalMarket />
       <MissionVision />
       <CoreValues />
-      <QualityControl />
+      {/* <QualityControl /> */}
       <ContactSection />
     </main>
   );
