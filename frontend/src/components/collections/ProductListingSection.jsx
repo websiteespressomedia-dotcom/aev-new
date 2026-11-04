@@ -39,6 +39,7 @@ export default function ProductListingSection({ initialProducts = [] }) {
   const [activeFilter, setActiveFilter] = useState("All");
   const [activeSizeFilter, setActiveSizeFilter] = useState("All");
   const [visibleCount, setVisibleCount] = useState(8);
+  const [sheetOpen, setSheetOpen] = useState(false); // phone: filter sheet
 
   const pathname = location.pathname || "/porcelain-floor-tiles";
 
@@ -202,6 +203,48 @@ export default function ProductListingSection({ initialProducts = [] }) {
     setSearch("");
   };
 
+  // ----- phone filter sheet -----
+  const activeCount =
+    (activeFilter !== "All" ? 1 : 0) + (activeSizeFilter !== "All" ? 1 : 0);
+
+  const showResults = () => {
+    const grid = gridRef.current;
+    if (!grid) return;
+    const top = grid.getBoundingClientRect().top + window.scrollY - 96;
+    window.scrollTo({ top, behavior: "smooth" });
+  };
+
+  const closeSheet = () => setSheetOpen(false);
+
+  const applyAndShow = () => {
+    setSheetOpen(false);
+    window.setTimeout(showResults, 80);
+  };
+
+  // lock the page behind the sheet, close it with Esc
+  useEffect(() => {
+    if (!sheetOpen) return undefined;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const onKey = (event) => {
+      if (event.key === "Escape") setSheetOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [sheetOpen]);
+
+  // tiny tile icon: shape follows the real format, e.g. 800x2400 = tall and thin
+  const sizeParts = (size) => {
+    const [w, h] = String(size).split("x").map((n) => Number.parseInt(n, 10));
+    return { w: w || 1, h: h || 1 };
+  };
+
   return (
     <section
       id="product-listing"
@@ -283,6 +326,129 @@ export default function ProductListingSection({ initialProducts = [] }) {
                 </button>
               )}
             </label>
+          </div>
+        </div>
+
+        {/* ===== phone only: one compact bar + a slide-up filter sheet ===== */}
+        <div className="aev-pf">
+          <button
+            type="button"
+            className="aev-pf__btn"
+            onClick={() => setSheetOpen(true)}
+            aria-haspopup="dialog"
+            aria-expanded={sheetOpen}
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 7h9M19 7h1M4 17h1M11 17h9" />
+              <circle cx="16" cy="7" r="2.2" />
+              <circle cx="8" cy="17" r="2.2" />
+            </svg>
+            <span>Filters</span>
+            {activeCount > 0 && <b>{activeCount}</b>}
+          </button>
+
+          <div className="aev-pf__chips">
+            {activeFilter !== "All" && (
+              <button type="button" className="aev-pf__chip" onClick={() => selectFinish("All")} aria-label={`Remove ${activeFilter}`}>
+                {activeFilter}<i aria-hidden="true">×</i>
+              </button>
+            )}
+            {activeSizeFilter !== "All" && (
+              <button type="button" className="aev-pf__chip" onClick={() => selectSize("All")} aria-label={`Remove ${activeSizeFilter}`}>
+                {activeSizeFilter.replace("x", " × ")}<i aria-hidden="true">×</i>
+              </button>
+            )}
+            {activeCount === 0 && (
+              <span className="aev-pf__hint">All finishes · All formats</span>
+            )}
+          </div>
+        </div> <br />
+
+        <div
+          className={`aev-sheet ${sheetOpen ? "is-open" : ""}`}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Filters"
+          aria-hidden={!sheetOpen}
+        >
+          <button
+            type="button"
+            className="aev-sheet__scrim"
+            aria-label="Close filters"
+            tabIndex={sheetOpen ? 0 : -1}
+            onClick={closeSheet}
+          />
+
+          <div className="aev-sheet__panel">
+            <span className="aev-sheet__handle" aria-hidden="true" />
+
+            <div className="aev-sheet__head">
+              <h3>Filters</h3>
+              <button type="button" className="aev-sheet__close" aria-label="Close filters" onClick={closeSheet}>
+                ×
+              </button>
+            </div>
+
+            <div className="aev-sheet__body">
+              <div className="aev-sheet__group">
+                <span className="aev-sheet__label">Finish</span>
+                <div className="aev-sheet__chips" role="group" aria-label="Filter by finish">
+                  {FINISH_FILTERS.map((filter, i) => (
+                    <button
+                      type="button"
+                      key={filter}
+                      style={{ "--i": i }}
+                      className={`aev-sheet__chip ${activeFilter === filter ? "is-active" : ""}`}
+                      aria-pressed={activeFilter === filter}
+                      onClick={() => selectFinish(filter)}
+                    >
+                      {filter === "All" ? "All finishes" : filter}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="aev-sheet__group">
+                <span className="aev-sheet__label">Format</span>
+                <div className="aev-sheet__chips" role="group" aria-label="Filter by tile size">
+                  {SIZE_FILTERS.map((size, i) => {
+                    const { w, h } = sizeParts(size);
+                    return (
+                      <button
+                        type="button"
+                        key={size}
+                        style={{ "--i": i + FINISH_FILTERS.length }}
+                        className={`aev-sheet__chip ${activeSizeFilter === size ? "is-active" : ""}`}
+                        aria-pressed={activeSizeFilter === size}
+                        onClick={() => selectSize(size)}
+                      >
+                        {size !== "All" && (
+                          <span className="aev-tile-icon" style={{ "--w": w, "--h": h }} aria-hidden="true" />
+                        )}
+                        {size === "All" ? "All formats" : size.replace("x", " × ")}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            <div className="aev-sheet__foot">
+              <button
+                type="button"
+                className="aev-sheet__clear"
+                onClick={clearFilters}
+                disabled={activeCount === 0 && !search}
+              >
+                Clear all
+              </button>
+              <button type="button" className="aev-sheet__show" onClick={applyAndShow}>
+                <span>
+                  Show {filteredProducts.length} {filteredProducts.length === 1 ? "surface" : "surfaces"}
+                </span>
+                <i aria-hidden="true">→</i>
+              </button>
+            </div>
           </div>
         </div>
 

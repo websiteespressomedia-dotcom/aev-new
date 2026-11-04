@@ -2304,34 +2304,6 @@
     font-size: 0.95rem;
   }
 
-  .home-page .sizes-panels {
-    height: 420px;
-    overflow-x: auto;
-    overflow-y: hidden;
-
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-  }
-
-  .home-page .sizes-panels::-webkit-scrollbar {
-    display: none;
-  }
-
-  .home-page .size-panel {
-    flex: 0 0 64px;
-    min-width: 64px;
-    scroll-snap-align: start;
-  }
-
-  .home-page .size-panel.is-active {
-    flex: 0 0 min(72vw, 340px);
-    min-width: 0;
-  }
-
-  .home-page .size-panel-vertical {
-    bottom: 18px;
-    gap: 3px;
-  }
   .home-page .size-panel-content {
     padding: 1.25rem;
   }
@@ -5159,4 +5131,254 @@
   font-weight: 600;
   letter-spacing: 0.06em;
   white-space: nowrap;
+}
+
+
+/* =========================================================
+   TILE SIZES ON PHONES — A STACK OF PLATES
+   No sideways scrolling any more. Every size is one slim plate,
+   stacked on the one above it. Tap a plate and it opens; the
+   others stay in the pile.
+========================================================= */
+@media (max-width: 768px) {
+  .home-page .sizes-panels {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    height: auto;
+    padding: 0.5rem 0 1rem;
+    overflow: visible;
+    scroll-snap-type: none;
+  }
+
+  /* one plate */
+  .home-page .sizes-panels .size-panel {
+    flex: 0 0 auto;
+    width: 100%;
+    min-width: 0;
+    height: 92px;
+    margin-top: -14px;                       /* plates overlap like a stack */
+    border-radius: 18px;
+    z-index: calc(20 - var(--i, 0));          /* higher plates sit on top of lower ones */
+    box-shadow: 0 -8px 18px rgba(0, 0, 0, 0.28);
+    scroll-snap-align: none;
+    transition:
+      height 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.4s ease,
+      transform 0.2s ease;
+  }
+  .home-page .sizes-panels .size-panel:first-child { margin-top: 0; }
+  .home-page .sizes-panels .size-panel:active { transform: scale(0.985); }
+
+  /* the open plate */
+  .home-page .sizes-panels .size-panel.is-active {
+    flex: 0 0 auto;
+    min-width: 0;
+    height: 410px;
+    z-index: 40;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.42);
+  }
+
+  /* Closed plate: dimension first, thickness on its own second line. */
+  .home-page .sizes-panels .size-panel-vertical {
+    position: absolute;
+    inset: 0 62px 0 20px;
+    padding-top: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 5px;
+  }
+  .home-page .sizes-panels .size-panel:first-child .size-panel-vertical { padding-top: 0; }
+
+  .home-page .sizes-panels .size-panel-vertical-size,
+  .home-page .sizes-panels .size-panel-vertical-meta,
+  .home-page .sizes-panels .size-panel-vertical-thickness,
+  .home-page .sizes-panels .size-panel-vertical-type {
+    writing-mode: horizontal-tb;
+    transform: none;
+    white-space: normal;
+  }
+  .home-page .sizes-panels .size-panel-vertical-size {
+    font-size: clamp(1rem, 4.2vw, 1.2rem);
+    line-height: 1.15;
+    letter-spacing: 0.035em;
+  }
+  /* Second row: thickness and product type share one line. */
+  .home-page .sizes-panels .size-panel-vertical-meta {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    font-size: 0.68rem;
+    line-height: 1.2;
+    letter-spacing: 0.07em;
+    text-align: left;
+    white-space: nowrap;
+  }
+  .home-page .sizes-panels .size-panel-vertical-thickness {
+    display: inline;
+    font-weight: 600;
+  }
+  .home-page .sizes-panels .size-panel-vertical-type {
+    display: inline;
+    font-size: 0.58rem;
+    opacity: 0.82;
+  }
+  .home-page .sizes-panels .size-panel-vertical-type::before {
+    content: "·";
+    margin-right: 8px;
+    opacity: 0.8;
+  }
+
+  /* readable on light and dark photos: darker on the left where the size is */
+  .home-page .sizes-panels .size-panel .size-panel-overlay {
+    opacity: 1 !important;
+    background: linear-gradient(
+      90deg,
+      rgba(17, 15, 14, 0.82) 0%,
+      rgba(17, 15, 14, 0.58) 58%,
+      rgba(17, 15, 14, 0.4) 100%
+    ) !important;
+  }
+  .home-page .sizes-panels .size-panel.is-active .size-panel-overlay {
+    background: linear-gradient(
+      to top,
+      rgba(17, 15, 14, 0.92) 0%,
+      rgba(17, 15, 14, 0.74) 34%,
+      rgba(17, 15, 14, 0.3) 62%,
+      rgba(17, 15, 14, 0) 84%
+    ) !important;
+  }
+
+  /* little "+" that turns into "×" when the plate opens */
+  .home-page .sizes-panels .size-panel::after {
+    content: "+";
+    position: absolute;
+    right: 16px;
+    top: calc(50% + 7px);
+    z-index: 3;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid rgba(245, 242, 234, 0.7);
+    border-radius: 50%;
+    color: #f5f2ea;
+    font-family: var(--size-font);
+    font-size: 20px;
+    line-height: 1;
+    transform: translateY(-50%);
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), top 0.45s cubic-bezier(0.22, 1, 0.36, 1), background 0.3s ease;
+  }
+  .home-page .sizes-panels .size-panel:first-child::after { top: 50%; }
+  .home-page .sizes-panels .size-panel.is-active::after {
+    top: 32px;
+    transform: translateY(-50%) rotate(45deg);
+    background: rgba(255, 255, 255, 0.14);
+  }
+  .home-page .sizes-panels .size-panel:first-child.is-active::after { top: 24px; }
+
+  /* opened plate: text sits at the bottom with room for the plate below */
+  .home-page .sizes-panels .size-panel-content { padding: 1.25rem 1.25rem 1.7rem; }
+}
+
+/* each plate drops onto the stack as you scroll to it (browsers without this just show them) */
+@keyframes size-plate-in {
+  from { opacity: 0; translate: 0 38px; scale: 0.94; }
+  to   { opacity: 1; translate: 0 0;    scale: 1; }
+}
+@media (max-width: 768px) {
+  @supports (animation-timeline: view()) {
+    .home-page .sizes-panels .size-panel {
+      animation: size-plate-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 75%;
+    }
+  }
+}
+
+@media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+  .home-page .sizes-panels .size-panel { animation: none; transition-duration: 0.01ms; }
+  .home-page .sizes-panels .size-panel::after { transition: none; }
+}
+
+/* GVT / PGVT — Editorial Text Labels (Not Buttons) */
+
+.home-page .cs-tags {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0;
+  margin: 0 0 2rem;
+}
+
+.home-page .cs-tags::before {
+  content: "";
+  width: 24px;
+  height: 1px;
+  margin-right: 14px;
+  background: var(--home-accent);
+}
+
+.home-page .cs-tags span {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+
+  color: var(--home-text-secondary);
+  font-size: 0.75rem;
+  font-weight: 650;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+
+  cursor: default;
+  box-shadow: none;
+}
+
+.home-page .cs-tags span + span::before {
+  content: "/";
+  display: inline-block;
+  margin: 0 13px;
+  color: var(--home-accent);
+  font-weight: 400;
+}
+
+.home-page .cs-tags span:hover {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .home-page .cs-tags {
+    margin-bottom: 1.1rem;
+  }
+
+  .home-page .cs-tags span {
+    font-size: 0.68rem;
+  }
+}
+
+/* Phone */
+@media (max-width: 480px) {
+  .home-page .cs-tags {
+    margin-bottom: 0.9rem;
+  }
+
+  .home-page .cs-tags span {
+    font-size: 0.65rem;
+    letter-spacing: 0.13em;
+  }
+
+  .home-page .cs-tags span + span::before {
+    margin: 0 10px;
+  }
 }

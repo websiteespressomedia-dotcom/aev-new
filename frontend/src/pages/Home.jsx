@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -49,7 +49,10 @@ const SizePanel = ({ item, isActive, onActivate, onDeactivate, onToggle }) => {
         </span>
 
         <span className="size-panel-vertical-meta">
-          {item.thk.join(' / ')} MM · {item.type}
+          <span className="size-panel-vertical-thickness">
+            {item.thk.join(' / ')} MM
+          </span>
+          <span className="size-panel-vertical-type">{item.type}</span>
         </span>
       </div>
 
@@ -61,6 +64,7 @@ const SizePanel = ({ item, isActive, onActivate, onDeactivate, onToggle }) => {
           <span className="size-panel-type">{item.type}</span>
 
           <div className="size-panel-thk">
+            <span className="size-panel-thk-label">Thickness</span>
             <ul aria-label={`Available thickness for ${item.size}`}>
               {item.thk.map((t) => (
                 <li key={t}>{t} mm</li>
@@ -240,7 +244,6 @@ const HERO_TEXT = {
 
 const HeroImageSlider = () => {
   const [activeSlide, setActiveSlide] = useState(0);
-  const [transitionSlide, setTransitionSlide] = useState(1);
 
   const rootRef = useRef(null);
   const busyRef = useRef(false);
@@ -249,7 +252,9 @@ const HeroImageSlider = () => {
   const tlRef = useRef(null);
   const changeRef = useRef(null);
 
-  const changeSlide = async (direction) => {
+  const nextIndex = (activeSlide + 1) % HERO_SLIDES.length;
+
+  const changeSlide = (direction) => {
     if (busyRef.current) return;
     const root = rootRef.current;
     if (!root) return;
@@ -267,24 +272,6 @@ const HeroImageSlider = () => {
 
     busyRef.current = true;
     clearTimeout(timerRef.current);
-
-    // Decode the destination before revealing any transition slice.
-    // This prevents a blank/previous-frame flash on slower devices or networks.
-    const preload = new Image();
-    preload.src = HERO_SLIDES[target].image;
-    try {
-      if (preload.decode) {
-        await preload.decode();
-      } else {
-        await new Promise((resolve) => {
-          if (preload.complete && preload.naturalWidth > 0) resolve();
-          else { preload.onload = resolve; preload.onerror = resolve; }
-        });
-      }
-    } catch {
-      // Keep the slider usable if the browser cannot decode the image.
-    }
-
     imgs.forEach((im) => { im.src = HERO_SLIDES[target].image; });
 
     const fromRight = direction < 0;
@@ -312,20 +299,6 @@ const HeroImageSlider = () => {
     });
   };
   changeRef.current = changeSlide;
-
-  // Wait until React has committed the new permanent image, then hide/reset
-  // the transition slices. This avoids exposing the previous image for a frame.
-  useLayoutEffect(() => {
-    const root = rootRef.current;
-    if (root) {
-      const slices = gsap.utils.toArray('.aev-hero-transition-slice', root);
-      gsap.set(slices, {
-        clipPath: 'inset(0 100% 0 0)',
-        opacity: 0,
-      });
-    }
-    setTransitionSlide((activeSlide + 1) % HERO_SLIDES.length);
-  }, [activeSlide]);
 
   // autoplay: every 4s, paused while the mouse is over the hero
   const schedule = () => {
@@ -394,7 +367,7 @@ const HeroImageSlider = () => {
         <div className="aev-hero-transition" aria-hidden="true">
           {Array.from({ length: HERO_SLICE_COUNT }).map((_, index) => (
             <div
-              key={index}
+              key={`${activeSlide}-${index}`}
               className="aev-hero-transition-slice"
               style={{
                 left: `${(index / HERO_SLICE_COUNT) * 100}%`,
@@ -403,7 +376,7 @@ const HeroImageSlider = () => {
             >
               <img
                 className="aev-hero-transition-image"
-                src={HERO_SLIDES[transitionSlide].image}
+                src={HERO_SLIDES[nextIndex].image}
                 alt=""
               />
             </div>
@@ -496,12 +469,13 @@ const CATEGORY_PREVIEW_SLICES = 7;
 
 const CategoryPreviewSlider = ({ sectionRef }) => {
   const [activeSlide, setActiveSlide] = useState(0);
-  const [transitionSlide, setTransitionSlide] = useState(1);
   const rootRef = useRef(null);
   const busyRef = useRef(false);
   const timerRef = useRef(null);
   const timelineRef = useRef(null);
   const changeRef = useRef(null);
+  const nextIndex = (activeSlide + 1) % CATEGORY_PREVIEW_SLIDES.length;
+
   const changeSlide = async (direction) => {
     if (busyRef.current || !rootRef.current) return;
     const target = (activeSlide + direction + CATEGORY_PREVIEW_SLIDES.length) % CATEGORY_PREVIEW_SLIDES.length;
@@ -552,8 +526,12 @@ images.forEach((img) => {
 
     timelineRef.current = gsap.timeline({
       onComplete: () => {
-        // Keep the completed destination visible until React commits it as
-        // the permanent image. useLayoutEffect hides the slices after commit.
+        // Hide the transition layer before changing its image source for the next slide.
+        // This prevents the next image from flashing across the completed slide.
+        gsap.set(slices, {
+          clipPath: reverse ? 'inset(0 0 0 100%)' : 'inset(0 100% 0 0)',
+          clearProps: 'opacity',
+        });
         setActiveSlide(target);
       },
     }).to(orderedSlices, {
@@ -565,38 +543,6 @@ images.forEach((img) => {
   };
 
   changeRef.current = changeSlide;
-
-  useLayoutEffect(() => {
-    const root = rootRef.current;
-    if (root) {
-      const slices = gsap.utils.toArray('.category-preview-slice', root);
-      gsap.set(slices, {
-        clipPath: 'inset(0 100% 0 0)',
-        opacity: 0,
-      });
-    }
-    setTransitionSlide((activeSlide + 1) % CATEGORY_PREVIEW_SLIDES.length);
-  }, [activeSlide]);
-
-  // Hold this full-screen image section in place while the visitor views it.
-  // The pin lasts for approximately two deliberate wheel/swipe scrolls.
-  useLayoutEffect(() => {
-    const section = sectionRef?.current;
-    if (!section) return undefined;
-
-    const pinTrigger = ScrollTrigger.create({
-      trigger: section,
-      start: 'top top',
-      end: () => `+=${Math.round(window.innerHeight * 1.35)}`,
-      pin: true,
-      pinSpacing: true,
-      anticipatePin: 1,
-      invalidateOnRefresh: true,
-      refreshPriority: 1,
-    });
-
-    return () => pinTrigger.kill();
-  }, [sectionRef]);
 
   useEffect(() => {
     busyRef.current = false;
@@ -636,7 +582,7 @@ images.forEach((img) => {
               className="category-preview-slice"
               style={{ left: `${(index / CATEGORY_PREVIEW_SLICES) * 100}%`, width: `${100 / CATEGORY_PREVIEW_SLICES}%`, "--slice-offset": `${-(index * 100 / CATEGORY_PREVIEW_SLICES)}vw` }}
             >
-              <img className="category-preview-transition-image" src={CATEGORY_PREVIEW_SLIDES[transitionSlide].image} alt="" />
+              <img className="category-preview-transition-image" src={CATEGORY_PREVIEW_SLIDES[nextIndex].image} alt="" />
             </div>
           ))}
         </div>
@@ -1171,16 +1117,14 @@ const Home = () => {
         });
       }
 
-      // 2.5 Category hero entry reveal.
-      // Keep the pinned section itself free from x-transforms so ScrollTrigger
-      // can pin it without competing with the previous horizontal wipe.
+      // 2.5 Horizontal Wipe for Category Hero Section (Standard Entry Animation)
       if (categoryHeroRef.current) {
         gsap.fromTo(categoryHeroRef.current,
-          { autoAlpha: 0.85 },
+          { xPercent: 100 },
           {
-            autoAlpha: 1,
-            duration: 0.8,
-            ease: "power2.out",
+            xPercent: 0,
+            duration: 2,
+            ease: "power3.out",
             scrollTrigger: {
               trigger: categoryHeroRef.current,
               start: "top 95%",
@@ -1509,7 +1453,7 @@ const Home = () => {
               id: 3,
               size: '1200×3000',
               thk: [6],
-              type: 'TILE',
+              type: 'SLAB',
               img: '/images/size-previews/tile-1200x3000.webp',
               description:
                 'Natural stone character with generous proportions and visual continuity.',
@@ -1518,7 +1462,7 @@ const Home = () => {
               id: 4,
               size: '1200×2800',
               thk: [6],
-              type: 'TILE',
+              type: 'SLAB',
               img: '/images/size-previews/tile-1200x2800.webp',
               description:
                 'Elegant marble-inspired surfaces for refined architectural applications.',
@@ -1536,7 +1480,7 @@ const Home = () => {
               id: 6,
               size: '1200×1800',
               thk: [9, 15],
-              type: 'SLAB',
+              type: 'TILE',
               img: '/images/size-previews/tile-1200x1800.webp',
               description:
                 'A generous format that creates a strong visual foundation for a space.',
@@ -1563,7 +1507,7 @@ const Home = () => {
               id: 9,
               size: '800×3000',
               thk: [9, 15],
-              type: 'SLAB',
+              type: 'TILE',
               img: '/images/size-previews/tile-800x3000.webp',
               description:
                 'Tall, elegant proportions for walls and carefully composed interiors.',
@@ -1572,7 +1516,7 @@ const Home = () => {
               id: 10,
               size: '800×2400',
               thk: [9, 15],
-              type: 'SLAB',
+              type: 'TILE',
               img: '/images/size-previews/tile-800x2400.webp',
               description:
                 'A balanced large-format tile for clean lines and understated luxury.',

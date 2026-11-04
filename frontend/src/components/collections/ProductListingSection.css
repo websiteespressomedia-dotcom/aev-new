@@ -1216,3 +1216,230 @@
 .aev-product-card__shade,
 .aev-product-card__hover-copy,
 .aev-product-card__corner { transition-duration: 0.25s; }
+
+
+/* =========================================================
+   PHONE FILTERS — compact bar + slide-up sheet
+   Closed: one tidy row (Filters button + what is selected).
+   Open:   a light sheet with every option, tiles drawn in the real
+           shape of each format, and one big "Show N surfaces" button.
+========================================================= */
+.aev-pf, .aev-sheet { display: none; }
+
+@media (max-width: 760px) {
+  /* bar scrolls with the page; the old inline groups are replaced by the sheet */
+  .aev-collection__toolbar {
+    position: static;
+    top: auto;
+    padding: 22px 16px 0;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .aev-collection__filters { gap: 14px; padding-bottom: 18px; }
+  .aev-collection__filters-left { display: none; }
+
+  /* ---------- compact bar ---------- */
+  .aev-pf { display: flex; align-items: center; gap: 12px; min-width: 0; }
+
+  .aev-pf__btn {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 10px;
+    min-height: 46px;
+    padding: 0 16px 0 14px;
+    border: 0;
+    border-radius: 999px;
+    background: #f2f0e9;
+    color: #25232A;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .aev-pf__btn svg { width: 20px; height: 20px; fill: none; stroke: #A78350; stroke-width: 1.7; stroke-linecap: round; }
+  .aev-pf__btn b {
+    display: grid;
+    place-items: center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: #A78350;
+    color: #ffffff;
+    font-size: 11px;
+    letter-spacing: 0;
+  }
+  .aev-pf__btn:active { transform: scale(0.97); }
+
+  .aev-pf__chips { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-width: 0; }
+  .aev-pf__hint { color: var(--aev-listing-muted-on-dark); font-size: 12px; letter-spacing: 0.04em; }
+
+  .aev-pf__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 36px;
+    padding: 0 8px 0 14px;
+    border: 1px solid #A78350;
+    border-radius: 999px;
+    background: rgba(167, 131, 80, 0.22);
+    color: #f5f2ea;
+    font: inherit;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .aev-pf__chip i {
+    display: grid;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.18);
+    font-style: normal;
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  /* ---------- the sheet ---------- */
+  .aev-sheet {
+    position: fixed;
+    inset: 0;
+    z-index: 10050;                 /* above the phone navbar */
+    display: block;
+    visibility: hidden;
+    pointer-events: none;
+    transition: visibility 0s linear 0.45s;
+  }
+  .aev-sheet.is-open { visibility: visible; pointer-events: auto; transition: visibility 0s; }
+
+  .aev-sheet__scrim {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: rgba(14, 12, 14, 0.55);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    cursor: default;
+  }
+  .aev-sheet.is-open .aev-sheet__scrim { opacity: 1; }
+
+  .aev-sheet__panel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    max-height: 86dvh;
+    padding: 10px 18px 0;
+    border-radius: 28px 28px 0 0;
+    background: #f2f0e9;
+    color: #25232A;
+    box-shadow: 0 -20px 50px rgba(0, 0, 0, 0.3);
+    transform: translateY(105%);
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .aev-sheet.is-open .aev-sheet__panel { transform: translateY(0); }
+
+  .aev-sheet__handle { align-self: center; width: 42px; height: 4px; margin-bottom: 12px; border-radius: 4px; background: rgba(37, 35, 42, 0.22); }
+
+  .aev-sheet__head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 8px; }
+  .aev-sheet__head h3 { margin: 0; font-family: "Times New Roman", Times, serif; font-size: 30px; font-weight: 400; letter-spacing: -0.02em; color: #25232A; }
+  .aev-sheet__close {
+    display: grid; place-items: center; width: 40px; height: 40px; padding: 0;
+    border: 1px solid rgba(37, 35, 42, 0.18); border-radius: 50%; background: transparent;
+    color: #25232A; font-size: 22px; line-height: 1; cursor: pointer;
+  }
+
+  .aev-sheet__body { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 6px 0 12px; -webkit-overflow-scrolling: touch; }
+  .aev-sheet__group + .aev-sheet__group { margin-top: 22px; }
+
+  .aev-sheet__label {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
+    color: #8d7951; font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+  }
+  .aev-sheet__label::after { content: ""; flex: 1; height: 1px; background: rgba(37, 35, 42, 0.14); }
+
+  .aev-sheet__chips { display: flex; flex-wrap: wrap; gap: 8px; }
+
+  .aev-sheet__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    padding: 0 16px;
+    border: 1px solid rgba(37, 35, 42, 0.16);
+    border-radius: 999px;
+    background: #ffffff;
+    color: #25232A;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
+  }
+  .aev-sheet__chip:active { transform: scale(0.96); }
+  .aev-sheet__chip.is-active { border-color: #A78350; background: #A78350; color: #ffffff; }
+
+  /* little tile that has the real shape of the format */
+  .aev-tile-icon {
+    display: inline-block;
+    flex: 0 0 auto;
+    height: calc(12px + var(--h) * 0.006px);
+    width: calc((12px + var(--h) * 0.006px) * var(--w) / var(--h));
+    border: 1.5px solid currentColor;
+    border-radius: 2px;
+    background: linear-gradient(135deg, transparent 46%, currentColor 47%, currentColor 50%, transparent 51%);
+    opacity: 0.85;
+  }
+
+  /* chips pop in one after another when the sheet opens */
+  .aev-sheet.is-open .aev-sheet__chip { animation: aev-chip-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both; animation-delay: calc(var(--i) * 35ms + 150ms); }
+  @keyframes aev-chip-in { from { opacity: 0; transform: translateY(10px) scale(0.96); } to { opacity: 1; transform: none; } }
+
+  .aev-sheet__foot {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 10px;
+    padding: 14px 0 calc(14px + env(safe-area-inset-bottom));
+    border-top: 1px solid rgba(37, 35, 42, 0.12);
+    background: #f2f0e9;
+  }
+  .aev-sheet__clear {
+    min-height: 54px; padding: 0 18px; border: 1px solid rgba(37, 35, 42, 0.2); border-radius: 999px;
+    background: transparent; color: #25232A; font: inherit; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
+  }
+  .aev-sheet__clear:disabled { opacity: 0.35; cursor: default; }
+  .aev-sheet__show {
+    display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 54px; padding: 0 18px;
+    border: 0; border-radius: 999px; background: #25232A; color: #f2f0e9;
+    font: inherit; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer;
+  }
+  .aev-sheet__show i { color: #C1A673; font-style: normal; font-size: 18px; }
+
+  /* results start a little below the top when "Show" scrolls to them */
+  .aev-collection__grid { scroll-margin-top: 96px; }
+}
+
+@media (max-width: 360px) {
+  .aev-pf { flex-wrap: wrap; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .aev-sheet__panel, .aev-sheet__scrim { transition: none; }
+  .aev-sheet.is-open .aev-sheet__chip { animation: none; }
+}

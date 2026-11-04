@@ -866,21 +866,6 @@ const MissionVision = () => {
           <div className="mv-image-line" />
 
 
-          {/* IMAGE INDEX */}
-
-          <div className="mv-image-index">
-
-            <span className="mv-idx">
-              01
-            </span>
-
-            <span className="mv-index-line" />
-
-            <span className="mv-idx">
-              02
-            </span>
-
-          </div>
 
 
           {/* SCROLL PROGRESS */}

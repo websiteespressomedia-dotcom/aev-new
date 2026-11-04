@@ -7,8 +7,18 @@ const CustomCursor = () => {
   const followerRef = useRef(null);
 
   useEffect(() => {
+    // Custom cursor effects are for mouse/trackpad devices only.
+    // Touch screens keep their natural tap and scroll interactions.
+    const isTouchDevice = window.matchMedia(
+      '(hover: none), (pointer: coarse), (max-width: 767px)'
+    ).matches;
+
+    if (isTouchDevice) return undefined;
+
     const cursor = cursorRef.current;
     const follower = followerRef.current;
+
+    if (!cursor || !follower) return undefined;
 
     // Set initial position
     gsap.set(cursor, { xPercent: -50, yPercent: -50 });

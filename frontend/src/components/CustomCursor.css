@@ -43,3 +43,14 @@
     cursor: none;
   }
 }
+
+
+/* Hide the custom mouse cursor on phones and touch-first tablets. */
+@media (hover: none), (pointer: coarse), (max-width: 767px) {
+  .cursor-dot,
+  .cursor-follower {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+}
